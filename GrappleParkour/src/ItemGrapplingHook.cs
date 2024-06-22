@@ -21,6 +21,7 @@ namespace GrappleParkour
             Vec3d aimPos = pos.AheadCopy(1, byEntity.ServerPos.Pitch + pitch, byEntity.ServerPos.Yaw + yaw);
             Vec3d velocity = (aimPos - pos) * 0.65;
             byEntity.ServerPos.Motion.Set(velocity);
+            byEntity.Pos.SetFrom(byEntity.ServerPos);
             byEntity.WatchedAttributes.MarkPathDirty("servercontrols");
         }
     }

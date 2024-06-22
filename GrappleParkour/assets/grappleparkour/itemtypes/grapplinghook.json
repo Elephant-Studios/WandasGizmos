@@ -6,7 +6,7 @@
   },
   "shape": {
     "base":  "item/grapplinghook"
-  }
+  },
   "creativeinventory": {
     "general": [ "*" ],
     "items": [ "*" ]
