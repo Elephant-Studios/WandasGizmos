@@ -4,6 +4,9 @@
   "texture": {
     "base": "item/grapplinghook"
   },
+  "shape": {
+    "base":  "item/grapplinghook"
+  }
   "creativeinventory": {
     "general": [ "*" ],
     "items": [ "*" ]
