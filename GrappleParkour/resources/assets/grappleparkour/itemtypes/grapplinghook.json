@@ -1,0 +1,11 @@
+{
+  "code": "grapple",
+  "class": "ItemGrapplingHook",
+  "texture": {
+    "base": "item/grapplinghook"
+  },
+  "creativeinventory": {
+    "general": [ "*" ],
+    "items": [ "*" ]
+  }
+}

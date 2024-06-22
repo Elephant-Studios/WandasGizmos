@@ -1,11 +1,9 @@
 {
     "type": "code",
-    "modid": "vsmodtemplate",
-    "name": "VSModTemplate",
+    "modid": "grappleparkour",
+    "name": "GrappleParkour",
     "authors": [
-        "Dov3",
-        "Aera",
-        "Siegrane"
+        "Dov3"
     ],
     "description": "To be added",
     "version": "1.0.0",
