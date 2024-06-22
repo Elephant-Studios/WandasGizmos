@@ -1,4 +1,5 @@
 ﻿using Microsoft.VisualBasic;
+using System.Diagnostics;
 using Vintagestory.API.Client;
 using Vintagestory.API.Common;
 using Vintagestory.API.Common.Entities;
@@ -18,11 +19,12 @@ namespace GrappleParkour
             double pitch = byEntity.WatchedAttributes.GetDouble("aimingRandYaw", 1);
             double yaw = byEntity.WatchedAttributes.GetDouble("aimingRandYaw", 1);
             Vec3d pos = byEntity.Pos.XYZ.Add(0, byEntity.LocalEyePos.Y - 0.2, 0);
-            Vec3d aimPos = pos.AheadCopy(1, byEntity.Pos.Pitch + pitch, byEntity.Pos.Yaw + yaw);
-            Vec3d velocity = (aimPos - pos) * 10;
-            byEntity.Pos.SetFrom(byEntity.ServerPos);
+            Vec3d aimPos = pos.AheadCopy(0.5, pitch, yaw);
+            Vec3d velocity = (aimPos - pos);
+            //byEntity.Pos.SetFrom(byEntity.ServerPos);
             byEntity.Pos.Motion.Set(velocity);
-            byEntity.WatchedAttributes.MarkPathDirty("servercontrols");
+            //byEntity.WatchedAttributes.MarkPathDirty("servercontrols");
+            Debug.Print("working"); 
         }
     }
 }
