@@ -1,0 +1,42 @@
+{
+	"code": "hook",
+	"class": "EntityProjectile",
+	"hitboxSize": {
+		"x": 0.125,
+		"y": 0.125
+	},
+	"client": {
+		"renderer": "Shape",
+		"shape": {
+			"base": "item/grapplinghook"
+		},
+		"texture": {
+			"base": "item/grapplinghook"
+		},
+		"behaviors": [
+			{
+				"code": "passivephysics",
+				"groundDragFactor": 1,
+				"airDragFactor": 0.25,
+				"gravityFactor": 0.75
+			},
+			{ "code": "interpolateposition" }
+		]
+	},
+	"server": {
+		"behaviors": [
+			{
+				"code": "passivephysics",
+				"groundDragFactor": 1,
+				"airDragFactor": 0.25,
+				"gravityFactor": 0.75
+			},
+			{
+				"code": "despawn",
+				"minSeconds": 600
+			}
+		]
+	},
+	"sounds": {
+	}
+}
