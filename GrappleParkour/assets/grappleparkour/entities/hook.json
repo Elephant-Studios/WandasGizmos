@@ -1,6 +1,6 @@
 {
 	"code": "hook",
-	"class": "EntityProjectile",
+	"class": "EntityHook",
 	"hitboxSize": {
 		"x": 0.125,
 		"y": 0.125
@@ -17,8 +17,8 @@
 			{
 				"code": "passivephysics",
 				"groundDragFactor": 1,
-				"airDragFactor": 0.25,
-				"gravityFactor": 0.75
+				"airDragFactor": 0.15,
+				"gravityFactor": 0.35
 			},
 			{ "code": "interpolateposition" }
 		]
@@ -28,8 +28,8 @@
 			{
 				"code": "passivephysics",
 				"groundDragFactor": 1,
-				"airDragFactor": 0.25,
-				"gravityFactor": 0.75
+				"airDragFactor": 0.15,
+				"gravityFactor": 0.35
 			},
 			{
 				"code": "despawn",
