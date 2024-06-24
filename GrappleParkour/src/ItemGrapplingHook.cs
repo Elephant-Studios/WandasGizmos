@@ -17,9 +17,8 @@ namespace GrappleParkour
         public override void OnHeldInteractStart(ItemSlot slot, EntityAgent byEntity, BlockSelection blockSel, EntitySelection entitySel, bool firstEvent, ref EnumHandHandling handling)
         {
             handling = EnumHandHandling.Handled;
-            string hookEntityCode = Attributes["hookEntityCode"].AsString();
-            api.Logger.Debug($"hookEntityCode: {hookEntityCode}");
-            EntityProperties type = byEntity.World.GetEntityType(new AssetLocation(Attributes["hookEntityCode"].AsString()));
+            EntityProperties type = byEntity.World.GetEntityType(new AssetLocation("grappleparkour", "entities/hook.json"));
+            GrappleParkour._api.Logger.Debug($"Hook Type: {type.ToString()}");
             EntityHook enpr = byEntity.World.ClassRegistry.CreateEntity(type) as EntityHook;
             double pitch = byEntity.WatchedAttributes.GetDouble("aimingRandYaw", 1);
             double yaw = byEntity.WatchedAttributes.GetDouble("aimingRandYaw", 1);
