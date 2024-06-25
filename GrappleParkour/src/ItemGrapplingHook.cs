@@ -1,4 +1,5 @@
 ﻿using Microsoft.VisualBasic;
+using System;
 using System.Diagnostics;
 using Vintagestory.API.Client;
 using Vintagestory.API.Common;
@@ -17,8 +18,8 @@ namespace GrappleParkour
         public override void OnHeldInteractStart(ItemSlot slot, EntityAgent byEntity, BlockSelection blockSel, EntitySelection entitySel, bool firstEvent, ref EnumHandHandling handling)
         {
             handling = EnumHandHandling.Handled;
-            EntityProperties type = byEntity.World.GetEntityType(new AssetLocation("grappleparkour", "entities/hook.json"));
-            GrappleParkour._api.Logger.Debug($"Hook Type: {type.ToString()}");
+            EntityProperties type = byEntity.World.GetEntityType(new AssetLocation("grappleparkour:hook"));
+            Console.WriteLine($"Hook Type: {type.Code.ToString()}");
             EntityHook enpr = byEntity.World.ClassRegistry.CreateEntity(type) as EntityHook;
             double pitch = byEntity.WatchedAttributes.GetDouble("aimingRandYaw", 1);
             double yaw = byEntity.WatchedAttributes.GetDouble("aimingRandYaw", 1);
