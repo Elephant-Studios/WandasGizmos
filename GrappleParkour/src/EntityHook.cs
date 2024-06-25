@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using System.IO;
 using Vintagestory.API.Client;
 using Vintagestory.API.Common;
@@ -9,7 +8,7 @@ using Vintagestory.API.Server;
 
 namespace GrappleParkour
 {
-    public class EntityHook : Entity //hook entity
+    public class EntityHook : Entity
     {
         bool beforeCollided;
         bool stuck;
@@ -29,10 +28,6 @@ namespace GrappleParkour
         public bool DamageStackOnImpact = false;
 
         Cuboidf collisionTestBox;
-
-        //EntityPartitioning ep;
-
-
 
 
         public override bool ApplyGravity
@@ -56,11 +51,9 @@ namespace GrappleParkour
             //if (api.Side == EnumAppSide.Server) - why only server side? This makes arrows fly through entities on the client
             {
                 GetBehavior<EntityBehaviorPassivePhysics>().OnPhysicsTickCallback = onPhysicsTickCallback;
-                //ep = api.ModLoader.GetModSystem<EntityPartitioning>();
             }
 
             GetBehavior<EntityBehaviorPassivePhysics>().collisionYExtra = 0f; // Slightly cheap hax so that stones/arrows don't collid with fences
-            
         }
 
         private void onPhysicsTickCallback(float dtFac)
@@ -71,10 +64,7 @@ namespace GrappleParkour
             var pos = SidedPos;
 
             if (pos.Motion.X == 0 && pos.Motion.Y == 0 && pos.Motion.Z == 0) return;  // don't do damage if stuck in ground
-            if (pos.Motion.X == 0 && pos.Motion.Y == 0 && pos.Motion.Z == 0)
-            {
-                Debug.Print(message: $"collided with:{pos.XYZ.ToString}");
-            }
+
 
             Cuboidd projectileBox = SelectionBox.ToDouble().Translate(pos.X, pos.Y, pos.Z);
 
@@ -84,21 +74,6 @@ namespace GrappleParkour
             else projectileBox.Y2 += pos.Motion.Y * dtFac;
             if (pos.Motion.Z < 0) projectileBox.Z1 += pos.Motion.Z * dtFac;
             else projectileBox.Z2 += pos.Motion.Z * dtFac;
-
-            /*ep.WalkEntities(pos.XYZ, 5f, (e) => {
-                if (e.EntityId == this.EntityId || (FiredBy != null && e.EntityId == FiredBy.EntityId && World.ElapsedMilliseconds - msLaunch < 500) || !e.IsInteractable) return true;
-
-                Cuboidd eBox = e.SelectionBox.ToDouble().Translate(e.ServerPos.X, e.ServerPos.Y, e.ServerPos.Z);
-
-                if (eBox.IntersectsOrTouches(projectileBox))
-                {
-                    impactOnEntity(e);
-                    return false;
-                }
-
-                return true;
-            }, EnumEntitySearchType.Creatures);
-                */
         }
 
 
@@ -125,10 +100,10 @@ namespace GrappleParkour
                 SetRotation();
             }
 
-            /*if (TryAttackEntity(impactSpeed))
+            if (TryAttackEntity(impactSpeed))
             {
                 return;
-            }*/
+            }
 
             beforeCollided = false;
             motionBeforeCollide.Set(pos.Motion.X, pos.Motion.Y, pos.Motion.Z);
@@ -168,7 +143,7 @@ namespace GrappleParkour
                     }
                 }
 
-                //TryAttackEntity(impactSpeed);
+                TryAttackEntity(impactSpeed);
 
                 msCollide = World.ElapsedMilliseconds;
 
@@ -179,7 +154,7 @@ namespace GrappleParkour
         }
 
 
-        /*bool TryAttackEntity(double impactSpeed)
+        bool TryAttackEntity(double impactSpeed)
         {
             if (World is IClientWorldAccessor || World.ElapsedMilliseconds <= msCollide + 250) return false;
             if (impactSpeed <= 0.01) return false;
@@ -217,10 +192,10 @@ namespace GrappleParkour
 
 
             return false;
-        }*/
+        }
 
 
-        /*private void impactOnEntity(Entity entity)
+        private void impactOnEntity(Entity entity)
         {
             if (!Alive) return;
 
@@ -286,7 +261,7 @@ namespace GrappleParkour
                     World.PlaySoundFor(new AssetLocation("sounds/player/projectilehit"), (FiredBy as EntityPlayer).Player, false, 24);
                 }
             }
-        }*/
+        }
 
 
         public virtual void SetRotation()

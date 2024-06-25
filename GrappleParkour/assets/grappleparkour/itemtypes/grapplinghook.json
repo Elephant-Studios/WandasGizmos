@@ -1,7 +1,6 @@
 {
-  "code": "grapple",
+  "code": "grapplinghook",
   "class": "ItemGrapplingHook",
-  "hookEntityCode": "hook",
   "texture": {
     "base": "item/grapplinghook"
   },

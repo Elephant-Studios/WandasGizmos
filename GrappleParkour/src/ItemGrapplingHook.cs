@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualBasic;
 using System.Diagnostics;
+using System.Linq;
 using Vintagestory.API.Client;
 using Vintagestory.API.Common;
 using Vintagestory.API.Common.Entities;
@@ -10,18 +11,22 @@ using Vintagestory.API.Util;
 
 namespace GrappleParkour
 {
+
     class ItemGrapplingHook : Item
     {
+
         // Called on server and client
         // Useful for registering block/entity classes on both sides
         public override void OnHeldInteractStart(ItemSlot slot, EntityAgent byEntity, BlockSelection blockSel, EntitySelection entitySel, bool firstEvent, ref EnumHandHandling handling)
         {
+            var capi = byEntity.Api as ICoreClientAPI;
+            capi.Logger.Debug(slot.Itemstack.ItemAttributes["hookEntityCode"].Exists);
             handling = EnumHandHandling.Handled;
-            EntityProperties type = byEntity.World.GetEntityType(new AssetLocation("grappleparkour", "entities/hook.json"));
-            GrappleParkour._api.Logger.Debug($"Hook Type: {type.ToString()}");
+            EntityProperties type = byEntity.World.GetEntityType(new AssetLocation(slot.Itemstack.ItemAttributes["hookEntityCode"].ToString()));
+            capi.Logger.Debug($"Hook Type: {type.ToString()}");
             EntityHook enpr = byEntity.World.ClassRegistry.CreateEntity(type) as EntityHook;
-            double pitch = byEntity.WatchedAttributes.GetDouble("aimingRandYaw", 1);
-            double yaw = byEntity.WatchedAttributes.GetDouble("aimingRandYaw", 1);
+            //double pitch = byEntity.WatchedAttributes.GetDouble("aimingRandYaw", 1);
+            //double yaw = byEntity.WatchedAttributes.GetDouble("aimingRandYaw", 1);
             Vec3d pos = byEntity.Pos.XYZ.Add(0, byEntity.LocalEyePos.Y - 0.2, 0);
             Vec3d aimPos = pos.AheadCopy(1, byEntity.Pos.Pitch, byEntity.Pos.Yaw);
             Vec3d velocity = (aimPos - pos);
@@ -40,7 +45,6 @@ namespace GrappleParkour
             byEntity.World.SpawnEntity(enpr);
             byEntity.StartAnimation("throw");
             //byEntity.WatchedAttributes.MarkPathDirty("servercontrols");
-            
             Debug.Print("working"); 
         }
     }

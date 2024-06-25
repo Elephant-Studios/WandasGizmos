@@ -1,5 +1,5 @@
 {
-	"code": "hook",
+	"code": "grapplinghook",
 	"class": "EntityHook",
 	"hitboxSize": {
 		"x": 0.125,
@@ -7,11 +7,11 @@
 	},
 	"client": {
 		"renderer": "Shape",
-		"shape": {
-			"base": "item/grapplinghook"
-		},
 		"texture": {
 			"base": "item/grapplinghook"
+		},
+		"shape": {
+			"base":  "item/grapplinghook"
 		},
 		"behaviors": [
 			{
@@ -38,5 +38,8 @@
 		]
 	},
 	"sounds": {
+	},
+	"attributes": {
+		"hookEntityCode": "EntityHook"
 	}
 }
