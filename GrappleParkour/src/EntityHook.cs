@@ -83,10 +83,9 @@ namespace GrappleParkour
             EntityPos pos = SidedPos;
             if (FiredBy != null && collTester.IsColliding(World.BlockAccessor, collisionTestBox, pos.XYZ))
             {
-                Console.WriteLine($"fired");
-                Api.Logger.Warning("fired");
+                Console.WriteLine($"{FiredBy.ToString()}");
                 Vec3d velocity = SpringConst * (FiredBy.ServerPos.XYZ - anchorPoint);
-                ItemGrapplingHook.PlayerMove(FiredBy, velocity);
+                MoveFiredBy(velocity);
             }
             stuck = Collided || collTester.IsColliding(World.BlockAccessor, collisionTestBox, pos.XYZ) || WatchedAttributes.GetBool("stuck");
             if (Api.Side == EnumAppSide.Server) WatchedAttributes.SetBool("stuck", stuck);
@@ -117,7 +116,7 @@ namespace GrappleParkour
         public override void OnCollided()
         {   
             EntityPos pos = SidedPos;
-            anchorPoint = SidedPos.XYZ;
+            anchorPoint = pos.XYZ;
             IsColliding(SidedPos, Math.Max(motionBeforeCollide.Length(), pos.Motion.Length()));
             motionBeforeCollide.Set(pos.Motion.X, pos.Motion.Y, pos.Motion.Z);
         }
@@ -157,6 +156,10 @@ namespace GrappleParkour
 
         }
 
+        private void MoveFiredBy(Vec3d Vel)
+        {
+            FiredBy.ServerPos.Motion.Add(Vel);
+        }
 
         bool TryAttackEntity(double impactSpeed)
         {

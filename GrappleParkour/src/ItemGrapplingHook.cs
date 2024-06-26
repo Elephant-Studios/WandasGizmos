@@ -13,11 +13,21 @@ namespace GrappleParkour
 {
     class ItemGrapplingHook : Item
     {
-        // Called on server and client
-        // Useful for registering block/entity classes on both sides
-        public override void OnHeldInteractStart(ItemSlot slot, EntityAgent byEntity, BlockSelection blockSel, EntitySelection entitySel, bool firstEvent, ref EnumHandHandling handling)
+        public override void OnHeldInteractStart(ItemSlot itemslot, EntityAgent byEntity, BlockSelection blockSel, EntitySelection entitySel, bool firstEvent, ref EnumHandHandling handling)
         {
+            base.OnHeldInteractStart(itemslot, byEntity, blockSel, entitySel, firstEvent, ref handling);
+            if (handling == EnumHandHandling.PreventDefault) return;
+
             handling = EnumHandHandling.Handled;
+
+            // Not ideal to code the aiming controls this way. Needs an elegant solution - maybe an event bus?
+            byEntity.Attributes.SetInt("aiming", 1);
+            byEntity.Attributes.SetInt("aimingCancel", 0);
+            byEntity.StartAnimation("aim");
+        }
+
+        public override void OnHeldInteractStop(float secondsUsed, ItemSlot slot, EntityAgent byEntity, BlockSelection blockSel, EntitySelection entitySel)
+        {
             EntityProperties type = byEntity.World.GetEntityType(new AssetLocation("grappleparkour:grapplinghook"));
             EntityHook enpr = byEntity.World.ClassRegistry.CreateEntity(type) as EntityHook;
             double pitch = byEntity.WatchedAttributes.GetDouble("aimingRandYaw", 1);
@@ -42,10 +52,6 @@ namespace GrappleParkour
             //byEntity.WatchedAttributes.MarkPathDirty("servercontrols");
 
             Debug.Print("working");
-        }
-        public void PlayerMove(EntityAgent byEntity, Vec3d Vel)
-        {
-            byEntity.ServerPos.Motion.Add(Vel);
         }
     }
 }
