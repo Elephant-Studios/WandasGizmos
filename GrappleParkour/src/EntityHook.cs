@@ -296,24 +296,9 @@ namespace GrappleParkour
             return ProjectileStack;
         }
 
-
         public override void OnCollideWithLiquid()
         {
             base.OnCollideWithLiquid();
-        }
-
-        public override void ToBytes(BinaryWriter writer, bool forClient)
-        {
-            base.ToBytes(writer, forClient);
-            writer.Write(beforeCollided);
-            ProjectileStack.ToBytes(writer);
-        }
-
-        public override void FromBytes(BinaryReader reader, bool fromServer)
-        {
-            base.FromBytes(reader, fromServer);
-            beforeCollided = reader.ReadBoolean();
-            ProjectileStack = new ItemStack(reader);
         }
     }
 }

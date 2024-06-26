@@ -17,8 +17,8 @@ namespace GrappleParkour
             base.Start(api);
             _api = api;
 
+            api.RegisterEntity("EntityHook", typeof(EntityHook));
             api.RegisterItemClass("ItemGrapplingHook", typeof(ItemGrapplingHook));
-            api.RegisterEntity("GrappleParkour:EntityHook", typeof(EntityHook));
         }
     }
 }
