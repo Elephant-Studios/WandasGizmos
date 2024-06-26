@@ -19,7 +19,6 @@ namespace GrappleParkour
         {
             handling = EnumHandHandling.Handled;
             EntityProperties type = byEntity.World.GetEntityType(new AssetLocation("grappleparkour:grapplinghook"));
-            Console.WriteLine($"Hook Type: {type.Code.ToString()}");
             EntityHook enpr = byEntity.World.ClassRegistry.CreateEntity(type) as EntityHook;
             double pitch = byEntity.WatchedAttributes.GetDouble("aimingRandYaw", 1);
             double yaw = byEntity.WatchedAttributes.GetDouble("aimingRandYaw", 1);

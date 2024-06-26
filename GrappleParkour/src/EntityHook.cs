@@ -80,11 +80,11 @@ namespace GrappleParkour
         {
             base.OnGameTick(dt);
             if (ShouldDespawn) return;
-
             EntityPos pos = SidedPos;
             if (FiredBy != null && collTester.IsColliding(World.BlockAccessor, collisionTestBox, pos.XYZ))
             {
-                //Api.Logger("fired");
+                Console.WriteLine($"fired");
+                Api.Logger.Warning("fired");
                 Vec3d velocity = SpringConst * (FiredBy.ServerPos.XYZ - anchorPoint);
                 FiredBy.ServerPos.Motion.Add(velocity);
             }
@@ -115,7 +115,7 @@ namespace GrappleParkour
 
 
         public override void OnCollided()
-        {
+        {   
             EntityPos pos = SidedPos;
             anchorPoint = SidedPos.XYZ;
             IsColliding(SidedPos, Math.Max(motionBeforeCollide.Length(), pos.Motion.Length()));
