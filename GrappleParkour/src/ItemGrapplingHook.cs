@@ -31,7 +31,7 @@ namespace GrappleParkour
 
             enpr.ServerPos.SetPos(spawnPos);
             enpr.ServerPos.Motion.Set(velocity);
-
+            enpr.FiredBy = byEntity;
 
             enpr.Pos.SetFrom(enpr.ServerPos);
             enpr.World = byEntity.World;
@@ -42,6 +42,10 @@ namespace GrappleParkour
             //byEntity.WatchedAttributes.MarkPathDirty("servercontrols");
 
             Debug.Print("working");
+        }
+        public void PlayerMove(EntityAgent byEntity, Vec3d Vel)
+        {
+            byEntity.ServerPos.Motion.Add(Vel);
         }
     }
 }

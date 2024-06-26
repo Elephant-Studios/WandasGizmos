@@ -86,7 +86,7 @@ namespace GrappleParkour
                 Console.WriteLine($"fired");
                 Api.Logger.Warning("fired");
                 Vec3d velocity = SpringConst * (FiredBy.ServerPos.XYZ - anchorPoint);
-                FiredBy.ServerPos.Motion.Add(velocity);
+                ItemGrapplingHook.PlayerMove(FiredBy, velocity);
             }
             stuck = Collided || collTester.IsColliding(World.BlockAccessor, collisionTestBox, pos.XYZ) || WatchedAttributes.GetBool("stuck");
             if (Api.Side == EnumAppSide.Server) WatchedAttributes.SetBool("stuck", stuck);
