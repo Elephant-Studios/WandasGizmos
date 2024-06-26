@@ -1,5 +1,4 @@
-﻿using Microsoft.VisualBasic;
-using System;
+﻿using System;
 using System.Diagnostics;
 using Vintagestory.API.Client;
 using Vintagestory.API.Common;
@@ -18,12 +17,17 @@ namespace GrappleParkour
             base.OnHeldInteractStart(itemslot, byEntity, blockSel, entitySel, firstEvent, ref handling);
             if (handling == EnumHandHandling.PreventDefault) return;
 
-            handling = EnumHandHandling.Handled;
+            handling = EnumHandHandling.PreventDefault;
+        }
 
-            // Not ideal to code the aiming controls this way. Needs an elegant solution - maybe an event bus?
-            byEntity.Attributes.SetInt("aiming", 1);
-            byEntity.Attributes.SetInt("aimingCancel", 0);
-            byEntity.StartAnimation("aim");
+        public override bool OnHeldInteractStep(float secondsUsed, ItemSlot slot, EntityAgent byEntity, BlockSelection blockSel, EntitySelection entitySel)
+        {
+            return true;
+        }
+
+        public override bool OnHeldInteractCancel(float secondsUsed, ItemSlot slot, EntityAgent byEntity, BlockSelection blockSel, EntitySelection entitySel, EnumItemUseCancelReason cancelReason)
+        {
+            return true;
         }
 
         public override void OnHeldInteractStop(float secondsUsed, ItemSlot slot, EntityAgent byEntity, BlockSelection blockSel, EntitySelection entitySel)
@@ -52,6 +56,17 @@ namespace GrappleParkour
             //byEntity.WatchedAttributes.MarkPathDirty("servercontrols");
 
             Debug.Print("working");
+        }
+
+        public override WorldInteraction[] GetHeldInteractionHelp(ItemSlot inSlot)
+        {
+            return new WorldInteraction[] {
+                new WorldInteraction()
+                {
+                    ActionLangCode = "heldhelp-throw",
+                    MouseButton = EnumMouseButton.Right,
+                }
+            }.Append(base.GetHeldInteractionHelp(inSlot));
         }
     }
 }
