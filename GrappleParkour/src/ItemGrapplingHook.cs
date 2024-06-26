@@ -18,7 +18,7 @@ namespace GrappleParkour
         public override void OnHeldInteractStart(ItemSlot slot, EntityAgent byEntity, BlockSelection blockSel, EntitySelection entitySel, bool firstEvent, ref EnumHandHandling handling)
         {
             handling = EnumHandHandling.Handled;
-            EntityProperties type = byEntity.World.GetEntityType(new AssetLocation("grappleparkour:hook"));
+            EntityProperties type = byEntity.World.GetEntityType(new AssetLocation("grappleparkour:grapplinghook"));
             Console.WriteLine($"Hook Type: {type.Code.ToString()}");
             EntityHook enpr = byEntity.World.ClassRegistry.CreateEntity(type) as EntityHook;
             double pitch = byEntity.WatchedAttributes.GetDouble("aimingRandYaw", 1);
@@ -27,7 +27,7 @@ namespace GrappleParkour
             Vec3d aimPos = pos.AheadCopy(1, byEntity.Pos.Pitch, byEntity.Pos.Yaw);
             Vec3d velocity = (aimPos - pos);
             //byEntity.Pos.SetFrom(byEntity.ServerPos);
-            byEntity.Pos.Motion.Add(velocity);
+
             Vec3d spawnPos = byEntity.ServerPos.BehindCopy(0.21).XYZ.Add(byEntity.LocalEyePos.X, byEntity.LocalEyePos.Y - 0.2, byEntity.LocalEyePos.Z);
 
             enpr.ServerPos.SetPos(spawnPos);
@@ -41,8 +41,8 @@ namespace GrappleParkour
             byEntity.World.SpawnEntity(enpr);
             byEntity.StartAnimation("throw");
             //byEntity.WatchedAttributes.MarkPathDirty("servercontrols");
-            
-            Debug.Print("working"); 
+
+            Debug.Print("working");
         }
     }
 }

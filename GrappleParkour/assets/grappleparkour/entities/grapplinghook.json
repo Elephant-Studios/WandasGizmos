@@ -2,7 +2,7 @@
 	"code": "grapplinghook",
 	"class": "EntityHook",
 	"hitboxSize": {
-		"x": 0.125,
+		"x": 0.0825,
 		"y": 0.125
 	},
 	"client": {
@@ -38,8 +38,5 @@
 		]
 	},
 	"sounds": {
-	},
-	"attributes": {
-		"hookEntityCode": "EntityHook"
 	}
 }

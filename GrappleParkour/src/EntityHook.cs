@@ -26,6 +26,8 @@ namespace GrappleParkour
         public ItemStack ProjectileStack;
         public float DropOnImpactChance = 0f;
         public bool DamageStackOnImpact = false;
+        public double SpringConst = 2.54;
+        public Vec3d anchorPoint;
 
         Cuboidf collisionTestBox;
 
@@ -62,10 +64,7 @@ namespace GrappleParkour
             if (World.ElapsedMilliseconds <= msCollide + 500) return;
 
             var pos = SidedPos;
-
-            if (pos.Motion.X == 0 && pos.Motion.Y == 0 && pos.Motion.Z == 0) return;  // don't do damage if stuck in ground
-
-
+            
             Cuboidd projectileBox = SelectionBox.ToDouble().Translate(pos.X, pos.Y, pos.Z);
 
             if (pos.Motion.X < 0) projectileBox.X1 += pos.Motion.X * dtFac;
@@ -83,7 +82,12 @@ namespace GrappleParkour
             if (ShouldDespawn) return;
 
             EntityPos pos = SidedPos;
-
+            if (FiredBy != null && collTester.IsColliding(World.BlockAccessor, collisionTestBox, pos.XYZ))
+            {
+                //Api.Logger("fired");
+                Vec3d velocity = SpringConst * (FiredBy.ServerPos.XYZ - anchorPoint);
+                FiredBy.ServerPos.Motion.Add(velocity);
+            }
             stuck = Collided || collTester.IsColliding(World.BlockAccessor, collisionTestBox, pos.XYZ) || WatchedAttributes.GetBool("stuck");
             if (Api.Side == EnumAppSide.Server) WatchedAttributes.SetBool("stuck", stuck);
 
@@ -113,7 +117,7 @@ namespace GrappleParkour
         public override void OnCollided()
         {
             EntityPos pos = SidedPos;
-
+            anchorPoint = SidedPos.XYZ;
             IsColliding(SidedPos, Math.Max(motionBeforeCollide.Length(), pos.Motion.Length()));
             motionBeforeCollide.Set(pos.Motion.X, pos.Motion.Y, pos.Motion.Z);
         }
@@ -161,6 +165,7 @@ namespace GrappleParkour
 
             EntityPos pos = SidedPos;
 
+            
             Cuboidd projectileBox = SelectionBox.ToDouble().Translate(ServerPos.X, ServerPos.Y, ServerPos.Z);
 
             // We give it a bit of extra leeway of 50% because physics ticks can run twice or 3 times in one game tick 
@@ -288,12 +293,6 @@ namespace GrappleParkour
         public override bool CanCollect(Entity byEntity)
         {
             return Alive && World.ElapsedMilliseconds - msLaunch > 1000 && ServerPos.Motion.Length() < 0.01;
-        }
-
-        public override ItemStack OnCollected(Entity byEntity)
-        {
-            ProjectileStack.ResolveBlockOrItem(World);
-            return ProjectileStack;
         }
 
         public override void OnCollideWithLiquid()
