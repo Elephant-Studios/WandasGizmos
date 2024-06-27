@@ -20,7 +20,7 @@ namespace GrappleParkour
 
         CollisionTester collTester = new CollisionTester();
 
-        public Entity FiredBy;
+        public EntityAgent FiredBy;
         public float Weight = 0.1f;
         public float Damage;
         public ItemStack ProjectileStack;
@@ -79,9 +79,9 @@ namespace GrappleParkour
             EntityPos pos = SidedPos;
             if (FiredBy != null && collTester.IsColliding(World.BlockAccessor, collisionTestBox, pos.XYZ))
             {
-                Console.WriteLine($"{FiredBy.GetName()}");
-                Vec3d velocity = SpringConst * (FiredBy.ServerPos.XYZ - anchorPoint);
-                MoveFiredBy(velocity);
+                Vec3d velocity = SpringConst * (FiredBy.Pos.XYZ - anchorPoint);
+                ItemGrapplingHook.MoveFiredBy(velocity, FiredBy);
+                //FiredBy.ServerPos.Motion.Add(velocity);
             }
             stuck = Collided || collTester.IsColliding(World.BlockAccessor, collisionTestBox, pos.XYZ) || WatchedAttributes.GetBool("stuck");
             if (Api.Side == EnumAppSide.Server) WatchedAttributes.SetBool("stuck", stuck);
@@ -97,11 +97,6 @@ namespace GrappleParkour
             else
             {
                 SetRotation();
-            }
-
-            if (TryAttackEntity(impactSpeed))
-            {
-                return;
             }
 
             beforeCollided = false;
@@ -148,11 +143,6 @@ namespace GrappleParkour
             }
 
 
-        }
-
-        private void MoveFiredBy(Vec3d Vel)
-        {
-            FiredBy.ServerPos.Motion.Add(Vel);
         }
 
         private void ImpactOnEntity(Entity entity)

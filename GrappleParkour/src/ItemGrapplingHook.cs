@@ -18,20 +18,6 @@ namespace GrappleParkour
             if (handling == EnumHandHandling.PreventDefault) return;
 
             handling = EnumHandHandling.PreventDefault;
-        }
-
-        public override bool OnHeldInteractStep(float secondsUsed, ItemSlot slot, EntityAgent byEntity, BlockSelection blockSel, EntitySelection entitySel)
-        {
-            return true;
-        }
-
-        public override bool OnHeldInteractCancel(float secondsUsed, ItemSlot slot, EntityAgent byEntity, BlockSelection blockSel, EntitySelection entitySel, EnumItemUseCancelReason cancelReason)
-        {
-            return true;
-        }
-
-        public override void OnHeldInteractStop(float secondsUsed, ItemSlot slot, EntityAgent byEntity, BlockSelection blockSel, EntitySelection entitySel)
-        {
             EntityProperties type = byEntity.World.GetEntityType(new AssetLocation("grappleparkour:grapplinghook"));
             EntityHook enpr = byEntity.World.ClassRegistry.CreateEntity(type) as EntityHook;
             double pitch = byEntity.WatchedAttributes.GetDouble("aimingRandYaw", 1);
@@ -58,6 +44,16 @@ namespace GrappleParkour
             Debug.Print("working");
         }
 
+        /*public override bool OnHeldInteractStep(float secondsUsed, ItemSlot slot, EntityAgent byEntity, BlockSelection blockSel, EntitySelection entitySel)
+        {
+            return true;
+        }
+
+        public override bool OnHeldInteractCancel(float secondsUsed, ItemSlot slot, EntityAgent byEntity, BlockSelection blockSel, EntitySelection entitySel, EnumItemUseCancelReason cancelReason)
+        {
+            return true;
+        }*/
+
         public override WorldInteraction[] GetHeldInteractionHelp(ItemSlot inSlot)
         {
             return new WorldInteraction[] {
@@ -67,6 +63,10 @@ namespace GrappleParkour
                     MouseButton = EnumMouseButton.Right,
                 }
             }.Append(base.GetHeldInteractionHelp(inSlot));
+        }
+        public static void MoveFiredBy(Vec3d Vel, EntityAgent plr)
+        {
+            plr.ServerPos.Motion.Set(Vel);
         }
     }
 }
