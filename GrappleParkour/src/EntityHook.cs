@@ -26,7 +26,7 @@ namespace GrappleParkour
         public ItemStack ProjectileStack;
         public float DropOnImpactChance = 0f;
         public bool DamageStackOnImpact = false;
-        public double SpringConst = 2.54;
+        public float SpringConst = 1f;
         public Vec3d anchorPoint;
 
         Cuboidf collisionTestBox;

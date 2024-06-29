@@ -36,6 +36,7 @@ namespace GrappleParkour
             enpr.Pos.SetFrom(enpr.ServerPos);
             enpr.World = byEntity.World;
             enpr.SetRotation();
+            //enpr.TrueClient = IClientPlayer;
 
             byEntity.World.SpawnEntity(enpr);
             byEntity.StartAnimation("throw");
@@ -66,7 +67,10 @@ namespace GrappleParkour
         }
         public static void MoveFiredBy(Vec3d Vel, EntityAgent plr)
         {
-            plr.ServerPos.Motion.Set(Vel);
+            Debug.Print("moving");
+            plr.ServerPos.Motion.Set(new Vec3d(0, 10, 0));
+            //plr.ServerPos.Motion.Set(Vel);
+            plr.Pos.SetFrom(plr.ServerPos);
         }
     }
 }
