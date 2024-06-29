@@ -82,9 +82,14 @@ namespace GrappleParkour
             if (anchorPoint == null) return;
             if (FiredBy != null && collTester.IsColliding(World.BlockAccessor, collisionTestBox, pos.XYZ)) //&& !grappled)
             {
-                Vec3d velocity = SpringConst * (FiredBy.Pos.XYZ - anchorPoint);
-                FiredBy.ServerPos.Motion.Add(velocity*dt);
-                FiredBy.Pos.Motion.Add(velocity*dt);
+                //Vec3d velocity = SpringConst * (FiredBy.Pos.XYZ - anchorPoint);
+                double L = Math.Sqrt(Math.Pow(FiredBy.Pos.X - anchorPoint.X, 2) + Math.Pow(FiredBy.Pos.Y - anchorPoint.Y, 2) + Math.Pow(FiredBy.Pos.Z - anchorPoint.Z, 2));
+                double theta = Math.Atan(Math.Sqrt(Math.Pow(FiredBy.Pos.Z - anchorPoint.Z, 2) - Math.Pow(FiredBy.Pos.Y - anchorPoint.Y, 2)));
+                double phi = Math.Atan(Math.Sqrt(Math.Pow(FiredBy.Pos.X - anchorPoint.X, 2) - Math.Pow(FiredBy.Pos.Z - anchorPoint.Z, 2)));
+                double mag = L * theta * -Math.Sin(Math.Sqrt(-9.81 / L));
+                Vec3d vel = new Vec3d(mag * Math.Sin(theta) * Math.Cos(phi), mag * Math.Cos(theta), 0);   //mag * Math.Sin(theta) * Math.Cos(phi));
+                FiredBy.ServerPos.Motion.Add(vel * dt);
+               FiredBy.Pos.Motion.Add(vel * dt);
                 Console.WriteLine(Api.Side);
                 Console.WriteLine(FiredBy.ServerPos.Motion);
                 //grappled = true;
