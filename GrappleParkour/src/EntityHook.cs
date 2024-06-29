@@ -72,7 +72,7 @@ namespace GrappleParkour
             else projectileBox.Z2 += pos.Motion.Z * dtFac;
         }
 
-        bool grappled = false;
+        //bool grappled = false;
         public override void OnGameTick(float dt)
         {
             base.OnGameTick(dt);
@@ -80,14 +80,14 @@ namespace GrappleParkour
             EntityPos pos = SidedPos;
             if (FiredBy == null) FiredBy = (Api as ICoreClientAPI)?.World.Player.Entity;
             if (anchorPoint == null) return;
-            if (FiredBy != null && collTester.IsColliding(World.BlockAccessor, collisionTestBox, pos.XYZ) && !grappled)
+            if (FiredBy != null && collTester.IsColliding(World.BlockAccessor, collisionTestBox, pos.XYZ)) //&& !grappled)
             {
                 Vec3d velocity = SpringConst * (FiredBy.Pos.XYZ - anchorPoint);
-                FiredBy.ServerPos.Motion.Set(velocity);
-                FiredBy.Pos.Motion.Set(velocity);
+                FiredBy.ServerPos.Motion.Add(velocity*dt);
+                FiredBy.Pos.Motion.Add(velocity*dt);
                 Console.WriteLine(Api.Side);
                 Console.WriteLine(FiredBy.ServerPos.Motion);
-                grappled = true;
+                //grappled = true;
             }
             stuck = Collided || collTester.IsColliding(World.BlockAccessor, collisionTestBox, pos.XYZ) || WatchedAttributes.GetBool("stuck");
             if (Api.Side == EnumAppSide.Server) WatchedAttributes.SetBool("stuck", stuck);
