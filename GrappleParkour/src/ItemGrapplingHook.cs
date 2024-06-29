@@ -12,11 +12,12 @@ namespace GrappleParkour
 {
     class ItemGrapplingHook : Item
     {
-        public override void OnHeldInteractStart(ItemSlot itemslot, EntityAgent byEntity, BlockSelection blockSel, EntitySelection entitySel, bool firstEvent, ref EnumHandHandling handling)
+        public override void OnHeldInteractStart(ItemSlot slot, EntityAgent byEntity, BlockSelection blockSel, EntitySelection entitySel, bool firstEvent, ref EnumHandHandling handling)
         {
-            base.OnHeldInteractStart(itemslot, byEntity, blockSel, entitySel, firstEvent, ref handling);
+            base.OnHeldInteractStart(slot, byEntity, blockSel, entitySel, firstEvent, ref handling);
             if (handling == EnumHandHandling.PreventDefault) return;
-
+            ItemStack stack = slot.TakeOut(1);
+            slot.MarkDirty();
             handling = EnumHandHandling.PreventDefault;
             EntityProperties type = byEntity.World.GetEntityType(new AssetLocation("grappleparkour:grapplinghook"));
             EntityHook enpr = byEntity.World.ClassRegistry.CreateEntity(type) as EntityHook;
@@ -32,6 +33,8 @@ namespace GrappleParkour
             enpr.ServerPos.SetPos(spawnPos);
             enpr.ServerPos.Motion.Set(velocity);
             enpr.FiredBy = byEntity;
+            enpr.ProjectileStack = stack;
+
 
             enpr.Pos.SetFrom(enpr.ServerPos);
             enpr.World = byEntity.World;
@@ -64,13 +67,6 @@ namespace GrappleParkour
                     MouseButton = EnumMouseButton.Right,
                 }
             }.Append(base.GetHeldInteractionHelp(inSlot));
-        }
-        public static void MoveFiredBy(Vec3d Vel, EntityAgent plr)
-        {
-            Debug.Print("moving");
-            plr.ServerPos.Motion.Set(new Vec3d(0, 10, 0));
-            //plr.ServerPos.Motion.Set(Vel);
-            plr.Pos.SetFrom(plr.ServerPos);
         }
     }
 }

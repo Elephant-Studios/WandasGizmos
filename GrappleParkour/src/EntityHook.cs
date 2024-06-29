@@ -26,7 +26,8 @@ namespace GrappleParkour
         public ItemStack ProjectileStack;
         public float DropOnImpactChance = 0f;
         public bool DamageStackOnImpact = false;
-        public float SpringConst = 1f;
+        public float SpringConst = -0.075f;
+        public long EntityID;
         public Vec3d anchorPoint;
 
         Cuboidf collisionTestBox;
@@ -45,9 +46,9 @@ namespace GrappleParkour
         public override void Initialize(EntityProperties properties, ICoreAPI api, long InChunkIndex3d)
         {
             base.Initialize(properties, api, InChunkIndex3d);
-
+            FiredBy = Api.World.GetEntityById(EntityID) as EntityAgent;
             msLaunch = World.ElapsedMilliseconds;
-
+            //anchorPoint = FiredBy.Pos.XYZ;
             collisionTestBox = SelectionBox.Clone().OmniGrowBy(0.05f);
 
             GetBehavior<EntityBehaviorPassivePhysics>().OnPhysicsTickCallback = onPhysicsTickCallback;
@@ -71,17 +72,22 @@ namespace GrappleParkour
             else projectileBox.Z2 += pos.Motion.Z * dtFac;
         }
 
-
+        bool grappled = false;
         public override void OnGameTick(float dt)
         {
             base.OnGameTick(dt);
             if (ShouldDespawn) return;
             EntityPos pos = SidedPos;
-            if (FiredBy != null && collTester.IsColliding(World.BlockAccessor, collisionTestBox, pos.XYZ))
+            if (FiredBy == null) FiredBy = (Api as ICoreClientAPI)?.World.Player.Entity;
+            if (anchorPoint == null) return;
+            if (FiredBy != null && collTester.IsColliding(World.BlockAccessor, collisionTestBox, pos.XYZ) && !grappled)
             {
                 Vec3d velocity = SpringConst * (FiredBy.Pos.XYZ - anchorPoint);
-                ItemGrapplingHook.MoveFiredBy(velocity, FiredBy);
-                //FiredBy.ServerPos.Motion.Add(velocity);
+                FiredBy.ServerPos.Motion.Set(velocity);
+                FiredBy.Pos.Motion.Set(velocity);
+                Console.WriteLine(Api.Side);
+                Console.WriteLine(FiredBy.ServerPos.Motion);
+                grappled = true;
             }
             stuck = Collided || collTester.IsColliding(World.BlockAccessor, collisionTestBox, pos.XYZ) || WatchedAttributes.GetBool("stuck");
             if (Api.Side == EnumAppSide.Server) WatchedAttributes.SetBool("stuck", stuck);
@@ -105,7 +111,7 @@ namespace GrappleParkour
 
 
         public override void OnCollided()
-        {   
+        {
             EntityPos pos = SidedPos;
             anchorPoint = pos.XYZ;
             IsColliding(SidedPos, Math.Max(motionBeforeCollide.Length(), pos.Motion.Length()));
@@ -213,7 +219,6 @@ namespace GrappleParkour
             }
         }
 
-
         public virtual void SetRotation()
         {
             EntityPos pos = (World is IServerWorldAccessor) ? ServerPos : Pos;
@@ -238,10 +243,29 @@ namespace GrappleParkour
         {
             return Alive && World.ElapsedMilliseconds - msLaunch > 1000 && ServerPos.Motion.Length() < 0.01;
         }
-
+        public override ItemStack OnCollected(Entity byEntity)
+        {
+            ProjectileStack.ResolveBlockOrItem(World);
+            return ProjectileStack;
+        }
         public override void OnCollideWithLiquid()
         {
             base.OnCollideWithLiquid();
+        }
+        public override void ToBytes(BinaryWriter writer, bool forClient)
+        {
+            base.ToBytes(writer, forClient);
+            writer.Write(EntityID);
+            writer.Write(beforeCollided);
+            ProjectileStack.ToBytes(writer);
+        }
+
+        public override void FromBytes(BinaryReader reader, bool fromServer)
+        {
+            base.FromBytes(reader, fromServer);
+            EntityID = reader.ReadInt64();
+            beforeCollided = reader.ReadBoolean();
+            ProjectileStack = new ItemStack(reader);
         }
     }
 }
