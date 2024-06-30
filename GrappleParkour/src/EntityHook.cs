@@ -26,10 +26,10 @@ namespace GrappleParkour
         public ItemStack ProjectileStack;
         public float DropOnImpactChance = 0f;
         public bool DamageStackOnImpact = false;
-        public float SpringConst = -2.0f;
-        public float DampingCoeff = 0.01f;
+        public float SpringConst = -0.1f;
+        public float DampingCoeff = 0.02f;
         public long EntityID;
-        public double MaxLength = 3;
+        public double MaxLength;
         public Vec3d anchorPoint;
 
         Cuboidf collisionTestBox;
@@ -72,7 +72,10 @@ namespace GrappleParkour
             if (pos.Motion.Z < 0) projectileBox.Z1 += pos.Motion.Z * dtFac;
             else projectileBox.Z2 += pos.Motion.Z * dtFac;
         }
-
+        public static Vec3d GetProjectionOn(Vec3d vector, Vec3d direction)
+        {
+            return direction * (vector.Dot(direction) / Math.Sqrt(direction.Dot(direction)));
+        }
         //bool grappled = false;
         public override void OnGameTick(float dt)
         {
@@ -85,17 +88,21 @@ namespace GrappleParkour
             {
                 double L = FiredBy.Pos.DistanceTo(anchorPoint);
                 double theta = Math.Atan2(FiredBy.Pos.X - anchorPoint.X, FiredBy.Pos.Y - anchorPoint.Y);
-                if (L > MaxLength)
-                {
-                    Vec3d acceleration = FiredBy.Pos.XYZ.SubCopy(anchorPoint).Normalize()*SpringConst;
-                    //Vec3d velocity = new Vec3d(Math.Sin(theta) * L, Math.Cos(theta) * L, 0);
-                    FiredBy.ServerPos.Motion.Add(acceleration * dt - FiredBy.ServerPos.Motion*DampingCoeff);
-                    FiredBy.Pos.Motion.Add(acceleration * dt - FiredBy.Pos.Motion*DampingCoeff);
-                    Console.WriteLine(Api.Side);
-                    Console.WriteLine(FiredBy.ServerPos.Motion);
-                }
+                Vec3d radialDistance = FiredBy.Pos.XYZ.SubCopy(anchorPoint);
+                double radialDistanceMag = radialDistance.Length();
+                Vec3d radialDirection = radialDistance.Normalize();
+                Vec3d acceleration = radialDirection * SpringConst * Math.Abs(radialDistanceMag - MaxLength);
+                //Vec3d velocity = new Vec3d(Math.Sin(theta) * L, Math.Cos(theta) * L, 0);
+                var damping = 2f * Math.Sqrt(SpringConst);
+                FiredBy.ServerPos.Motion.Add(acceleration * dt);
+                FiredBy.Pos.Motion.Add(acceleration * dt);
+                FiredBy.ServerPos.Motion.Add(-damping * GetProjectionOn(FiredBy.Pos.Motion, radialDirection));
+                FiredBy.Pos.Motion.Add(-damping * GetProjectionOn(FiredBy.Pos.Motion, radialDirection));
+                Console.WriteLine(Api.Side);
+                Console.WriteLine(FiredBy.ServerPos.Motion);
                 //grappled = true;
             }
+
             stuck = Collided || collTester.IsColliding(World.BlockAccessor, collisionTestBox, pos.XYZ) || WatchedAttributes.GetBool("stuck");
             if (Api.Side == EnumAppSide.Server) WatchedAttributes.SetBool("stuck", stuck);
 
@@ -121,7 +128,7 @@ namespace GrappleParkour
         {
             EntityPos pos = SidedPos;
             anchorPoint = pos.XYZ;
-            //MaxLength = Math.Sqrt(Math.Pow(FiredBy.Pos.X - anchorPoint.X, 2) + Math.Pow(FiredBy.Pos.Y - anchorPoint.Y, 2));
+            MaxLength = FiredBy.Pos.DistanceTo(anchorPoint);
             IsColliding(SidedPos, Math.Max(motionBeforeCollide.Length(), pos.Motion.Length()));
             motionBeforeCollide.Set(pos.Motion.X, pos.Motion.Y, pos.Motion.Z);
         }
