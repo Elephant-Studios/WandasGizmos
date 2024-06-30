@@ -28,6 +28,7 @@ namespace GrappleParkour
         public bool DamageStackOnImpact = false;
         public float SpringConst = -0.075f;
         public long EntityID;
+        public double MaxLength;
         public Vec3d anchorPoint;
 
         Cuboidf collisionTestBox;
@@ -46,7 +47,7 @@ namespace GrappleParkour
         public override void Initialize(EntityProperties properties, ICoreAPI api, long InChunkIndex3d)
         {
             base.Initialize(properties, api, InChunkIndex3d);
-            FiredBy = Api.World.GetEntityById(EntityID) as EntityAgent;
+            //FiredBy = Api.World.GetEntityById(EntityID) as EntityAgent;
             msLaunch = World.ElapsedMilliseconds;
             //anchorPoint = FiredBy.Pos.XYZ;
             collisionTestBox = SelectionBox.Clone().OmniGrowBy(0.05f);
@@ -76,22 +77,22 @@ namespace GrappleParkour
         public override void OnGameTick(float dt)
         {
             base.OnGameTick(dt);
+            if (FiredBy == null) FiredBy = (Api as ICoreClientAPI)?.World.Player.Entity;
             if (ShouldDespawn) return;
             EntityPos pos = SidedPos;
-            if (FiredBy == null) FiredBy = (Api as ICoreClientAPI)?.World.Player.Entity;
             if (anchorPoint == null) return;
             if (FiredBy != null && collTester.IsColliding(World.BlockAccessor, collisionTestBox, pos.XYZ)) //&& !grappled)
             {
-                //Vec3d velocity = SpringConst * (FiredBy.Pos.XYZ - anchorPoint);
-                double L = Math.Sqrt(Math.Pow(FiredBy.Pos.X - anchorPoint.X, 2) + Math.Pow(FiredBy.Pos.Y - anchorPoint.Y, 2) + Math.Pow(FiredBy.Pos.Z - anchorPoint.Z, 2));
-                double theta = Math.Atan(Math.Sqrt(Math.Pow(FiredBy.Pos.Z - anchorPoint.Z, 2) - Math.Pow(FiredBy.Pos.Y - anchorPoint.Y, 2)));
-                double phi = Math.Atan(Math.Sqrt(Math.Pow(FiredBy.Pos.X - anchorPoint.X, 2) - Math.Pow(FiredBy.Pos.Z - anchorPoint.Z, 2)));
-                double mag = L * theta * -Math.Sin(Math.Sqrt(-9.81 / L));
-                Vec3d vel = new Vec3d(mag * Math.Sin(theta) * Math.Cos(phi), mag * Math.Cos(theta), 0);   //mag * Math.Sin(theta) * Math.Cos(phi));
-                FiredBy.ServerPos.Motion.Add(vel * dt);
-               FiredBy.Pos.Motion.Add(vel * dt);
-                Console.WriteLine(Api.Side);
-                Console.WriteLine(FiredBy.ServerPos.Motion);
+                double L = Math.Sqrt(Math.Pow(FiredBy.Pos.X - anchorPoint.X, 2) + Math.Pow(FiredBy.Pos.Y - anchorPoint.Y, 2));
+                double theta = Math.Atan2(FiredBy.Pos.X - anchorPoint.X, FiredBy.Pos.Y - anchorPoint.Y);
+                if (L > MaxLength)
+                {
+                    Vec3d velocity = new Vec3d(Math.Sin(theta) * L, Math.Cos(theta) * L, 0);
+                    FiredBy.ServerPos.Motion.Add(velocity * dt);
+                    FiredBy.Pos.Motion.Add(velocity * dt);
+                    Console.WriteLine(Api.Side);
+                    Console.WriteLine(FiredBy.ServerPos.Motion);
+                }
                 //grappled = true;
             }
             stuck = Collided || collTester.IsColliding(World.BlockAccessor, collisionTestBox, pos.XYZ) || WatchedAttributes.GetBool("stuck");
@@ -119,6 +120,7 @@ namespace GrappleParkour
         {
             EntityPos pos = SidedPos;
             anchorPoint = pos.XYZ;
+            MaxLength = Math.Sqrt(Math.Pow(FiredBy.Pos.X - anchorPoint.X, 2) + Math.Pow(FiredBy.Pos.Y - anchorPoint.Y, 2));
             IsColliding(SidedPos, Math.Max(motionBeforeCollide.Length(), pos.Motion.Length()));
             motionBeforeCollide.Set(pos.Motion.X, pos.Motion.Y, pos.Motion.Z);
         }
