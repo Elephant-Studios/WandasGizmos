@@ -26,17 +26,10 @@ namespace GrappleParkour
         public ItemStack ProjectileStack;
         public float DropOnImpactChance = 0f;
         public bool DamageStackOnImpact = false;
-<<<<<<< HEAD
-        public float SpringConst = -0.1f;
-        public float DampingCoeff = 0.02f;
+        public float SpringConst = 0.5f;
         public long EntityID;
         public double MaxLength;
-=======
-        public float SpringConst = -2.0f;
-        public float DampingCoeff = 0.01f;
-        public long EntityID;
-        public double MaxLength = 3;
->>>>>>> parent of 53cd888 (Merge pull request #2 from jayugg/hook-attempt)
+        public double FunConstant = 0.05f;
         public Vec3d anchorPoint;
 
         Cuboidf collisionTestBox;
@@ -69,7 +62,7 @@ namespace GrappleParkour
             if (World.ElapsedMilliseconds <= msCollide + 500) return;
 
             var pos = SidedPos;
-            
+
             Cuboidd projectileBox = SelectionBox.ToDouble().Translate(pos.X, pos.Y, pos.Z);
 
             if (pos.Motion.X < 0) projectileBox.X1 += pos.Motion.X * dtFac;
@@ -79,10 +72,7 @@ namespace GrappleParkour
             if (pos.Motion.Z < 0) projectileBox.Z1 += pos.Motion.Z * dtFac;
             else projectileBox.Z2 += pos.Motion.Z * dtFac;
         }
-        public static Vec3d GetProjectionOn(Vec3d vector, Vec3d direction)
-        {
-            return direction * (vector.Dot(direction) / Math.Sqrt(direction.Dot(direction)));
-        }
+
         //bool grappled = false;
         public override void OnGameTick(float dt)
         {
@@ -91,37 +81,42 @@ namespace GrappleParkour
             if (ShouldDespawn) return;
             EntityPos pos = SidedPos;
             if (anchorPoint == null) return;
+            // New comment to overwrite PR
             if (FiredBy != null && collTester.IsColliding(World.BlockAccessor, collisionTestBox, pos.XYZ)) //&& !grappled)
             {
                 double L = FiredBy.Pos.DistanceTo(anchorPoint);
-                double theta = Math.Atan2(FiredBy.Pos.X - anchorPoint.X, FiredBy.Pos.Y - anchorPoint.Y);
-<<<<<<< HEAD
-                Vec3d radialDistance = FiredBy.Pos.XYZ.SubCopy(anchorPoint);
-                double radialDistanceMag = radialDistance.Length();
-                Vec3d radialDirection = radialDistance.Normalize();
-                Vec3d acceleration = radialDirection * SpringConst * Math.Abs(radialDistanceMag - MaxLength);
-                //Vec3d velocity = new Vec3d(Math.Sin(theta) * L, Math.Cos(theta) * L, 0);
-                var damping = 2f * Math.Sqrt(SpringConst);
-                FiredBy.ServerPos.Motion.Add(acceleration * dt);
-                FiredBy.Pos.Motion.Add(acceleration * dt);
-                FiredBy.ServerPos.Motion.Add(-damping * GetProjectionOn(FiredBy.Pos.Motion, radialDirection));
-                FiredBy.Pos.Motion.Add(-damping * GetProjectionOn(FiredBy.Pos.Motion, radialDirection));
-                Console.WriteLine(Api.Side);
-                Console.WriteLine(FiredBy.ServerPos.Motion);
-=======
-                if (L > MaxLength)
+                if (L > MaxLength + 0.2)
                 {
-                    Vec3d acceleration = FiredBy.Pos.XYZ.SubCopy(anchorPoint).Normalize()*SpringConst;
-                    //Vec3d velocity = new Vec3d(Math.Sin(theta) * L, Math.Cos(theta) * L, 0);
-                    FiredBy.ServerPos.Motion.Add(acceleration * dt - FiredBy.ServerPos.Motion*DampingCoeff);
-                    FiredBy.Pos.Motion.Add(acceleration * dt - FiredBy.Pos.Motion*DampingCoeff);
-                    Console.WriteLine(Api.Side);
-                    Console.WriteLine(FiredBy.ServerPos.Motion);
+                    double theta = Math.Atan2(FiredBy.Pos.X - anchorPoint.X, FiredBy.Pos.Y - anchorPoint.Y);
+                    double phi = Math.Atan2(FiredBy.Pos.Z - anchorPoint.Z, FiredBy.Pos.Y - anchorPoint.Y);
+                    Vec3d radialDistance = FiredBy.Pos.XYZ.SubCopy(anchorPoint);
+                    double radialDistanceMag = radialDistance.Length();
+                    Vec3d radialDirection = radialDistance.Normalize();
+                    Vec3d acceleration = radialDirection * SpringConst * Math.Abs(radialDistanceMag - MaxLength);
+                    var damping = 2f * Math.Sqrt(SpringConst);
+                    Vec3d TangVel = FiredBy.Pos.Motion - GetProjectionOn(FiredBy.Pos.Motion, radialDirection);
+                    FiredBy.ServerPos.Motion.Add(acceleration * dt);
+                    FiredBy.Pos.Motion.Add(acceleration * dt);
+                    FiredBy.ServerPos.Motion.Add(-damping * GetProjectionOn(FiredBy.Pos.Motion, radialDirection));
+                    FiredBy.Pos.Motion.Add(-damping * GetProjectionOn(FiredBy.Pos.Motion, radialDirection));
+                    var ThetaDegrees = theta * 180 / Math.PI;
+                    var PhiDegrees = phi * 180 / Math.PI;
+                    if (FiredBy.Pos.Motion.Length() < 0.3f && ((ThetaDegrees > 135 && ThetaDegrees < 180) || (ThetaDegrees > -180 && ThetaDegrees < -135)))
+                    {
+                        FiredBy.ServerPos.Motion.Add(TangVel * FunConstant);
+                        FiredBy.Pos.Motion.Add(TangVel * FunConstant);
+                        Console.WriteLine("theta multiplier used");
+                    }
+                    if (FiredBy.Pos.Motion.Length() < 0.3f && ((PhiDegrees > 135 && PhiDegrees < 180) || (PhiDegrees > -180 && PhiDegrees < -135)))
+                    {
+                        FiredBy.ServerPos.Motion.Add(TangVel * FunConstant);
+                        FiredBy.Pos.Motion.Add(TangVel * FunConstant);
+                        Console.WriteLine("phi multiplier used");
+                    }
+                    
                 }
->>>>>>> parent of 53cd888 (Merge pull request #2 from jayugg/hook-attempt)
-                //grappled = true;
-            }
 
+            }
             stuck = Collided || collTester.IsColliding(World.BlockAccessor, collisionTestBox, pos.XYZ) || WatchedAttributes.GetBool("stuck");
             if (Api.Side == EnumAppSide.Server) WatchedAttributes.SetBool("stuck", stuck);
 
@@ -142,6 +137,10 @@ namespace GrappleParkour
             motionBeforeCollide.Set(pos.Motion.X, pos.Motion.Y, pos.Motion.Z);
         }
 
+        public static Vec3d GetProjectionOn(Vec3d vector, Vec3d direction)
+        {
+            return direction * (vector.Dot(direction) / Math.Sqrt(direction.Dot(direction)));
+        }
 
         public override void OnCollided()
         {
