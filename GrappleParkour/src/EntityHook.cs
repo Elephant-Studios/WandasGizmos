@@ -81,23 +81,24 @@ namespace GrappleParkour
             if (ShouldDespawn) return;
             EntityPos pos = SidedPos;
             if (anchorPoint == null) return;
+            // New comment to overwrite PR
             if (FiredBy != null && collTester.IsColliding(World.BlockAccessor, collisionTestBox, pos.XYZ)) //&& !grappled)
             {
                 double L = FiredBy.Pos.DistanceTo(anchorPoint);
-                    double theta = Math.Atan2(FiredBy.Pos.X - anchorPoint.X, FiredBy.Pos.Y - anchorPoint.Y);
-                    Vec3d radialDistance = FiredBy.Pos.XYZ.SubCopy(anchorPoint);
-                    double radialDistanceMag = radialDistance.Length();
-                    Vec3d radialDirection = radialDistance.Normalize();
-                    Vec3d acceleration = radialDirection * SpringConst * Math.Abs(radialDistanceMag - MaxLength);
-                    //Vec3d velocity = new Vec3d(Math.Sin(theta) * L, Math.Cos(theta) * L, 0);
-                    var damping = 2f * Math.Sqrt(SpringConst);
-                    FiredBy.ServerPos.Motion.Add(acceleration * dt);
-                    FiredBy.Pos.Motion.Add(acceleration*dt);
-                    FiredBy.ServerPos.Motion.Add(-damping * GetProjectionOn(FiredBy.Pos.Motion, radialDirection));
-                    FiredBy.Pos.Motion.Add(-damping * GetProjectionOn(FiredBy.Pos.Motion, radialDirection));
-                    Console.WriteLine(Api.Side);
-                    Console.WriteLine(FiredBy.ServerPos.Motion);
-                    //grappled = true;
+                double theta = Math.Atan2(FiredBy.Pos.X - anchorPoint.X, FiredBy.Pos.Y - anchorPoint.Y);
+                Vec3d radialDistance = FiredBy.Pos.XYZ.SubCopy(anchorPoint);
+                double radialDistanceMag = radialDistance.Length();
+                Vec3d radialDirection = radialDistance.Normalize();
+                Vec3d acceleration = radialDirection * SpringConst * Math.Abs(radialDistanceMag - MaxLength);
+                //Vec3d velocity = new Vec3d(Math.Sin(theta) * L, Math.Cos(theta) * L, 0);
+                var damping = 2f * Math.Sqrt(SpringConst);
+                FiredBy.ServerPos.Motion.Add(acceleration * dt);
+                FiredBy.Pos.Motion.Add(acceleration*dt);
+                FiredBy.ServerPos.Motion.Add(-damping * GetProjectionOn(FiredBy.Pos.Motion, radialDirection));
+                FiredBy.Pos.Motion.Add(-damping * GetProjectionOn(FiredBy.Pos.Motion, radialDirection));
+                Console.WriteLine(Api.Side);
+                Console.WriteLine(FiredBy.ServerPos.Motion);
+                //grappled = true;
             }
             stuck = Collided || collTester.IsColliding(World.BlockAccessor, collisionTestBox, pos.XYZ) || WatchedAttributes.GetBool("stuck");
             if (Api.Side == EnumAppSide.Server) WatchedAttributes.SetBool("stuck", stuck);
