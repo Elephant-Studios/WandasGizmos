@@ -26,10 +26,17 @@ namespace GrappleParkour
         public ItemStack ProjectileStack;
         public float DropOnImpactChance = 0f;
         public bool DamageStackOnImpact = false;
+<<<<<<< HEAD
         public float SpringConst = -0.1f;
         public float DampingCoeff = 0.02f;
         public long EntityID;
         public double MaxLength;
+=======
+        public float SpringConst = -2.0f;
+        public float DampingCoeff = 0.01f;
+        public long EntityID;
+        public double MaxLength = 3;
+>>>>>>> parent of 53cd888 (Merge pull request #2 from jayugg/hook-attempt)
         public Vec3d anchorPoint;
 
         Cuboidf collisionTestBox;
@@ -88,6 +95,7 @@ namespace GrappleParkour
             {
                 double L = FiredBy.Pos.DistanceTo(anchorPoint);
                 double theta = Math.Atan2(FiredBy.Pos.X - anchorPoint.X, FiredBy.Pos.Y - anchorPoint.Y);
+<<<<<<< HEAD
                 Vec3d radialDistance = FiredBy.Pos.XYZ.SubCopy(anchorPoint);
                 double radialDistanceMag = radialDistance.Length();
                 Vec3d radialDirection = radialDistance.Normalize();
@@ -100,6 +108,17 @@ namespace GrappleParkour
                 FiredBy.Pos.Motion.Add(-damping * GetProjectionOn(FiredBy.Pos.Motion, radialDirection));
                 Console.WriteLine(Api.Side);
                 Console.WriteLine(FiredBy.ServerPos.Motion);
+=======
+                if (L > MaxLength)
+                {
+                    Vec3d acceleration = FiredBy.Pos.XYZ.SubCopy(anchorPoint).Normalize()*SpringConst;
+                    //Vec3d velocity = new Vec3d(Math.Sin(theta) * L, Math.Cos(theta) * L, 0);
+                    FiredBy.ServerPos.Motion.Add(acceleration * dt - FiredBy.ServerPos.Motion*DampingCoeff);
+                    FiredBy.Pos.Motion.Add(acceleration * dt - FiredBy.Pos.Motion*DampingCoeff);
+                    Console.WriteLine(Api.Side);
+                    Console.WriteLine(FiredBy.ServerPos.Motion);
+                }
+>>>>>>> parent of 53cd888 (Merge pull request #2 from jayugg/hook-attempt)
                 //grappled = true;
             }
 
