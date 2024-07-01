@@ -55,7 +55,6 @@ namespace GrappleParkour
             GetBehavior<EntityBehaviorPassivePhysics>().OnPhysicsTickCallback = onPhysicsTickCallback;
             GetBehavior<EntityBehaviorPassivePhysics>().collisionYExtra = 0f; // Slightly cheap hax so that stones/arrows don't collid with fences
         }
-
         private void onPhysicsTickCallback(float dtFac)
         {
             if (ShouldDespawn || !Alive) return;
@@ -71,8 +70,19 @@ namespace GrappleParkour
             else projectileBox.Y2 += pos.Motion.Y * dtFac;
             if (pos.Motion.Z < 0) projectileBox.Z1 += pos.Motion.Z * dtFac;
             else projectileBox.Z2 += pos.Motion.Z * dtFac;
+            if (msCollide > 10000)
+            {
+                Die();
+            }
         }
 
+        private void KillHook(int ID)
+        {
+            if (ID == FiredBy.EntityId)
+            {
+                Die();
+            }
+        }
         //bool grappled = false;
         public override void OnGameTick(float dt)
         {
@@ -139,7 +149,6 @@ namespace GrappleParkour
         {
             return direction * (vector.Dot(direction) / Math.Sqrt(direction.Dot(direction)));
         }
-
         public override void OnCollided()
         {
             EntityPos pos = SidedPos;
