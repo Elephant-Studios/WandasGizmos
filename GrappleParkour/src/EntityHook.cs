@@ -113,9 +113,7 @@ namespace GrappleParkour
                         FiredBy.Pos.Motion.Add(TangVel * FunConstant);
                         Console.WriteLine("phi multiplier used");
                     }
-                    
                 }
-
             }
             stuck = Collided || collTester.IsColliding(World.BlockAccessor, collisionTestBox, pos.XYZ) || WatchedAttributes.GetBool("stuck");
             if (Api.Side == EnumAppSide.Server) WatchedAttributes.SetBool("stuck", stuck);

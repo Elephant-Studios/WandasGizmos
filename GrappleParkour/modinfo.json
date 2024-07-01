@@ -1,11 +1,11 @@
 {
     "type": "code",
-    "modid": "grappleparkour",
-    "name": "GrappleParkour",
+    "modid": "WandasrappleHookAlpha",
+    "name": "WGMT",
     "authors": [
         "Dov3"
     ],
-    "description": "To be added",
+    "description": "Adds a grappling hook",
     "version": "1.0.0",
     "dependencies": {
         "game": ""

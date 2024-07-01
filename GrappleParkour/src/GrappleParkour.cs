@@ -6,7 +6,7 @@ using Vintagestory.GameContent;
 
 namespace GrappleParkour
 {
-    public class GrappleParkour : ModSystem
+    public class WandasGizmos : ModSystem
     {
         public static ICoreAPI _api;
 
