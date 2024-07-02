@@ -13,7 +13,7 @@ namespace GrappleParkour
 {
     class ItemGrapplingHook : Item
     {
-
+        public bool mode;
         public override void OnLoaded(ICoreAPI api)
         {
             base.OnLoaded(api);
@@ -23,8 +23,6 @@ namespace GrappleParkour
             base.OnHeldInteractStart(slot, byEntity, blockSel, entitySel, firstEvent, ref handling);
             if (handling == EnumHandHandling.PreventDefault) return;
             if (slot.Itemstack.Attributes.HasAttribute("hookId")) return;
-            //ItemStack stack = slot.TakeOut(1);
-            //slot.MarkDirty();
             handling = EnumHandHandling.PreventDefault;
             EntityProperties type = byEntity.World.GetEntityType(new AssetLocation("grappleparkour:grapplinghook"));
             EntityHook enhk = byEntity.World.ClassRegistry.CreateEntity(type) as EntityHook;
@@ -46,12 +44,13 @@ namespace GrappleParkour
             enhk.Pos.SetFrom(enhk.ServerPos);
             enhk.World = byEntity.World;
             enhk.SetRotation();
-            enhk.SetHook(slot, api);
+            //enhk.SetHook(slot, api);
             //enpr.TrueClient = IClientPlayer;
 
             byEntity.World.SpawnEntity(enhk);
             byEntity.StartAnimation("throw");
-            ItemGrapplingHook.InitializeHook(slot, enhk);
+            //ItemGrapplingHook.InitializeHook(slot, enhk);
+            //ItemStack stack = slot.TakeOut(1);
             slot.MarkDirty();
             Debug.Print("working");
         }
@@ -59,7 +58,7 @@ namespace GrappleParkour
         public override void OnHeldInteractStop(float secondsUsed, ItemSlot slot, EntityAgent byEntity, BlockSelection blockSel, EntitySelection entitySel)
         {
             base.OnHeldInteractStop(secondsUsed, slot, byEntity, blockSel, entitySel);
-            ClearHook(slot);
+            //ClearHook(slot);
         }
 
         /*public override bool OnHeldInteractStep(float secondsUsed, ItemSlot slot, EntityAgent byEntity, BlockSelection blockSel, EntitySelection entitySel)
@@ -83,6 +82,11 @@ namespace GrappleParkour
             }.Append(base.GetHeldInteractionHelp(inSlot));
         }
 
+        public static void SwitchMode(bool mode, EntityAgent player)
+        {
+           
+        }
+        /*
         public static void InitializeHook(ItemSlot slot, EntityHook hook)
         {
             slot.Itemstack.Attributes.SetLong("hookId", hook.EntityId);
@@ -99,5 +103,6 @@ namespace GrappleParkour
         {
             return slot.Itemstack.Attributes.HasAttribute("hookId");
         }
+        */
     }
 }

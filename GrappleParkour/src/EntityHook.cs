@@ -29,7 +29,7 @@ namespace GrappleParkour
         public bool DamageStackOnImpact = false;
         public float SpringConst = 0.5f;
         public double MaxLength;
-        public double FunConstant = 0.05f;
+        public double FunConstant = 0.01f;
         public Vec3d anchorPoint;
         public ItemSlot HookSlot = null!;
         public ItemStack hook = null!;
@@ -49,11 +49,11 @@ namespace GrappleParkour
             get { return false; }
         }
 
-        public void SetHook(ItemSlot slot, ICoreAPI api)
+        /*public void SetHook(ItemSlot slot, ICoreAPI api)
         {
             this.HookSlot = slot;
             this.hook = slot.Itemstack;
-        }
+        }*/
 
         public override void Initialize(EntityProperties properties, ICoreAPI api, long InChunkIndex3d)
         {
@@ -66,6 +66,7 @@ namespace GrappleParkour
             }
             else
             {
+                Console.WriteLine("death: not fired by player");
                 Die();
             }   
         msLaunch = World.ElapsedMilliseconds;
@@ -89,10 +90,11 @@ namespace GrappleParkour
             else projectileBox.Y2 += pos.Motion.Y * dtFac;
             if (pos.Motion.Z < 0) projectileBox.Z1 += pos.Motion.Z * dtFac;
             else projectileBox.Z2 += pos.Motion.Z * dtFac;
-            if (msCollide > 10000)
+            /*if (msCollide > 10000)
             {
-                Die();
-            }
+                Console.WriteLine("death: took too long");
+                //Die();
+            }*/
         }
 
         //bool grappled = false;
@@ -100,15 +102,26 @@ namespace GrappleParkour
         {
             base.OnGameTick(dt);
             if (FiredBy == null) FiredBy = (Api as ICoreClientAPI)?.World.Player.Entity;
-            if (HookSlot == null) return;
-            if (this.ServerPos.DistanceTo(FiredBy.Pos) > 150.0) // > totalRope);
+            if (HookSlot == null) HookSlot = FiredBy.Player.InventoryManager.ActiveHotbarSlot;
+            Console.WriteLine(HookSlot.Itemstack.Id);
+            if (HookSlot.Itemstack.Attributes.TryGetBool("pull") == true)
             {
-                HookSlot.Itemstack.Attributes.RemoveAttribute("hookId");
-                Die();
+                MaxLength -= 0.5;
             }
+            else if (HookSlot.Itemstack.Attributes.TryGetBool("push") == true)
+            {
+                MaxLength += 0.5;
+            }
+            /*if (this.ServerPos.DistanceTo(FiredBy.Pos) > 150.0) // > totalRope);
+            {
+                Console.WriteLine("death: player too far");
+                //HookSlot.Itemstack.Attributes.RemoveAttribute("hookId");
+                Die();
+            }*/
             else if (this.FiredBy.Player.InventoryManager.ActiveHotbarSlot.Itemstack != this.HookSlot.Itemstack)
             {
-                this.HookSlot.Itemstack.Attributes.RemoveAttribute("hookId");
+                //this.HookSlot.Itemstack.Attributes.RemoveAttribute("hookId");
+                Console.WriteLine("death: switched hotbar slots");
                 Die();
             }
             if (ShouldDespawn) return;
@@ -201,6 +214,7 @@ namespace GrappleParkour
                         int leftDurability = ProjectileStack == null ? 1 : ProjectileStack.Collectible.GetRemainingDurability(ProjectileStack);
                         if (leftDurability <= 0)
                         {
+                            Console.WriteLine("death: durability");
                             Die();
                         }
                     }
@@ -272,6 +286,7 @@ namespace GrappleParkour
                 }
                 else
                 {
+                    Console.WriteLine("death: random break chance");
                     Die();
                 }
 

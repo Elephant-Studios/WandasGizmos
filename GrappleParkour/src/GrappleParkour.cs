@@ -21,13 +21,40 @@ namespace GrappleParkour
             api.RegisterItemClass("ItemGrapplingHook", typeof(ItemGrapplingHook));
         }
 
-        /*public override void StartClientSide(ICoreClientAPI api)
+        public override void StartClientSide(ICoreClientAPI api)
         {
             api.Event.KeyDown += (keyEvent) =>
             {
-                if (keyEvent.KeyCode == (int)GlKeys.J)
-                { 
-                    entityHook.KillHook(api.World.Player.Entity.PlayerUID);
+                if (keyEvent.KeyCode == (int)GlKeys.LShift)
+                {
+                    if (api.World.Player.InventoryManager.ActiveHotbarSlot.Itemstack?.Id == 3336)
+                    {
+                        api.World.Player.InventoryManager.ActiveHotbarSlot.Itemstack.Attributes.SetBool("pull", true);
+                    }
+                }
+                else if (keyEvent.KeyCode == (int)GlKeys.Space)
+                {
+                    if (api.World.Player.InventoryManager.ActiveHotbarSlot.Itemstack?.Id == 3336)
+                    {
+                        api.World.Player.InventoryManager.ActiveHotbarSlot.Itemstack.Attributes.SetBool("push", true);
+                    }
+                }
+            };
+            api.Event.KeyUp += (keyEvent) =>
+            {
+                if (keyEvent.KeyCode == (int)GlKeys.LShift)
+                {
+                    if (api.World.Player.InventoryManager.ActiveHotbarSlot.Itemstack?.Id == 3336)
+                    {
+                        api.World.Player.InventoryManager.ActiveHotbarSlot.Itemstack.Attributes.SetBool("pull", false);
+                    }
+                }
+                else if (keyEvent.KeyCode == (int)GlKeys.Space)
+                {
+                    if (api.World.Player.InventoryManager.ActiveHotbarSlot.Itemstack?.Id == 3336)
+                    {
+                        api.World.Player.InventoryManager.ActiveHotbarSlot.Itemstack.Attributes.SetBool("push", false);
+                    }
                 }
             };
             base.StartClientSide(api);
@@ -37,6 +64,6 @@ namespace GrappleParkour
         {
             base.StartServerSide(api);
 
-        }*/
+        }
     }
 }
