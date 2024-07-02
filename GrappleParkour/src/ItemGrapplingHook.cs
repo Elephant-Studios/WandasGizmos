@@ -40,17 +40,18 @@ namespace GrappleParkour
             enhk.ServerPos.SetPos(spawnPos);
             enhk.ServerPos.Motion.Set(velocity);
             enhk.FiredById = byEntity.EntityId;
-            enhk.ProjectileStack = slot.Itemstack;
             enhk.HookSlot = slot;
+            enhk.ProjectileStack = slot.Itemstack;
 
             enhk.Pos.SetFrom(enhk.ServerPos);
             enhk.World = byEntity.World;
             enhk.SetRotation();
+            enhk.SetHook(slot, api);
             //enpr.TrueClient = IClientPlayer;
 
             byEntity.World.SpawnEntity(enhk);
             byEntity.StartAnimation("throw");
-            ItemGrapplingHook.SetHook(slot, enhk);
+            ItemGrapplingHook.InitializeHook(slot, enhk);
             slot.MarkDirty();
             Debug.Print("working");
         }
@@ -82,7 +83,7 @@ namespace GrappleParkour
             }.Append(base.GetHeldInteractionHelp(inSlot));
         }
 
-        public static void SetHook(ItemSlot slot, EntityHook hook)
+        public static void InitializeHook(ItemSlot slot, EntityHook hook)
         {
             slot.Itemstack.Attributes.SetLong("hookId", hook.EntityId);
             slot.MarkDirty();

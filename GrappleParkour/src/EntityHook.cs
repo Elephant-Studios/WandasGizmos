@@ -21,19 +21,18 @@ namespace GrappleParkour
         CollisionTester collTester = new CollisionTester();
 
         public long FiredById;
-        public EntityPlayer FiredBy;
+        public EntityPlayer FiredBy = null!;
         public float Weight = 0.1f;
         public float Damage;
         public ItemStack ProjectileStack;
         public float DropOnImpactChance = 0f;
         public bool DamageStackOnImpact = false;
         public float SpringConst = 0.5f;
-        public long EntityID;
         public double MaxLength;
         public double FunConstant = 0.05f;
         public Vec3d anchorPoint;
-        public ItemSlot HookSlot;
-        public ItemStack hook;
+        public ItemSlot HookSlot = null!;
+        public ItemStack hook = null!;
         //public int totalRope;
 
 
@@ -50,10 +49,15 @@ namespace GrappleParkour
             get { return false; }
         }
 
+        public void SetHook(ItemSlot slot, ICoreAPI api)
+        {
+            this.HookSlot = slot;
+            this.hook = slot.Itemstack;
+        }
+
         public override void Initialize(EntityProperties properties, ICoreAPI api, long InChunkIndex3d)
         {
             base.Initialize(properties, api, InChunkIndex3d);
-            this.hook = HookSlot.Itemstack;
             //for (FiredBy.GearInventory[0]) march through inventory on initialize
             //FiredBy = Api.World.GetEntityById(EntityID) as EntityAgent;
             if (api.World.GetEntityById(this.FiredById) is EntityPlayer entityById)
@@ -96,14 +100,15 @@ namespace GrappleParkour
         {
             base.OnGameTick(dt);
             if (FiredBy == null) FiredBy = (Api as ICoreClientAPI)?.World.Player.Entity;
+            if (HookSlot == null) return;
             if (this.ServerPos.DistanceTo(FiredBy.Pos) > 150.0) // > totalRope);
             {
-                this.hook.Attributes.RemoveAttribute("hookId");
+                HookSlot.Itemstack.Attributes.RemoveAttribute("hookId");
                 Die();
             }
-            else if (this.FiredBy.Player.InventoryManager.ActiveHotbarSlot.Itemstack != this.hook)
+            else if (this.FiredBy.Player.InventoryManager.ActiveHotbarSlot.Itemstack != this.HookSlot.Itemstack)
             {
-                this.hook.Attributes.RemoveAttribute("hookId");
+                this.HookSlot.Itemstack.Attributes.RemoveAttribute("hookId");
                 Die();
             }
             if (ShouldDespawn) return;
@@ -314,7 +319,7 @@ namespace GrappleParkour
         public override void ToBytes(BinaryWriter writer, bool forClient)
         {
             base.ToBytes(writer, forClient);
-            writer.Write(EntityID);
+            writer.Write(FiredById);
             writer.Write(beforeCollided);
             ProjectileStack.ToBytes(writer);
         }
@@ -322,7 +327,7 @@ namespace GrappleParkour
         public override void FromBytes(BinaryReader reader, bool fromServer)
         {
             base.FromBytes(reader, fromServer);
-            EntityID = reader.ReadInt64();
+            FiredById = reader.ReadInt64();
             beforeCollided = reader.ReadBoolean();
             ProjectileStack = new ItemStack(reader);
         }
