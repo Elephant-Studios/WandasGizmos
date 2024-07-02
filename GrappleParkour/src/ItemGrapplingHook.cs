@@ -23,8 +23,8 @@ namespace GrappleParkour
             base.OnHeldInteractStart(slot, byEntity, blockSel, entitySel, firstEvent, ref handling);
             if (handling == EnumHandHandling.PreventDefault) return;
             if (slot.Itemstack.Attributes.HasAttribute("hookId")) return;
-            ItemStack stack = slot.TakeOut(1);
-            slot.MarkDirty();
+            //ItemStack stack = slot.TakeOut(1);
+            //slot.MarkDirty();
             handling = EnumHandHandling.PreventDefault;
             EntityProperties type = byEntity.World.GetEntityType(new AssetLocation("grappleparkour:grapplinghook"));
             EntityHook enhk = byEntity.World.ClassRegistry.CreateEntity(type) as EntityHook;
@@ -40,7 +40,7 @@ namespace GrappleParkour
             enhk.ServerPos.SetPos(spawnPos);
             enhk.ServerPos.Motion.Set(velocity);
             enhk.FiredById = byEntity.EntityId;
-            enhk.ProjectileStack = stack;
+            enhk.ProjectileStack = slot.Itemstack;
             enhk.HookSlot = slot;
 
             enhk.Pos.SetFrom(enhk.ServerPos);
