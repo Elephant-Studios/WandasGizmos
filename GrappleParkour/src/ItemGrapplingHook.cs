@@ -1,4 +1,5 @@
-﻿using System;
+﻿using HarmonyLib;
+using System;
 using System.Diagnostics;
 using Vintagestory.API.Client;
 using Vintagestory.API.Common;
@@ -12,15 +13,21 @@ namespace GrappleParkour
 {
     class ItemGrapplingHook : Item
     {
+
+        public override void OnLoaded(ICoreAPI api)
+        {
+            base.OnLoaded(api);
+        }
         public override void OnHeldInteractStart(ItemSlot slot, EntityAgent byEntity, BlockSelection blockSel, EntitySelection entitySel, bool firstEvent, ref EnumHandHandling handling)
         {
             base.OnHeldInteractStart(slot, byEntity, blockSel, entitySel, firstEvent, ref handling);
             if (handling == EnumHandHandling.PreventDefault) return;
+            if (slot.Itemstack.Attributes.HasAttribute("hookId")) return;
             ItemStack stack = slot.TakeOut(1);
             slot.MarkDirty();
             handling = EnumHandHandling.PreventDefault;
             EntityProperties type = byEntity.World.GetEntityType(new AssetLocation("grappleparkour:grapplinghook"));
-            EntityHook enpr = byEntity.World.ClassRegistry.CreateEntity(type) as EntityHook;
+            EntityHook enhk = byEntity.World.ClassRegistry.CreateEntity(type) as EntityHook;
             double pitch = byEntity.WatchedAttributes.GetDouble("aimingRandYaw", 1);
             double yaw = byEntity.WatchedAttributes.GetDouble("aimingRandYaw", 1);
             Vec3d pos = byEntity.Pos.XYZ.Add(0, byEntity.LocalEyePos.Y - 0.2, 0);
@@ -30,22 +37,28 @@ namespace GrappleParkour
 
             Vec3d spawnPos = byEntity.ServerPos.BehindCopy(0.21).XYZ.Add(byEntity.LocalEyePos.X, byEntity.LocalEyePos.Y - 0.2, byEntity.LocalEyePos.Z);
 
-            enpr.ServerPos.SetPos(spawnPos);
-            enpr.ServerPos.Motion.Set(velocity);
-            enpr.FiredBy = byEntity;
-            enpr.ProjectileStack = stack;
+            enhk.ServerPos.SetPos(spawnPos);
+            enhk.ServerPos.Motion.Set(velocity);
+            enhk.FiredById = byEntity.EntityId;
+            enhk.ProjectileStack = stack;
+            enhk.HookSlot = slot;
 
-
-            enpr.Pos.SetFrom(enpr.ServerPos);
-            enpr.World = byEntity.World;
-            enpr.SetRotation();
+            enhk.Pos.SetFrom(enhk.ServerPos);
+            enhk.World = byEntity.World;
+            enhk.SetRotation();
             //enpr.TrueClient = IClientPlayer;
 
-            byEntity.World.SpawnEntity(enpr);
+            byEntity.World.SpawnEntity(enhk);
             byEntity.StartAnimation("throw");
-            //byEntity.WatchedAttributes.MarkPathDirty("servercontrols");
-
+            ItemGrapplingHook.SetHook(slot, enhk);
+            slot.MarkDirty();
             Debug.Print("working");
+        }
+
+        public override void OnHeldInteractStop(float secondsUsed, ItemSlot slot, EntityAgent byEntity, BlockSelection blockSel, EntitySelection entitySel)
+        {
+            base.OnHeldInteractStop(secondsUsed, slot, byEntity, blockSel, entitySel);
+            ClearHook(slot);
         }
 
         /*public override bool OnHeldInteractStep(float secondsUsed, ItemSlot slot, EntityAgent byEntity, BlockSelection blockSel, EntitySelection entitySel)
@@ -67,6 +80,23 @@ namespace GrappleParkour
                     MouseButton = EnumMouseButton.Right,
                 }
             }.Append(base.GetHeldInteractionHelp(inSlot));
+        }
+
+        public static void SetHook(ItemSlot slot, EntityHook hook)
+        {
+            slot.Itemstack.Attributes.SetLong("hookId", hook.EntityId);
+            slot.MarkDirty();
+        }
+
+        public static void ClearHook(ItemSlot slot)
+        {
+            slot.Itemstack.Attributes.RemoveAttribute("hookId");
+            slot.MarkDirty();
+        }
+
+        public static bool HasHook(ItemSlot slot)
+        {
+            return slot.Itemstack.Attributes.HasAttribute("hookId");
         }
     }
 }

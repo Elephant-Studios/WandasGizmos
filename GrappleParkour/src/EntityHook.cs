@@ -20,7 +20,8 @@ namespace GrappleParkour
 
         CollisionTester collTester = new CollisionTester();
 
-        public EntityAgent FiredBy;
+        public long FiredById;
+        public EntityPlayer FiredBy;
         public float Weight = 0.1f;
         public float Damage;
         public ItemStack ProjectileStack;
@@ -31,6 +32,10 @@ namespace GrappleParkour
         public double MaxLength;
         public double FunConstant = 0.05f;
         public Vec3d anchorPoint;
+        public ItemSlot HookSlot;
+        public ItemStack hook;
+        //public int totalRope;
+
 
         Cuboidf collisionTestBox;
 
@@ -48,8 +53,18 @@ namespace GrappleParkour
         public override void Initialize(EntityProperties properties, ICoreAPI api, long InChunkIndex3d)
         {
             base.Initialize(properties, api, InChunkIndex3d);
+            this.hook = HookSlot.Itemstack;
+            //for (FiredBy.GearInventory[0]) march through inventory on initialize
             //FiredBy = Api.World.GetEntityById(EntityID) as EntityAgent;
-            msLaunch = World.ElapsedMilliseconds;
+            if (api.World.GetEntityById(this.FiredById) is EntityPlayer entityById)
+            {
+                this.FiredBy = entityById;
+            }
+            else
+            {
+                Die();
+            }   
+        msLaunch = World.ElapsedMilliseconds;
             //anchorPoint = FiredBy.Pos.XYZ;
             collisionTestBox = SelectionBox.Clone().OmniGrowBy(0.05f);
             GetBehavior<EntityBehaviorPassivePhysics>().OnPhysicsTickCallback = onPhysicsTickCallback;
@@ -76,22 +91,25 @@ namespace GrappleParkour
             }
         }
 
-        private void KillHook(int ID)
-        {
-            if (ID == FiredBy.EntityId)
-            {
-                Die();
-            }
-        }
         //bool grappled = false;
         public override void OnGameTick(float dt)
         {
             base.OnGameTick(dt);
             if (FiredBy == null) FiredBy = (Api as ICoreClientAPI)?.World.Player.Entity;
+            if (this.ServerPos.DistanceTo(FiredBy.Pos) > 150.0) // > totalRope);
+            {
+                this.hook.Attributes.RemoveAttribute("hookId");
+                Die();
+            }
+            else if (this.FiredBy.Player.InventoryManager.ActiveHotbarSlot.Itemstack != this.hook)
+            {
+                this.hook.Attributes.RemoveAttribute("hookId");
+                Die();
+            }
             if (ShouldDespawn) return;
             EntityPos pos = SidedPos;
             if (anchorPoint == null) return;
-            // New comment to overwrite PR
+            
             if (FiredBy != null && collTester.IsColliding(World.BlockAccessor, collisionTestBox, pos.XYZ)) //&& !grappled)
             {
                 double L = FiredBy.Pos.DistanceTo(anchorPoint);

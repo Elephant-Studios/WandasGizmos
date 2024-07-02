@@ -9,7 +9,6 @@ namespace GrappleParkour
     public class WandasGizmos : ModSystem
     {
         public static ICoreAPI _api;
-        public static EntityHook;
 
         // Called on server and client
         // Useful for registering block/entity classes on both sides
@@ -22,17 +21,22 @@ namespace GrappleParkour
             api.RegisterItemClass("ItemGrapplingHook", typeof(ItemGrapplingHook));
         }
 
-        public override void StartClientSide(ICoreClientAPI api)
+        /*public override void StartClientSide(ICoreClientAPI api)
         {
             api.Event.KeyDown += (keyEvent) =>
             {
                 if (keyEvent.KeyCode == (int)GlKeys.J)
-                {
-                    EntityHook.KillHook(api.World.Player.Entity.PlayerUID);
+                { 
+                    entityHook.KillHook(api.World.Player.Entity.PlayerUID);
                 }
             };
             base.StartClientSide(api);
-
         }
+
+        public override void StartServerSide(ICoreServerAPI api)
+        {
+            base.StartServerSide(api);
+
+        }*/
     }
 }
