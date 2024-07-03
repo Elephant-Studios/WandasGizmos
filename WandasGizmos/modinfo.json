@@ -5,6 +5,9 @@
     "authors": [
         "Dov3"
     ],
+    "contributors": [
+        "Jayugg"
+    ],
     "description": "Adds a grappling hook",
     "version": "1.0.0",
     "dependencies": {

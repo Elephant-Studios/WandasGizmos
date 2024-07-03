@@ -5,7 +5,7 @@ VisualStudioVersion = 17.10.34916.146
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CakeBuild", "CakeBuild\CakeBuild.csproj", "{7098A7CF-5F7B-45B2-B0D2-0F2896B388D0}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WandasGizmos", "GrappleParkour\WandasGizmos.csproj", "{C478568F-AFEC-406E-A888-3F177721A638}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WandasGizmos", "WandasGizmos\WandasGizmos.csproj", "{C478568F-AFEC-406E-A888-3F177721A638}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
