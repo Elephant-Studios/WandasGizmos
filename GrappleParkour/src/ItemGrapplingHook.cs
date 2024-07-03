@@ -13,7 +13,7 @@ namespace GrappleParkour
 {
     class ItemGrapplingHook : Item
     {
-        public bool mode;
+        EntityPlayer plr;
         public override void OnLoaded(ICoreAPI api)
         {
             base.OnLoaded(api);
@@ -44,6 +44,10 @@ namespace GrappleParkour
             enhk.Pos.SetFrom(enhk.ServerPos);
             enhk.World = byEntity.World;
             enhk.SetRotation();
+            if (api.World.GetEntityById(byEntity.EntityId) is EntityPlayer entityById)
+            {
+                plr = entityById;
+            }
             //enhk.SetHook(slot, api);
             //enpr.TrueClient = IClientPlayer;
 

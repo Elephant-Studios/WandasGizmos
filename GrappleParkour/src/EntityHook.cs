@@ -29,6 +29,7 @@ namespace GrappleParkour
         public bool DamageStackOnImpact = false;
         public float SpringConst = 0.5f;
         public double MaxLength;
+        public int RopeCount;
         public double FunConstant = 0.01f;
         public Vec3d anchorPoint;
         public ItemSlot HookSlot = null!;
@@ -103,21 +104,20 @@ namespace GrappleParkour
             base.OnGameTick(dt);
             if (FiredBy == null) FiredBy = (Api as ICoreClientAPI)?.World.Player.Entity;
             if (HookSlot == null) HookSlot = FiredBy.Player.InventoryManager.ActiveHotbarSlot;
-            Console.WriteLine(HookSlot.Itemstack.Id);
-            if (HookSlot.Itemstack.Attributes.TryGetBool("pull") == true)
+            //Console.WriteLine(HookSlot.Itemstack.Id);
+            if (HookSlot.Itemstack?.Attributes.TryGetBool("pull") == true)
             {
                 MaxLength -= 0.5;
             }
-            else if (HookSlot.Itemstack.Attributes.TryGetBool("push") == true)
+            else if (HookSlot.Itemstack?.Attributes.TryGetBool("push") == true)
             {
-                MaxLength += 0.5;
+                Console.WriteLine(RopeCount + " r");
+                Console.WriteLine(MaxLength + " m");   
+                if (MaxLength + -0.1 < RopeCount)
+                {
+                    MaxLength += 0.5;
+                }  
             }
-            /*if (this.ServerPos.DistanceTo(FiredBy.Pos) > 150.0) // > totalRope);
-            {
-                Console.WriteLine("death: player too far");
-                //HookSlot.Itemstack.Attributes.RemoveAttribute("hookId");
-                Die();
-            }*/
             else if (this.FiredBy.Player.InventoryManager.ActiveHotbarSlot.Itemstack != this.HookSlot.Itemstack)
             {
                 //this.HookSlot.Itemstack.Attributes.RemoveAttribute("hookId");
@@ -151,13 +151,13 @@ namespace GrappleParkour
                     {
                         FiredBy.ServerPos.Motion.Add(TangVel * FunConstant);
                         FiredBy.Pos.Motion.Add(TangVel * FunConstant);
-                        Console.WriteLine("theta multiplier used");
+                        //Console.WriteLine("theta multiplier used");
                     }
                     if (FiredBy.Pos.Motion.Length() < 0.3f && ((PhiDegrees > 135 && PhiDegrees < 180) || (PhiDegrees > -180 && PhiDegrees < -135)))
                     {
                         FiredBy.ServerPos.Motion.Add(TangVel * FunConstant);
                         FiredBy.Pos.Motion.Add(TangVel * FunConstant);
-                        Console.WriteLine("phi multiplier used");
+                        //Console.WriteLine("phi multiplier used");
                     }
                 }
             }
@@ -187,6 +187,20 @@ namespace GrappleParkour
         }
         public override void OnCollided()
         {
+            foreach (ItemSlot itemSlot in FiredBy.Player.InventoryManager.GetHotbarInventory())
+            {
+                if (itemSlot?.Itemstack?.Id == 1701)
+                {
+                    RopeCount += itemSlot.Itemstack.StackSize;
+                }
+            }
+            RopeCount *= 3;
+            if (this.ServerPos.DistanceTo(FiredBy.Pos) > RopeCount) // > totalRope);
+            {
+                Console.WriteLine("death: player too far");
+                //HookSlot.Itemstack.Attributes.RemoveAttribute("hookId");
+                Die();
+            }
             EntityPos pos = SidedPos;
             anchorPoint = pos.XYZ;
             MaxLength = FiredBy.Pos.DistanceTo(anchorPoint);
@@ -319,8 +333,9 @@ namespace GrappleParkour
 
         public override bool CanCollect(Entity byEntity)
         {
-            if (byEntity is EntityPlayer player) return player.Controls.Sneak;
-            return Alive && World.ElapsedMilliseconds - msLaunch > 1000 && ServerPos.Motion.Length() < 0.01;
+            return false;
+            /*if (byEntity is EntityPlayer player) return player.Controls.Sneak;
+            return Alive && World.ElapsedMilliseconds - msLaunch > 1000 && ServerPos.Motion.Length() < 0.01;*/
         }
         public override ItemStack OnCollected(Entity byEntity)
         {

@@ -32,7 +32,7 @@ namespace GrappleParkour
                         api.World.Player.InventoryManager.ActiveHotbarSlot.Itemstack.Attributes.SetBool("pull", true);
                     }
                 }
-                else if (keyEvent.KeyCode == (int)GlKeys.Space)
+                else if (keyEvent.KeyCode == (int)GlKeys.Tab)
                 {
                     if (api.World.Player.InventoryManager.ActiveHotbarSlot.Itemstack?.Id == 3336)
                     {
@@ -41,7 +41,7 @@ namespace GrappleParkour
                 }
             };
             api.Event.KeyUp += (keyEvent) =>
-            {
+            {                       
                 if (keyEvent.KeyCode == (int)GlKeys.LShift)
                 {
                     if (api.World.Player.InventoryManager.ActiveHotbarSlot.Itemstack?.Id == 3336)
@@ -49,7 +49,7 @@ namespace GrappleParkour
                         api.World.Player.InventoryManager.ActiveHotbarSlot.Itemstack.Attributes.SetBool("pull", false);
                     }
                 }
-                else if (keyEvent.KeyCode == (int)GlKeys.Space)
+                else if (keyEvent.KeyCode == (int)GlKeys.Tab)
                 {
                     if (api.World.Player.InventoryManager.ActiveHotbarSlot.Itemstack?.Id == 3336)
                     {
