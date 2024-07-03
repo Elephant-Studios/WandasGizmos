@@ -5,8 +5,9 @@ using Vintagestory.API.Common;
 using Vintagestory.API.Common.Entities;
 using Vintagestory.API.MathTools;
 using Vintagestory.API.Server;
+using Vintagestory.GameContent;
 
-namespace GrappleParkour
+namespace WandasGizmos
 {
     public class EntityHook : Entity
     {
@@ -34,27 +35,21 @@ namespace GrappleParkour
         public Vec3d anchorPoint;
         public ItemSlot HookSlot = null!;
         public ItemStack hook = null!;
-        //public int totalRope;
-
+        public Entity CollidedEntity;
 
         Cuboidf collisionTestBox;
 
+        EntityPartitioning ep;
 
         public override bool ApplyGravity
         {
-            get { return !stuck; }
+            get { return stuck; }
         }
 
         public override bool IsInteractable
         {
             get { return false; }
         }
-
-        /*public void SetHook(ItemSlot slot, ICoreAPI api)
-        {
-            this.HookSlot = slot;
-            this.hook = slot.Itemstack;
-        }*/
 
         public override void Initialize(EntityProperties properties, ICoreAPI api, long InChunkIndex3d)
         {
@@ -75,6 +70,7 @@ namespace GrappleParkour
             collisionTestBox = SelectionBox.Clone().OmniGrowBy(0.05f);
             GetBehavior<EntityBehaviorPassivePhysics>().OnPhysicsTickCallback = onPhysicsTickCallback;
             GetBehavior<EntityBehaviorPassivePhysics>().collisionYExtra = 0f; // Slightly cheap hax so that stones/arrows don't collid with fences
+            ep = api.ModLoader.GetModSystem<EntityPartitioning>();
         }
         private void onPhysicsTickCallback(float dtFac)
         {
@@ -91,11 +87,36 @@ namespace GrappleParkour
             else projectileBox.Y2 += pos.Motion.Y * dtFac;
             if (pos.Motion.Z < 0) projectileBox.Z1 += pos.Motion.Z * dtFac;
             else projectileBox.Z2 += pos.Motion.Z * dtFac;
-            /*if (msCollide > 10000)
-            {
-                Console.WriteLine("death: took too long");
-                //Die();
-            }*/
+            ep.WalkEntities(pos.XYZ, 5f, (e) => {
+                if (e.EntityId == this.EntityId || (FiredBy != null && e.EntityId == FiredBy.EntityId && World.ElapsedMilliseconds - msLaunch < 500) || !e.IsInteractable) return true;
+
+                Cuboidd eBox = e.SelectionBox.ToDouble().Translate(e.ServerPos.X, e.ServerPos.Y, e.ServerPos.Z);
+
+                if (eBox.IntersectsOrTouches(projectileBox))
+                {
+                    foreach (ItemSlot itemSlot in FiredBy.Player.InventoryManager.GetHotbarInventory())
+                    {
+                        if (itemSlot?.Itemstack?.Id == 1701)
+                        {
+                            RopeCount += itemSlot.Itemstack.StackSize;
+                        }
+                    }
+                    RopeCount *= 3;
+                    if (this.ServerPos.DistanceTo(FiredBy.Pos) > RopeCount) // > totalRope);
+                    {
+                        Console.WriteLine("death: player too far");
+                        //HookSlot.Itemstack.Attributes.RemoveAttribute("hookId");
+                        Die();
+                    }
+                    anchorPoint = pos.XYZ;
+                    MaxLength = FiredBy.Pos.DistanceTo(anchorPoint);
+                    CollidedEntity = e;
+                    ImpactOnEntity(e);
+                    return false;
+                }
+
+                return true;
+            }, EnumEntitySearchType.Creatures);
         }
 
         //bool grappled = false;
@@ -105,6 +126,17 @@ namespace GrappleParkour
             if (FiredBy == null) FiredBy = (Api as ICoreClientAPI)?.World.Player.Entity;
             if (HookSlot == null) HookSlot = FiredBy.Player.InventoryManager.ActiveHotbarSlot;
             //Console.WriteLine(HookSlot.Itemstack.Id);
+
+            if (CollidedEntity != null) //if it has hit something, actively set it to that
+            {
+                //Console.WriteLine("hit " + CollidedEntity.EntityId);
+                anchorPoint = CollidedEntity.Pos.XYZ;
+                //MaxLength = FiredBy.Pos.DistanceTo(anchorPoint);
+                //Console.WriteLine("L " + MaxLength);
+                //Console.WriteLine("A" + anchorPoint.ToString());
+            }
+            //else if (anchorPoint == null) Die(); //if it hasn't hit something, AND anchorPoint is undefined, die.
+            
             if (HookSlot.Itemstack?.Attributes.TryGetBool("pull") == true)
             {
                 MaxLength -= 0.5;
@@ -127,11 +159,11 @@ namespace GrappleParkour
             if (ShouldDespawn) return;
             EntityPos pos = SidedPos;
             if (anchorPoint == null) return;
-            
-            if (FiredBy != null && collTester.IsColliding(World.BlockAccessor, collisionTestBox, pos.XYZ)) //&& !grappled)
+            if (FiredBy != null && (collTester.IsColliding(World.BlockAccessor, collisionTestBox, pos.XYZ) || CollidedEntity != null)) //&& !grappled)
             {
-                double L = FiredBy.Pos.DistanceTo(anchorPoint);
-                if (L > MaxLength + 0.2)
+                double CurrentLength = FiredBy.Pos.DistanceTo(anchorPoint);
+                Console.WriteLine((CurrentLength >= MaxLength + 0.3) + " " + CurrentLength + " " + MaxLength);
+                if (CurrentLength >= MaxLength + 0.2)
                 {
                     double theta = Math.Atan2(FiredBy.Pos.X - anchorPoint.X, FiredBy.Pos.Y - anchorPoint.Y);
                     double phi = Math.Atan2(FiredBy.Pos.Z - anchorPoint.Z, FiredBy.Pos.Y - anchorPoint.Y);
@@ -238,13 +270,53 @@ namespace GrappleParkour
 
                 beforeCollided = true;
             }
-
-
         }
+
+        bool TryAttackEntity(double impactSpeed)
+        {
+            if (World is IClientWorldAccessor || World.ElapsedMilliseconds <= msCollide + 250) return false;
+            if (impactSpeed <= 0.01) return false;
+
+            EntityPos pos = SidedPos;
+
+            Cuboidd projectileBox = SelectionBox.ToDouble().Translate(ServerPos.X, ServerPos.Y, ServerPos.Z);
+
+            // We give it a bit of extra leeway of 50% because physics ticks can run twice or 3 times in one game tick 
+            if (ServerPos.Motion.X < 0) projectileBox.X1 += 1.5 * ServerPos.Motion.X;
+            else projectileBox.X2 += 1.5 * ServerPos.Motion.X;
+            if (ServerPos.Motion.Y < 0) projectileBox.Y1 += 1.5 * ServerPos.Motion.Y;
+            else projectileBox.Y2 += 1.5 * ServerPos.Motion.Y;
+            if (ServerPos.Motion.Z < 0) projectileBox.Z1 += 1.5 * ServerPos.Motion.Z;
+            else projectileBox.Z2 += 1.5 * ServerPos.Motion.Z;
+
+            Entity entity = World.GetNearestEntity(ServerPos.XYZ, 5f, 5f, (e) => {
+                if (e.EntityId == this.EntityId || !e.IsInteractable) return false;
+
+                if (FiredBy != null && e.EntityId == FiredBy.EntityId && World.ElapsedMilliseconds - msLaunch < 500)
+                {
+                    return false;
+                }
+
+                Cuboidd eBox = e.SelectionBox.ToDouble().Translate(e.ServerPos.X, e.ServerPos.Y, e.ServerPos.Z);
+
+                return eBox.IntersectsOrTouches(projectileBox);
+            });
+
+            if (entity != null)
+            {
+                ImpactOnEntity(entity);
+                return true;
+            }
+
+
+            return false;
+        }
+
 
         private void ImpactOnEntity(Entity entity)
         {
             if (!Alive) return;
+            Console.WriteLine("hit entity");
 
             EntityPos pos = SidedPos;
 
@@ -256,7 +328,7 @@ namespace GrappleParkour
 
             bool targetIsPlayer = entity is EntityPlayer;
             bool targetIsCreature = entity is EntityAgent;
-            bool canDamage = true;
+            bool canDamage = false;
 
             ICoreServerAPI sapi = World.Api as ICoreServerAPI;
             if (fromPlayer != null)
