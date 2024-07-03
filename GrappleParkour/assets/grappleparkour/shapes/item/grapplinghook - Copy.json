@@ -1,0 +1,320 @@
+{
+	"editor": {
+		"allAngles": false,
+		"entityTextureMode": true
+	},
+	"textureWidth": 32,
+	"textureHeight": 32,
+	"textureSizes": {
+	},
+	"textures": {
+	},
+	"elements": [
+		{
+			"name": "Shaft",
+			"from": [ 7.0, 0.0, 7.0 ],
+			"to": [ 9.0, 8.0, 9.0 ],
+			"uv": [ 0.0, 0.0 ],
+			"rotationOrigin": [ 8.0, 8.0, 8.0 ],
+			"rotationZ": -90.0,
+			"faces": {
+				"north": { "texture": "#null", "uv": [ 0.0, 2.0, 2.0, 10.0 ] },
+				"east": { "texture": "#null", "uv": [ 2.0, 2.0, 4.0, 10.0 ] },
+				"south": { "texture": "#null", "uv": [ 4.0, 2.0, 6.0, 10.0 ] },
+				"west": { "texture": "#null", "uv": [ 6.0, 2.0, 8.0, 10.0 ] },
+				"up": { "texture": "#null", "uv": [ 0.0, 0.0, 2.0, 2.0 ] },
+				"down": { "texture": "#null", "uv": [ 2.0, 0.0, 4.0, 2.0 ] }
+			},
+			"children": [
+				{
+					"name": "North Claw Shaft",
+					"from": [ 1.0, 8.0, 0.0 ],
+					"to": [ 2.0, 16.0, 2.0 ],
+					"uv": [ 20.0, 0.0 ],
+					"rotationOrigin": [ 1.0, 8.0, 1.0 ],
+					"rotationX": -180.0,
+					"rotationY": 0.0,
+					"rotationZ": 135.0,
+					"faces": {
+						"north": { "texture": "#null", "uv": [ 20.0, 2.0, 21.0, 10.0 ] },
+						"east": { "texture": "#null", "uv": [ 21.0, 2.0, 23.0, 10.0 ] },
+						"south": { "texture": "#null", "uv": [ 23.0, 2.0, 24.0, 10.0 ] },
+						"west": { "texture": "#null", "uv": [ 24.0, 2.0, 26.0, 10.0 ] },
+						"up": { "texture": "#null", "uv": [ 20.0, 0.0, 21.0, 2.0 ] },
+						"down": { "texture": "#null", "uv": [ 21.0, 0.0, 22.0, 2.0 ] }
+					}
+				},
+				{
+					"name": "West Claw Shaft",
+					"from": [ 0.0, 8.0, 1.0 ],
+					"to": [ 2.0, 16.0, 2.0 ],
+					"uv": [ 14.0, 1.0 ],
+					"rotationOrigin": [ 1.0, 8.0, 1.0 ],
+					"rotationX": 45.0,
+					"rotationY": 0.0,
+					"rotationZ": 0.0,
+					"faces": {
+						"north": { "texture": "#null", "uv": [ 15.0, 2.0, 17.0, 10.0 ] },
+						"east": { "texture": "#null", "uv": [ 17.0, 2.0, 18.0, 10.0 ] },
+						"south": { "texture": "#null", "uv": [ 18.0, 2.0, 20.0, 10.0 ] },
+						"west": { "texture": "#null", "uv": [ 14.0, 2.0, 15.0, 10.0 ] },
+						"up": { "texture": "#null", "uv": [ 14.0, 1.0, 16.0, 2.0 ] },
+						"down": { "texture": "#null", "uv": [ 16.0, 1.0, 18.0, 2.0 ] }
+					}
+				},
+				{
+					"name": "East Claw Shaft",
+					"from": [ 0.0, 8.0, 0.0 ],
+					"to": [ 2.0, 16.0, 1.0 ],
+					"uv": [ 26.0, 1.0 ],
+					"rotationOrigin": [ 1.0, 8.0, 1.0 ],
+					"rotationX": -45.0,
+					"rotationY": 0.0,
+					"rotationZ": 0.0,
+					"faces": {
+						"north": { "texture": "#null", "uv": [ 27.0, 2.0, 29.0, 10.0 ] },
+						"east": { "texture": "#null", "uv": [ 29.0, 2.0, 30.0, 10.0 ] },
+						"south": { "texture": "#null", "uv": [ 30.0, 2.0, 32.0, 10.0 ] },
+						"west": { "texture": "#null", "uv": [ 26.0, 2.0, 27.0, 10.0 ] },
+						"up": { "texture": "#null", "uv": [ 26.0, 1.0, 28.0, 2.0 ] },
+						"down": { "texture": "#null", "uv": [ 28.0, 1.0, 30.0, 2.0 ] }
+					}
+				},
+				{
+					"name": "South Claw Shaft",
+					"from": [ 0.5, 7.0, 0.0 ],
+					"to": [ 1.5, 15.0, 2.0 ],
+					"uv": [ 8.0, 0.0 ],
+					"rotationOrigin": [ 2.0, 7.0, 1.0 ],
+					"rotationZ": -45.0,
+					"faces": {
+						"north": { "texture": "#null", "uv": [ 8.0, 2.0, 9.0, 10.0 ] },
+						"east": { "texture": "#null", "uv": [ 9.0, 2.0, 11.0, 10.0 ] },
+						"south": { "texture": "#null", "uv": [ 11.0, 2.0, 12.0, 10.0 ] },
+						"west": { "texture": "#null", "uv": [ 12.0, 2.0, 14.0, 10.0 ] },
+						"up": { "texture": "#null", "uv": [ 8.0, 0.0, 9.0, 2.0 ] },
+						"down": { "texture": "#null", "uv": [ 9.0, 0.0, 10.0, 2.0 ] }
+					}
+				},
+				{
+					"name": "North Claw Tip",
+					"from": [ 19.48, 2.12, 0.01 ],
+					"to": [ 20.13, 4.12, 1.99 ],
+					"uv": [ 0.0, 0.0 ],
+					"rotationOrigin": [ 6.5, 6.0, 7.5 ],
+					"rotationZ": 157.5,
+					"faces": {
+						"north": { "texture": "#null", "uv": [ 0.0, 1.5, 0.5, 3.5 ] },
+						"east": { "texture": "#null", "uv": [ 0.5, 1.5, 2.0, 3.5 ] },
+						"south": { "texture": "#null", "uv": [ 2.0, 1.5, 2.5, 3.5 ] },
+						"west": { "texture": "#null", "uv": [ 2.5, 1.5, 4.0, 3.5 ] },
+						"up": { "texture": "#null", "uv": [ 0.0, 0.0, 0.5, 1.5 ] },
+						"down": { "texture": "#null", "uv": [ 0.5, 0.0, 1.0, 1.5 ] }
+					}
+				},
+				{
+					"name": "West Claw Tip",
+					"from": [ 20.48, 2.12, -11.99 ],
+					"to": [ 21.13, 4.12, -10.01 ],
+					"uv": [ 0.0, 0.0 ],
+					"rotationOrigin": [ 7.5, 6.0, -4.5 ],
+					"rotationY": 90.0,
+					"rotationZ": 157.5,
+					"faces": {
+						"north": { "texture": "#null", "uv": [ 0.0, 1.5, 0.5, 3.5 ] },
+						"east": { "texture": "#null", "uv": [ 0.5, 1.5, 2.0, 3.5 ] },
+						"south": { "texture": "#null", "uv": [ 2.0, 1.5, 2.5, 3.5 ] },
+						"west": { "texture": "#null", "uv": [ 2.5, 1.5, 4.0, 3.5 ] },
+						"up": { "texture": "#null", "uv": [ 0.0, 0.0, 0.5, 1.5 ] },
+						"down": { "texture": "#null", "uv": [ 0.5, 0.0, 1.0, 1.5 ] }
+					}
+				},
+				{
+					"name": "North Claw Tip2",
+					"from": [ 8.43, 2.05, -12.99 ],
+					"to": [ 9.08, 4.05, -11.01 ],
+					"uv": [ 0.0, 0.0 ],
+					"rotationOrigin": [ -4.5, 6.0, -5.5 ],
+					"rotationY": -180.0,
+					"rotationZ": 157.5,
+					"faces": {
+						"north": { "texture": "#null", "uv": [ 0.0, 1.5, 0.5, 3.5 ] },
+						"east": { "texture": "#null", "uv": [ 0.5, 1.5, 2.0, 3.5 ] },
+						"south": { "texture": "#null", "uv": [ 2.0, 1.5, 2.5, 3.5 ] },
+						"west": { "texture": "#null", "uv": [ 2.5, 1.5, 4.0, 3.5 ] },
+						"up": { "texture": "#null", "uv": [ 0.0, 0.0, 0.5, 1.5 ] },
+						"down": { "texture": "#null", "uv": [ 0.5, 0.0, 1.0, 1.5 ] }
+					}
+				},
+				{
+					"name": "East Claw Tip",
+					"from": [ -13.16, 10.24, -19.99 ],
+					"to": [ -12.51, 12.24, -18.01 ],
+					"uv": [ 0.0, 0.0 ],
+					"rotationOrigin": [ -5.5, 14.0, -12.5 ],
+					"rotationY": -90.0,
+					"rotationZ": 157.5,
+					"faces": {
+						"north": { "texture": "#null", "uv": [ 0.0, 1.5, 0.5, 3.5 ] },
+						"east": { "texture": "#null", "uv": [ 0.5, 1.5, 2.0, 3.5 ] },
+						"south": { "texture": "#null", "uv": [ 2.0, 1.5, 2.5, 3.5 ] },
+						"west": { "texture": "#null", "uv": [ 2.5, 1.5, 4.0, 3.5 ] },
+						"up": { "texture": "#null", "uv": [ 0.0, 0.0, 0.5, 1.5 ] },
+						"down": { "texture": "#null", "uv": [ 0.5, 0.0, 1.0, 1.5 ] }
+					}
+				}
+			]
+		},
+		{
+			"name": "Tether Segment 1",
+			"from": [ 0.0, 7.5, 7.5 ],
+			"to": [ 8.0, 8.5, 8.5 ],
+			"uv": [ 0.0, 0.0 ],
+			"rotationOrigin": [ 0.0, 7.0, 7.0 ],
+			"faces": {
+				"north": { "texture": "#null", "uv": [ 0.0, 1.0, 8.0, 2.0 ] },
+				"east": { "texture": "#null", "uv": [ 8.0, 1.0, 9.0, 2.0 ] },
+				"south": { "texture": "#null", "uv": [ 9.0, 1.0, 17.0, 2.0 ] },
+				"west": { "texture": "#null", "uv": [ 17.0, 1.0, 18.0, 2.0 ] },
+				"up": { "texture": "#null", "uv": [ 0.0, 0.0, 8.0, 1.0 ] },
+				"down": { "texture": "#null", "uv": [ 8.0, 0.0, 16.0, 1.0 ] }
+			}
+		},
+		{
+			"name": "Tether Segment 2",
+			"from": [ 0.0, 7.5, 7.5 ],
+			"to": [ 8.0, 8.5, 8.5 ],
+			"uv": [ 0.0, 0.0 ],
+			"rotationOrigin": [ 0.0, 7.0, 7.0 ],
+			"faces": {
+				"north": { "texture": "#null", "uv": [ 0.0, 1.0, 8.0, 2.0 ] },
+				"east": { "texture": "#null", "uv": [ 8.0, 1.0, 9.0, 2.0 ] },
+				"south": { "texture": "#null", "uv": [ 9.0, 1.0, 17.0, 2.0 ] },
+				"west": { "texture": "#null", "uv": [ 17.0, 1.0, 18.0, 2.0 ] },
+				"up": { "texture": "#null", "uv": [ 0.0, 0.0, 8.0, 1.0 ] },
+				"down": { "texture": "#null", "uv": [ 8.0, 0.0, 16.0, 1.0 ] }
+			}
+		}
+	],
+	"animations": [
+		{
+			"name": "Hook Thrown",
+			"code": "Hook Thrown",
+			"quantityframes": 17,
+			"onActivityStopped": "Rewind",
+			"onAnimationEnd": "Repeat",
+			"keyframes": [
+				{
+					"frame": 0,
+					"elements": {
+						"Tether Segment 1": { "offsetX": 0.0, "offsetY": 0.0, "offsetZ": 0.0 }
+					}
+				},
+				{
+					"frame": 1,
+					"elements": {
+						"Tether Segment 1": { "offsetX": -1.0, "offsetY": 0.0, "offsetZ": 0.0 }
+					}
+				},
+				{
+					"frame": 2,
+					"elements": {
+						"Tether Segment 1": { "offsetX": -2.0, "offsetY": 0.0, "offsetZ": 0.0 }
+					}
+				},
+				{
+					"frame": 3,
+					"elements": {
+						"Tether Segment 1": { "offsetX": -3.0, "offsetY": 0.0, "offsetZ": 0.0 }
+					}
+				},
+				{
+					"frame": 4,
+					"elements": {
+						"Tether Segment 1": { "offsetX": -4.0, "offsetY": 0.0, "offsetZ": 0.0 }
+					}
+				},
+				{
+					"frame": 5,
+					"elements": {
+						"Tether Segment 1": { "offsetX": -5.0, "offsetY": 0.0, "offsetZ": 0.0 }
+					}
+				},
+				{
+					"frame": 6,
+					"elements": {
+						"Tether Segment 1": { "offsetX": -6.0, "offsetY": 0.0, "offsetZ": 0.0 }
+					}
+				},
+				{
+					"frame": 7,
+					"elements": {
+						"Tether Segment 1": { "offsetX": -7.0, "offsetY": 0.0, "offsetZ": 0.0 }
+					}
+				},
+				{
+					"frame": 8,
+					"elements": {
+						"Tether Segment 1": { "offsetX": -8.0, "offsetY": 0.0, "offsetZ": 0.0 }
+					}
+				},
+				{
+					"frame": 9,
+					"elements": {
+						"Tether Segment 1": { "offsetX": -9.0, "offsetY": 0.0, "offsetZ": 0.0 },
+						"Tether Segment 2": { "offsetX": -1.0, "offsetY": 0.0, "offsetZ": 0.0 }
+					}
+				},
+				{
+					"frame": 10,
+					"elements": {
+						"Tether Segment 1": { "offsetX": -10.0, "offsetY": 0.0, "offsetZ": 0.0 },
+						"Tether Segment 2": { "offsetX": -2.0, "offsetY": 0.0, "offsetZ": 0.0 }
+					}
+				},
+				{
+					"frame": 11,
+					"elements": {
+						"Tether Segment 1": { "offsetX": -11.0, "offsetY": 0.0, "offsetZ": 0.0 },
+						"Tether Segment 2": { "offsetX": -3.0, "offsetY": 0.0, "offsetZ": 0.0 }
+					}
+				},
+				{
+					"frame": 12,
+					"elements": {
+						"Tether Segment 1": { "offsetX": -12.0, "offsetY": 0.0, "offsetZ": 0.0 },
+						"Tether Segment 2": { "offsetX": -4.0, "offsetY": 0.0, "offsetZ": 0.0 }
+					}
+				},
+				{
+					"frame": 13,
+					"elements": {
+						"Tether Segment 1": { "offsetX": -13.0, "offsetY": 0.0, "offsetZ": 0.0 },
+						"Tether Segment 2": { "offsetX": -5.0, "offsetY": 0.0, "offsetZ": 0.0 }
+					}
+				},
+				{
+					"frame": 14,
+					"elements": {
+						"Tether Segment 1": { "offsetX": -14.0, "offsetY": 0.0, "offsetZ": 0.0 },
+						"Tether Segment 2": { "offsetX": -6.0, "offsetY": 0.0, "offsetZ": 0.0 }
+					}
+				},
+				{
+					"frame": 15,
+					"elements": {
+						"Tether Segment 1": { "offsetX": -15.0, "offsetY": 0.0, "offsetZ": 0.0 },
+						"Tether Segment 2": { "offsetX": -7.0, "offsetY": 0.0, "offsetZ": 0.0 }
+					}
+				},
+				{
+					"frame": 16,
+					"elements": {
+						"Tether Segment 2": { "offsetX": -8.0, "offsetY": 0.0, "offsetZ": 0.0 },
+						"Tether Segment 1": { "offsetX": -16.0, "offsetY": 0.0, "offsetZ": 0.0 }
+					}
+				}
+			]
+		}
+	]
+}
