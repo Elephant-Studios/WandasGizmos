@@ -45,8 +45,10 @@
   <Content Include="assets\**">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
   </Content>
-  <None Remove="assets\grappleparkour\entities\grapplinghook.json" />
-  <None Remove="assets\grappleparkour\shapes\item\grapplinghook.json" />
+  <None Remove="assets\wgmt\entities\grapplinghook.json" />
+  <None Remove="assets\wgmt\shapes\item\grapplinghook.json" />
+  <None Remove="assets\wgmt\shapes\rope\rope.json" />
+  <None Remove="assets\wgmt\textures\rope\rope.png" />
   <Content Include="modinfo.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
   </Content>

@@ -1,0 +1,29 @@
+{
+	"editor": {
+		"allAngles": false,
+		"entityTextureMode": true
+	},
+	"textureWidth": 16,
+	"textureHeight": 16,
+	"textureSizes": {
+	},
+	"textures": {
+		"rope": "C:/Users/stewb/OneDrive/Documents/rope"
+	},
+	"elements": [
+		{
+			"name": "Cube2",
+			"from": [ 7.5, 8.0, 0.0 ],
+			"to": [ 9.5, 10.0, 16.0 ],
+			"autoUnwrap": false,
+			"uv": [ 0.0, 0.0 ],
+			"faces": {
+				"north": { "texture": "#rope", "uv": [ 8.0, 14.0, 10.0, 16.0 ], "windMode": [-1,-1,-1,-1] },
+				"east": { "texture": "#rope", "uv": [ 4.0, 0.0, 6.0, 16.0 ], "rotation": 270, "windMode": [-1,-1,-1,-1] },
+				"south": { "texture": "#rope", "uv": [ 8.0, 12.0, 10.0, 14.0 ], "windMode": [-1,-1,-1,-1] },
+				"west": { "texture": "#rope", "uv": [ 6.0, 0.0, 8.0, 16.0 ], "rotation": 90, "windMode": [-1,-1,-1,-1] },
+				"up": { "texture": "#rope", "uv": [ 0.0, 0.0, 2.0, 16.0 ] },
+				"down": { "texture": "#rope", "uv": [ 2.0, 0.0, 4.0, 16.0 ] }
+			}
+		}
+	]}
