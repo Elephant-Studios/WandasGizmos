@@ -13,7 +13,8 @@ namespace WandasGizmos
 {
     class ItemGrapplingHook : Item
     {
-        EntityPlayer plr;
+        public int ItemRopeCount;
+        public EntityPlayer FiredBy;
         public override void OnLoaded(ICoreAPI api)
         {
             base.OnLoaded(api);
@@ -23,9 +24,25 @@ namespace WandasGizmos
             base.OnHeldInteractStart(slot, byEntity, blockSel, entitySel, firstEvent, ref handling);
             if (handling == EnumHandHandling.PreventDefault) return;
             if (slot.Itemstack.Attributes.HasAttribute("hookId")) return;
+            if (api.World.GetEntityById(byEntity.EntityId) is EntityPlayer entityById)
+            {
+                this.FiredBy = entityById;
+            }
+            foreach (ItemSlot itemSlot in FiredBy.Player.InventoryManager.GetHotbarInventory())
+            {
+                if (itemSlot?.Itemstack?.Id == 1701)
+                {
+                    ItemRopeCount += itemSlot.Itemstack.StackSize;
+                }
+            }
+            if (ItemRopeCount == 0) api.Logger.Chat("requires rope to be used");
             handling = EnumHandHandling.PreventDefault;
-            EntityProperties type = byEntity.World.GetEntityType(new AssetLocation("grappleparkour:grapplinghook"));
-            EntityHook enhk = byEntity.World.ClassRegistry.CreateEntity(type) as EntityHook;
+            EntityProperties EnhkType = byEntity.World.GetEntityType(new AssetLocation("wgmt:grapplinghook"));
+            EntityHook enhk = byEntity.World.ClassRegistry.CreateEntity(EnhkType) as EntityHook;
+
+            EntityProperties EnrpType = byEntity.World.GetEntityType(new AssetLocation("wgmt:rope"));
+            EntityRope enrp = byEntity.World.ClassRegistry.CreateEntity(EnrpType) as EntityRope;
+
             double pitch = byEntity.WatchedAttributes.GetDouble("aimingRandYaw", 1);
             double yaw = byEntity.WatchedAttributes.GetDouble("aimingRandYaw", 1);
             Vec3d pos = byEntity.Pos.XYZ.Add(0, byEntity.LocalEyePos.Y - 0.2, 0);
@@ -44,14 +61,22 @@ namespace WandasGizmos
             enhk.Pos.SetFrom(enhk.ServerPos);
             enhk.World = byEntity.World;
             enhk.SetRotation();
-            if (api.World.GetEntityById(byEntity.EntityId) is EntityPlayer entityById)
-            {
-                plr = entityById;
-            }
+            enhk.RopeCount = ItemRopeCount * 3;
+
+            enrp.ServerPos.SetPos(spawnPos);
+            enrp.ServerPos.Motion.Set(velocity);
+            enrp.FiredById = byEntity.EntityId;
+            enrp.HookSlot = slot;
+            enrp.ProjectileStack = slot.Itemstack;
+
+            enrp.Pos.SetFrom(enhk.ServerPos);
+            enrp.World = byEntity.World;
+            enrp.SetRotation();
             //enhk.SetHook(slot, api);
             //enpr.TrueClient = IClientPlayer;
 
             byEntity.World.SpawnEntity(enhk);
+            byEntity.World.SpawnEntity(enrp);
             byEntity.StartAnimation("throw");
             //ItemGrapplingHook.InitializeHook(slot, enhk);
             //ItemStack stack = slot.TakeOut(1);

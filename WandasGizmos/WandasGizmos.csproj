@@ -46,6 +46,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
   </Content>
   <None Remove="assets\wgmt\entities\grapplinghook.json" />
+  <None Remove="assets\wgmt\entities\rope.json" />
   <None Remove="assets\wgmt\shapes\item\grapplinghook.json" />
   <None Remove="assets\wgmt\shapes\rope\rope.json" />
   <None Remove="assets\wgmt\textures\rope\rope.png" />

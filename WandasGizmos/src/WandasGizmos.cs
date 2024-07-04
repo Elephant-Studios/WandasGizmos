@@ -1,6 +1,7 @@
 ﻿using Vintagestory.API.Client;
 using Vintagestory.API.Common;
 using Vintagestory.API.Config;
+using Vintagestory.API.MathTools;
 using Vintagestory.API.Server;
 using Vintagestory.GameContent;
 
@@ -8,7 +9,10 @@ namespace WandasGizmos
 {
     public class WandasGizmos : ModSystem
     {
-        public static ICoreAPI _api;
+
+        ICoreAPI _api;
+        MeshRef ropeMesh;
+        float[] modelMat = Mat4f.Create();
 
         // Called on server and client
         // Useful for registering block/entity classes on both sides
@@ -18,11 +22,15 @@ namespace WandasGizmos
             _api = api;
 
             api.RegisterEntity("EntityHook", typeof(EntityHook));
+            //api.RegisterEntity("EntityRope", typeof(EntityRope));
             api.RegisterItemClass("ItemGrapplingHook", typeof(ItemGrapplingHook));
         }
 
         public override void StartClientSide(ICoreClientAPI api)
         {
+            api.Event.RegisterRenderer(EntityHook, EnumRenderStage.Opaque);
+            api.Event.RegisterRenderer(this, EnumRenderStage.ShadowFar);
+            api.Event.RegisterRenderer(this, EnumRenderStage.ShadowNear);
             api.Event.KeyDown += (keyEvent) =>
             {
                 if (keyEvent.KeyCode == (int)GlKeys.LShift)
@@ -67,3 +75,5 @@ namespace WandasGizmos
         }
     }
 }
+
+

@@ -1,0 +1,42 @@
+{
+	"code": "rope",
+	"class": "EntityRope",
+	"hitboxSize": {
+		"x": 0.0825,
+		"y": 0.125
+	},
+	"client": {
+		"renderer": "Shape",
+		"texture": {
+			"base": "rope/rope"
+		},
+		"shape": {
+			"base":  "rope/rope"
+		},
+		"behaviors": [
+			{
+				"code": "passivephysics",
+				"groundDragFactor": 0,
+				"airDragFactor": 0,
+				"gravityFactor": 0
+			},
+			{ "code": "interpolateposition" }
+		]
+	},
+	"server": {
+		"behaviors": [
+			{
+				"code": "passivephysics",
+				"groundDragFactor": 0,
+				"airDragFactor": 0,
+				"gravityFactor": 0
+			},
+			{
+				"code": "despawn",
+				"minSeconds": 600
+			}
+		]
+	},
+	"sounds": {
+	}
+}
