@@ -1,6 +1,7 @@
 ﻿using HarmonyLib;
 using System;
 using System.Diagnostics;
+using System.Runtime.CompilerServices;
 using Vintagestory.API.Client;
 using Vintagestory.API.Common;
 using Vintagestory.API.Common.Entities;
@@ -40,9 +41,6 @@ namespace WandasGizmos
             EntityProperties EnhkType = byEntity.World.GetEntityType(new AssetLocation("wgmt:grapplinghook"));
             EntityHook enhk = byEntity.World.ClassRegistry.CreateEntity(EnhkType) as EntityHook;
 
-            EntityProperties EnrpType = byEntity.World.GetEntityType(new AssetLocation("wgmt:rope"));
-            EntityRope enrp = byEntity.World.ClassRegistry.CreateEntity(EnrpType) as EntityRope;
-
             double pitch = byEntity.WatchedAttributes.GetDouble("aimingRandYaw", 1);
             double yaw = byEntity.WatchedAttributes.GetDouble("aimingRandYaw", 1);
             Vec3d pos = byEntity.Pos.XYZ.Add(0, byEntity.LocalEyePos.Y - 0.2, 0);
@@ -63,27 +61,18 @@ namespace WandasGizmos
             enhk.SetRotation();
             enhk.RopeCount = ItemRopeCount * 3;
 
-            enrp.ServerPos.SetPos(spawnPos);
-            enrp.ServerPos.Motion.Set(velocity);
-            enrp.FiredById = byEntity.EntityId;
-            enrp.HookSlot = slot;
-            enrp.ProjectileStack = slot.Itemstack;
-
-            enrp.Pos.SetFrom(enhk.ServerPos);
-            enrp.World = byEntity.World;
-            enrp.SetRotation();
+            
             //enhk.SetHook(slot, api);
             //enpr.TrueClient = IClientPlayer;
 
             byEntity.World.SpawnEntity(enhk);
-            byEntity.World.SpawnEntity(enrp);
+            
             byEntity.StartAnimation("throw");
             //ItemGrapplingHook.InitializeHook(slot, enhk);
             //ItemStack stack = slot.TakeOut(1);
             slot.MarkDirty();
             Debug.Print("working");
         }
-
         public override void OnHeldInteractStop(float secondsUsed, ItemSlot slot, EntityAgent byEntity, BlockSelection blockSel, EntitySelection entitySel)
         {
             base.OnHeldInteractStop(secondsUsed, slot, byEntity, blockSel, entitySel);

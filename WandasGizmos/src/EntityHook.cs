@@ -9,7 +9,7 @@ using Vintagestory.GameContent;
 
 namespace WandasGizmos
 {
-    public class EntityHook : Entity, IRenderer
+    public class EntityHook : Entity
     {
         ICoreClientAPI api;
 
@@ -46,18 +46,7 @@ namespace WandasGizmos
 
         Cuboidf collisionTestBox;
 
-        public double RenderOrder
-        {
-            get { return 1; }
-        }
-        public override void Dispose()
-        {
 
-        }
-        public int RenderRange
-        {
-            get { return 99; }
-        }
         public override bool ApplyGravity
         {
             get { return !stuck; }
@@ -201,89 +190,6 @@ namespace WandasGizmos
 
             beforeCollided = false;
             motionBeforeCollide.Set(pos.Motion.X, pos.Motion.Y, pos.Motion.Z);
-        }
-        public void OnRenderFrame(float deltaTime, EnumRenderStage stage)
-        {
-            if (ropeMesh == null)
-            {
-                Block block = api.World.GetBlock(new AssetLocation("stationarybasket-north"));
-                ropeMesh = api.Render.UploadMesh(api.TesselatorManager.GetDefaultBlockMesh(block));
-                ropeMeshTextureId = api.BlockTextureAtlas.Positions[0].atlasTextureId;
-            }
-
-            for (int i = 0; i < api.World.AllPlayers.Length; i++)
-            {
-                IPlayer plr = api.World.AllPlayers[i];
-                EntityShapeRenderer rend = plr.Entity.Properties.Client.Renderer as EntityShapeRenderer;
-                if (rend == null) continue;
-
-                if (plr == api.World.Player && api.World.Player.CameraMode == EnumCameraMode.FirstPerson) continue;
-
-                RenderRope(plr.Entity, rend, stage != EnumRenderStage.Opaque);
-            }
-        }
-        private void RenderRope(EntityPlayer entity, EntityShapeRenderer rend, bool isShadowPass)
-        {
-            double x = entity.Pos.X - anchorPoint.X;
-            double y = entity.Pos.X - anchorPoint.Y;
-            double z = entity.Pos.Z - anchorPoint.Z;
-            double theta = Math.Atan2(x, y);
-            double phi = Math.Abs(Math.Atan2((Math.Sqrt(x * x + z * z) / y), y));
-            IRenderAPI rpi = api.Render;
-            ClientAnimator animator = entity.AnimManager.Animator as ClientAnimator;
-            AttachmentPointAndPose apap = null;
-
-            animator.AttachmentPointByCode.TryGetValue("Back", out apap);
-
-            if (apap == null || ropeMesh == null) return;
-
-            for (int i = 0; i < 16; i++) modelMat[i] = rend.ModelMat[i];
-
-            AttachmentPoint ap = apap.AttachPoint;
-
-            float[] animModelMat = apap.CachedPose.AnimModelMatrix;
-            float[] viewMatrix = new float[16];
-            for (int i = 0; i < 16; i++) viewMatrix[i] = (float)api.Render.CameraMatrixOrigin[i];
-
-            Mat4f.Mul(modelMat, modelMat, animModelMat);
-
-            IStandardShaderProgram prog = null;
-
-            if (isShadowPass)
-            {
-                rpi.CurrentActiveShader.BindTexture2D("tex2d", ropeMeshTextureId, 0);
-            }
-            else
-            {
-                prog = rpi.PreparedStandardShader((int)entity.Pos.X, (int)entity.Pos.Y, (int)entity.Pos.Z);
-                prog.Tex2D = ropeMeshTextureId;
-                prog.AlphaTest = 0.01f;
-            }
-
-
-            Mat4f.Translate(modelMat, modelMat, (float)FiredBy.Pos.X, (float)FiredBy.Pos.Y, (float)FiredBy.Pos.Z);
-            Mat4f.Scale(modelMat, modelMat, (float)1.0, 10f, (float)1.0);
-            Mat4f.Translate(modelMat, modelMat, (float)ap.PosX / 16f, (float)ap.PosY / 16f, (float)ap.PosZ / 16f);
-            Mat4f.RotateX(modelMat, modelMat, (float)(phi - Math.PI /2));
-            Mat4f.RotateY(modelMat, modelMat, (float)(theta));
-            Mat4f.RotateZ(modelMat, modelMat, 0);
-            Mat4f.Translate(modelMat, modelMat, -(0), -(0), -(0));
-
-            if (isShadowPass)
-            {
-                Mat4f.Mul(modelMat, api.Render.CurrentShadowProjectionMatrix, modelMat);
-                api.Render.CurrentActiveShader.UniformMatrix("mvpMatrix", modelMat);
-                api.Render.CurrentActiveShader.Uniform("origin", rend.OriginPos);
-            }
-            else
-            {
-                prog.ModelMatrix = modelMat;
-                prog.ViewMatrix = viewMatrix;
-            }
-
-            api.Render.RenderMesh(ropeMesh);
-
-            if (!isShadowPass) prog.Stop();
         }
         
         public static Vec3d GetProjectionOn(Vec3d vector, Vec3d direction)
