@@ -93,7 +93,7 @@ namespace WandasGizmos.src
                 fishingLineShadow.Stop();
                 currentActiveShader.Use();
             }*/
-            if (!isShadowPass)
+            if (isShadowPass)
             {
                 IShaderProgram ropeLine = WandasGizmos.RopeLine;
                 ropeLine.Use();

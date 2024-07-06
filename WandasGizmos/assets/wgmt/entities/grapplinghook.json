@@ -6,7 +6,7 @@
 		"y": 0.125
 	},
 	"client": {
-		"renderer": "Shape",
+		"renderer": "RopeRenderer",
 		"texture": {
 			"base": "item/grapplinghook"
 		},

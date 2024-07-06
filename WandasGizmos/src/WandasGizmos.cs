@@ -1,8 +1,11 @@
-﻿using Vintagestory.API.Client;
+﻿using System.Drawing;
+using System.Reflection;
+using Vintagestory.API.Client;
 using Vintagestory.API.Common;
 using Vintagestory.API.Config;
 using Vintagestory.API.MathTools;
 using Vintagestory.API.Server;
+using Vintagestory.Client.NoObf;
 using Vintagestory.GameContent;
 using WandasGizmos.src;
 
@@ -13,7 +16,8 @@ namespace WandasGizmos
 
         ICoreAPI _api;
         MeshRef ropeMesh;
-        float[] modelMat = Mat4f.Create();
+        public ICoreClientAPI capi;
+        //float[] modelMat = Mat4f.Create();
 
         public static IShaderProgram RopeLine { get; set; }
 
@@ -66,6 +70,14 @@ namespace WandasGizmos
                     }
                 }
             };
+            capi.Event.ReloadShader += () =>
+            {
+                //Squiggly = RegisterShader("squiggly", "squiggly");
+                //FishingLineShadow = RegisterShader("fishinglineshadow", "fishinglineshadow");
+                RopeLine = RegisterShader("shaders", "ropeline");
+                //Color = RegisterShader("color", "color");
+                return true;
+            };
             base.StartClientSide(api);
         }
 
@@ -73,6 +85,28 @@ namespace WandasGizmos
         {
             base.StartServerSide(api);
 
+        }
+
+
+        public IShaderProgram RegisterShader(string shaderPath, string shaderName)
+        {
+            IShaderProgram shader = capi.Shader.NewShaderProgram();
+
+            MethodInfo method = typeof(ShaderRegistry).GetMethod("HandleIncludes", BindingFlags.NonPublic | BindingFlags.Static)!;
+            object[] vertParams = new object[] { shader, capi.Assets.Get($"wgmt:shaders/rope.vert").ToText(), null! };
+            object[] fragParams = new object[] { shader, capi.Assets.Get($"wgmt:shaders/rope.frag").ToText(), null! };
+
+            shader.VertexShader = capi.Shader.NewShader(EnumShaderType.VertexShader);
+            shader.FragmentShader = capi.Shader.NewShader(EnumShaderType.FragmentShader);
+
+            shader.VertexShader.Code = (string)method.Invoke(null, vertParams)!;
+            shader.FragmentShader.Code = (string)method.Invoke(null, fragParams)!;
+
+            capi.Shader.RegisterMemoryShaderProgram(shaderName, shader);
+
+            shader.Compile(); // Returns bool.
+
+            return shader;
         }
     }
 }
