@@ -198,6 +198,14 @@ namespace WandasGizmos
         }
         public override void OnCollided()
         {
+            RopeCount = 0;
+            foreach (ItemSlot itemSlot in FiredBy.Player.InventoryManager.GetHotbarInventory())
+            {
+                if (itemSlot?.Itemstack?.Id == 1701)
+                {
+                    RopeCount += itemSlot.Itemstack.StackSize * 3/2;
+                }
+            }
             if (this.ServerPos.DistanceTo(FiredBy.Pos) > RopeCount) // > totalRope);
             {
                 Console.WriteLine("death: player too far");

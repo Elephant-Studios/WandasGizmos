@@ -27,7 +27,7 @@ namespace WandasGizmos.src
             this.CreateCrossFishingLine(0.03f);
             this.hook = (EntityHook)entity;
             this.lineTexture = ((EntityRenderer)this).capi.Render.GetOrLoadTexture(new AssetLocation("wgmt:rope/rope.png"));
-            float num = (float)((EntityRenderer)this).capi.Settings.Int["fpHandsFoV"] * ((float)Math.PI / 180f);
+            float num = (float)((EntityRenderer)this).capi.Settings.Int["fpHandsFoV"] * ((float)Math.PI / 1f);
             this.normalFov = (float[])((EntityRenderer)this).capi.Render.CurrentProjectionMatrix.Clone();
             ((EntityRenderer)this).capi.Render.Set3DProjection(((EntityRenderer)this).capi.Render.ShaderUniforms.ZFar, num);
             this.handFov = (float[])((EntityRenderer)this).capi.Render.CurrentProjectionMatrix.Clone();
@@ -76,7 +76,7 @@ namespace WandasGizmos.src
             }
             if (isShadowPass)
             {
-                /*IShaderProgram currentActiveShader = ((EntityRenderer)this).capi.Render.CurrentActiveShader;
+                IShaderProgram currentActiveShader = ((EntityRenderer)this).capi.Render.CurrentActiveShader;
                 currentActiveShader.Stop();
                 IShaderProgram ropeLineShadow = WandasGizmos.RopeLineShadow;
                 ropeLineShadow.Use();
@@ -91,7 +91,7 @@ namespace WandasGizmos.src
                 ((EntityRenderer)this).capi.Render.RenderMesh(this.ropeLineMesh);
                 ((EntityRenderer)this).capi.Render.GlEnableCullFace();
                 ropeLineShadow.Stop();
-                currentActiveShader.Use();*/
+                currentActiveShader.Use();
 
             }
             else
