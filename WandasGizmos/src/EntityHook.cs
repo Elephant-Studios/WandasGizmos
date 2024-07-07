@@ -116,9 +116,9 @@ namespace WandasGizmos
             if (FiredBy == null) FiredBy = (Api as ICoreClientAPI)?.World.Player.Entity;
             if (HookSlot == null) HookSlot = FiredBy.Player.InventoryManager.ActiveHotbarSlot;
             //Console.WriteLine(HookSlot.Itemstack.Id);
-            /*if (HookSlot.Itemstack?.Attributes.TryGetBool("pull") == true)
+            if (HookSlot.Itemstack?.Attributes.TryGetBool("pull") == true)
             {
-                MaxLength -= 0.5;
+                MaxLength -= 0.3;
             }
             else if (HookSlot.Itemstack?.Attributes.TryGetBool("push") == true)
             {
@@ -126,9 +126,9 @@ namespace WandasGizmos
                 Console.WriteLine(MaxLength + " m");   
                 if (MaxLength + -0.1 < RopeCount)
                 {
-                    MaxLength += 0.5;
+                    MaxLength += 0.3;
                 }  
-            }*/
+            }
             else if (this.FiredBy.Player.InventoryManager.ActiveHotbarSlot.Itemstack != this.HookSlot.Itemstack)
             {
                 //this.HookSlot.Itemstack.Attributes.RemoveAttribute("hookId");

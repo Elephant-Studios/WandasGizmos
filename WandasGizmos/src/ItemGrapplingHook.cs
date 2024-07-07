@@ -35,7 +35,11 @@ namespace WandasGizmos
                     ItemRopeCount += itemSlot.Itemstack.StackSize;
                 }
             }
-            if (ItemRopeCount == 0) api.Logger.Chat("requires rope to be used");
+            if (ItemRopeCount == 0)
+            {
+                api.Logger.Chat("requires rope to be used");
+                return;
+            }
             handling = EnumHandHandling.PreventDefault;
             EntityProperties EnhkType = byEntity.World.GetEntityType(new AssetLocation("wgmt:grapplinghook"));
             EntityHook enhk = byEntity.World.ClassRegistry.CreateEntity(EnhkType) as EntityHook;
@@ -56,6 +60,7 @@ namespace WandasGizmos
             enhk.ServerPos.Motion.Set(velocity);
             enhk.FiredById = byEntity.EntityId;
             enhk.HookSlot = slot;
+            enhk.RopeCount = ItemRopeCount * 3;
             enhk.ProjectileStack = slot.Itemstack;
 
             enhk.Pos.SetFrom(enhk.ServerPos);

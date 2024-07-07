@@ -20,6 +20,7 @@ namespace WandasGizmos
         //float[] modelMat = Mat4f.Create();
 
         public static IShaderProgram RopeLine { get; set; }
+        public static IShaderProgram RopeLineShadow { get; set; }
 
         // Called on server and client
         // Useful for registering block/entity classes on both sides
@@ -36,6 +37,8 @@ namespace WandasGizmos
         public override void StartClientSide(ICoreClientAPI api)
         {
             api.RegisterEntityRendererClass("RopeRenderer", typeof(RopeRenderer));
+            base.StartClientSide(api);
+            capi = api;
             api.Event.KeyDown += (keyEvent) =>
             {
                 if (keyEvent.KeyCode == (int)GlKeys.LShift)
@@ -73,12 +76,11 @@ namespace WandasGizmos
             capi.Event.ReloadShader += () =>
             {
                 //Squiggly = RegisterShader("squiggly", "squiggly");
-                //FishingLineShadow = RegisterShader("fishinglineshadow", "fishinglineshadow");
-                RopeLine = RegisterShader("shaders", "ropeline");
+                RopeLineShadow = RegisterShader("ropelineshadow", "ropelineshadow");
+                RopeLine = RegisterShader("ropeline", "ropeline");
                 //Color = RegisterShader("color", "color");
                 return true;
             };
-            base.StartClientSide(api);
         }
 
         public override void StartServerSide(ICoreServerAPI api)
@@ -93,8 +95,8 @@ namespace WandasGizmos
             IShaderProgram shader = capi.Shader.NewShaderProgram();
 
             MethodInfo method = typeof(ShaderRegistry).GetMethod("HandleIncludes", BindingFlags.NonPublic | BindingFlags.Static)!;
-            object[] vertParams = new object[] { shader, capi.Assets.Get($"wgmt:shaders/rope.vert").ToText(), null! };
-            object[] fragParams = new object[] { shader, capi.Assets.Get($"wgmt:shaders/rope.frag").ToText(), null! };
+            object[] vertParams = new object[] { shader, capi.Assets.Get($"wgmt:shaders/{shaderPath}.vert").ToText(), null! };
+            object[] fragParams = new object[] { shader, capi.Assets.Get($"wgmt:shaders/{shaderPath}.frag").ToText(), null! };
 
             shader.VertexShader = capi.Shader.NewShader(EnumShaderType.VertexShader);
             shader.FragmentShader = capi.Shader.NewShader(EnumShaderType.FragmentShader);

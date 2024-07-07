@@ -24,7 +24,7 @@ namespace WandasGizmos.src
         public RopeRenderer(Entity entity, ICoreClientAPI api)
           : base(entity, api)
         {
-            this.CreateCrossFishingLine(0.025f);
+            this.CreateCrossFishingLine(0.03f);
             this.hook = (EntityHook)entity;
             this.lineTexture = ((EntityRenderer)this).capi.Render.GetOrLoadTexture(new AssetLocation("wgmt:rope/rope.png"));
             float num = (float)((EntityRenderer)this).capi.Settings.Int["fpHandsFoV"] * ((float)Math.PI / 180f);
@@ -34,16 +34,16 @@ namespace WandasGizmos.src
             ((EntityRenderer)this).capi.Render.Reset3DProjection();
         }
 
-        public virtual void DoRender3DOpaque(float dt, bool isShadowPass)
+        public override void DoRender3DOpaque(float dt, bool isShadowPass)
         {
             base.DoRender3DOpaque(dt, isShadowPass);
-            if (!(((IWorldAccessor)((EntityRenderer)this).capi.World).GetEntityById(this.hook.FiredById) is EntityPlayer entityById) || !(entityById.Player.InventoryManager.ActiveHotbarSlot.Itemstack?.Collectible is ItemGrapplingHook collectible))
-                return;
+            if (!(((IWorldAccessor)((EntityRenderer)this).capi.World).GetEntityById(this.hook.FiredById) is EntityPlayer entityById) || !(entityById.Player.InventoryManager.ActiveHotbarSlot.Itemstack?.Collectible is ItemGrapplingHook collectible)) return;
             EntityPlayer entity = ((IPlayer)((EntityRenderer)this).capi.World.Player).Entity;
             bool flag = entityById == entity && ((EntityRenderer)this).capi.World.Player.CameraMode == EnumCameraMode.ThirdPerson && !isShadowPass;
+            bool flagFirstPerson = entityById == entity && ((EntityRenderer)this).capi.World.Player.CameraMode == EnumCameraMode.FirstPerson && !isShadowPass;
+            bool flagOverhead = entityById == entity && ((EntityRenderer)this).capi.World.Player.CameraMode == EnumCameraMode.Overhead && !isShadowPass;
             AttachmentPointAndPose attachmentPointPose = ((Entity)entityById).AnimManager.Animator?.GetAttachmentPointPose("RightHand");
-            if (attachmentPointPose == null)
-                return;
+            if (attachmentPointPose == null) return;
             AttachmentPoint attachPoint = attachmentPointPose.AttachPoint;
             double num1 = attachPoint.RotationX * (Math.PI / 180.0);
             double num2 = attachPoint.RotationY * (Math.PI / 180.0);
@@ -51,10 +51,10 @@ namespace WandasGizmos.src
             this.matrix.Identity();
             this.matrix.RotateX(((Entity)entityById).Pos.Roll);
             this.matrix.RotateY(((EntityAgent)entityById).BodyYaw);
-            if (flag)
+            if (flagFirstPerson)
             {
-                float num4 = ((EntityAgent)entityById).Controls.IsFlying ? -1f : -0.75f;
-                this.matrix.Translate(0.0f, ((EntityRenderer)this).capi.Settings.Float["fpHandsYOffset"], 0.0f);
+                float num4 = ((EntityAgent)entityById).Controls.IsFlying ? -1.3f : -1f;
+                this.matrix.Translate(1.0f, ((EntityRenderer)this).capi.Settings.Float["fpHandsYOffset"], 0.0f);
                 this.matrix.Translate(0.0, ((Entity)entityById).LocalEyePos.Y, 0.0);
                 this.matrix.RotateZ((((Entity)entityById).Pos.Pitch - 3.14159274f) * num4);
                 this.matrix.Translate(0.0, -((Entity)entityById).LocalEyePos.Y, 0.0);
@@ -62,38 +62,39 @@ namespace WandasGizmos.src
             this.matrix.RotateX((float)num1).RotateY((float)num2).RotateZ((float)num3).Translate(attachPoint.PosX / 16.0 - 0.5, attachPoint.PosY / 16.0, attachPoint.PosZ / 16.0 - 0.5).Mul(attachmentPointPose.AnimModelMatrix);
             //this.matrix.Translate(-(double)collectible.lineOffset, 0.1, 0.0);
             Vec4f vec4f1 = this.matrix.TransformVector(new Vec4f(0.0f, 0.0f, 0.0f, 1f));
-            if (flag)
+            if (flagFirstPerson)
             {
                 Vec4f vec4f2 = new Matrixf().Set(this.handFov).Mul(((EntityRenderer)this).capi.Render.CameraMatrixOriginf).TransformVector(vec4f1);
                 vec4f1 = new Matrixf(((EntityRenderer)this).capi.Render.CameraMatrixOriginf).Invert().Mul(new Matrixf(this.normalFov).Invert()).TransformVector(vec4f2);
             }
-            Vec3d vec3d = new Vec3d();
+                Vec3d vec3d = new Vec3d();
             if (entityById == entity)
                 vec3d.Set((double)vec4f1.X, (double)vec4f1.Y, (double)vec4f1.Z);
             else
             {
                 vec3d.Set((double)vec4f1.X + ((Entity)entityById).Pos.X - entity.CameraPos.X, (double)vec4f1.Y + ((Entity)entityById).Pos.Y - entity.CameraPos.Y, (double)vec4f1.Z + ((Entity)entityById).Pos.Z - entity.CameraPos.Z);
             }
-            /*if (isShadowPass)
+            if (isShadowPass)
             {
-                IShaderProgram currentActiveShader = ((EntityRenderer)this).capi.Render.CurrentActiveShader;
+                /*IShaderProgram currentActiveShader = ((EntityRenderer)this).capi.Render.CurrentActiveShader;
                 currentActiveShader.Stop();
-                IShaderProgram fishingLineShadow = FishingMod.FishingLineShadow;
-                fishingLineShadow.Use();
+                IShaderProgram ropeLineShadow = WandasGizmos.RopeLineShadow;
+                ropeLineShadow.Use();
                 Matrixf matrixf = new Matrixf().Translate(vec3d.X, vec3d.Y, vec3d.Z);
                 float[] numArray = Mat4f.Mul(matrixf.Values, ((EntityRenderer)this).capi.Render.CurrentModelviewMatrix, matrixf.Values);
                 Mat4f.Mul(numArray, ((EntityRenderer)this).capi.Render.CurrentProjectionMatrix, numArray);
-                fishingLineShadow.UniformMatrix("mvpMatrix", numArray);
+                ropeLineShadow.UniformMatrix("mvpMatrix", numArray);
                 this.offset.Set((float)(((EntityRenderer)this).entity.Pos.X - entity.CameraPos.X - vec3d.X), (float)(((EntityRenderer)this).entity.Pos.Y + 0.10000000149011612 - entity.CameraPos.Y - vec3d.Y), (float)(((EntityRenderer)this).entity.Pos.Z - entity.CameraPos.Z - vec3d.Z));
-                fishingLineShadow.Uniform("offset", this.offset);
-                fishingLineShadow.Uniform("droop", 1f);
+                ropeLineShadow.Uniform("offset", this.offset);
+                ropeLineShadow.Uniform("droop", 1f);
                 ((EntityRenderer)this).capi.Render.GlDisableCullFace();
-                ((EntityRenderer)this).capi.Render.RenderMesh(this.fishingLineMesh);
+                ((EntityRenderer)this).capi.Render.RenderMesh(this.ropeLineMesh);
                 ((EntityRenderer)this).capi.Render.GlEnableCullFace();
-                fishingLineShadow.Stop();
-                currentActiveShader.Use();
-            }*/
-            if (isShadowPass)
+                ropeLineShadow.Stop();
+                currentActiveShader.Use();*/
+
+            }
+            else
             {
                 IShaderProgram ropeLine = WandasGizmos.RopeLine;
                 ropeLine.Use();
@@ -101,8 +102,8 @@ namespace WandasGizmos.src
                 ropeLine.UniformMatrix("viewMatrix", ((EntityRenderer)this).capi.Render.CameraMatrixOriginf);
                 ropeLine.UniformMatrix("projectionMatrix", ((EntityRenderer)this).capi.Render.CurrentProjectionMatrix);
                 ropeLine.BindTexture2D("tex2d", this.lineTexture, 0);
-                this.offset.Set((float)(((EntityRenderer)this).entity.Pos.X - entity.CameraPos.X - vec3d.X), (float)(((EntityRenderer)this).entity.Pos.Y + 0.10000000149011612 - entity.CameraPos.Y - vec3d.Y), (float)(((EntityRenderer)this).entity.Pos.Z - entity.CameraPos.Z - vec3d.Z));
-                ropeLine.Uniform("offset", this.offset);
+                this.offset.Set((float)(((EntityRenderer)this).entity.Pos.X - entity.CameraPos.X - vec3d.X), (float)(((EntityRenderer)this).entity.Pos.Y + 0.45 - entity.CameraPos.Y - vec3d.Y), (float)(((EntityRenderer)this).entity.Pos.Z - entity.CameraPos.Z - vec3d.Z)); //z == 0.25
+                ropeLine.Uniform("offset", offset);
                 ropeLine.Uniform("color", new Vec3f(0.8f, 0.8f, 0.8f));
                 ropeLine.Uniform("droop", 1f);
                 ropeLine.Uniform("rgbaAmbientIn", ((EntityRenderer)this).capi.Render.AmbientColor);
@@ -117,7 +118,7 @@ namespace WandasGizmos.src
             }
         }
 
-        public virtual void Dispose()
+        public override void Dispose()
         {
             base.Dispose();
             this.ropeLineMesh?.Dispose();
