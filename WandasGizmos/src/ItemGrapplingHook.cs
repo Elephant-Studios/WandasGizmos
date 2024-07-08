@@ -87,7 +87,7 @@ namespace WandasGizmos
             base.OnHeldInteractStop(secondsUsed, slot, byEntity, blockSel, entitySel);
             Console.WriteLine(secondsUsed);
             double power = secondsUsed / 2.5;
-            EntityProperties EnhkType = byEntity.World.GetEntityType(new AssetLocation("wgmt:grapplinghook"));
+            EntityProperties EnhkType = byEntity.World.GetEntityType(Code);
             EntityHook enhk = byEntity.World.ClassRegistry.CreateEntity(EnhkType) as EntityHook;
             Console.WriteLine("fauxBreak3");
             //EntityProperties EnrpType = byEntity.World.GetEntityType(new AssetLocation("wgmt:rope"));
@@ -126,9 +126,13 @@ namespace WandasGizmos
 
             byEntity.World.SpawnEntity(enhk);
             //slot.Itemstack.Attributes.SetBool("used", true);
-            slot.Itemstack.Attributes.SetInt("renderVariant", 1); //empty
-            slot.Itemstack.Attributes.SetInt("shapeinventory", 1);
+            
+            
+            slot.Itemstack.Attributes.SetInt("renderVariant", 2); //empty
+            slot.MarkDirty();
             Console.WriteLine("changed it");
+            
+            
             //byEntity.World.SpawnEntity(enrp);
             byEntity.StartAnimation("throw");
             //byEntity.StartAnimation("swing");

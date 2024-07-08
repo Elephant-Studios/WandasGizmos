@@ -12,31 +12,31 @@
       <Private>False</Private>
     </Reference>
     <Reference Include="OpenTK.Audio.OpenAL">
-      <HintPath>..\..\..\..\..\AppData\Roaming\Vintagestory\Lib\OpenTK.Audio.OpenAL.dll</HintPath>
+      <HintPath>$(VINTAGE_STORY)\Lib\OpenTK.Audio.OpenAL.dll</HintPath>
     </Reference>
     <Reference Include="OpenTK.Compute">
-      <HintPath>..\..\..\..\..\AppData\Roaming\Vintagestory\Lib\OpenTK.Compute.dll</HintPath>
+      <HintPath>$(VINTAGE_STORY)\Lib\OpenTK.Compute.dll</HintPath>
     </Reference>
     <Reference Include="OpenTK.Core">
-      <HintPath>..\..\..\..\..\AppData\Roaming\Vintagestory\Lib\OpenTK.Core.dll</HintPath>
+      <HintPath>$(VINTAGE_STORY)\Lib\OpenTK.Core.dll</HintPath>
     </Reference>
     <Reference Include="OpenTK.Graphics">
-      <HintPath>..\..\..\..\..\AppData\Roaming\Vintagestory\Lib\OpenTK.Graphics.dll</HintPath>
+      <HintPath>$(VINTAGE_STORY)\Lib\OpenTK.Graphics.dll</HintPath>
     </Reference>
     <Reference Include="OpenTK.Input">
-      <HintPath>..\..\..\..\..\AppData\Roaming\Vintagestory\Lib\OpenTK.Input.dll</HintPath>
+      <HintPath>$(VINTAGE_STORY)\Lib\OpenTK.Input.dll</HintPath>
     </Reference>
     <Reference Include="OpenTK.Mathematics">
-      <HintPath>..\..\..\..\..\AppData\Roaming\Vintagestory\Lib\OpenTK.Mathematics.dll</HintPath>
+      <HintPath>$(VINTAGE_STORY)\Lib\OpenTK.Mathematics.dll</HintPath>
     </Reference>
     <Reference Include="OpenTK.Windowing.Common">
-      <HintPath>..\..\..\..\..\AppData\Roaming\Vintagestory\Lib\OpenTK.Windowing.Common.dll</HintPath>
+      <HintPath>$(VINTAGE_STORY)\Lib\OpenTK.Windowing.Common.dll</HintPath>
     </Reference>
     <Reference Include="OpenTK.Windowing.Desktop">
-      <HintPath>..\..\..\..\..\AppData\Roaming\Vintagestory\Lib\OpenTK.Windowing.Desktop.dll</HintPath>
+      <HintPath>$(VINTAGE_STORY)\Lib\OpenTK.Windowing.Desktop.dll</HintPath>
     </Reference>
     <Reference Include="OpenTK.Windowing.GraphicsLibraryFramework">
-      <HintPath>..\..\..\..\..\AppData\Roaming\Vintagestory\Lib\OpenTK.Windowing.GraphicsLibraryFramework.dll</HintPath>
+      <HintPath>$(VINTAGE_STORY)\Lib\OpenTK.Windowing.GraphicsLibraryFramework.dll</HintPath>
     </Reference>
     <Reference Include="VintagestoryAPI">
       <HintPath>$(VINTAGE_STORY)/VintagestoryAPI.dll</HintPath>
