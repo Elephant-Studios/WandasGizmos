@@ -9,7 +9,7 @@
 	"textureSizes": {
 	},
 	"textures": {
-		"rope": "game:block/cloth/linen/plain",
+		"rope": "game:block/cloth/reedrope",
 		"metal": "game:block/metal/plate/steel"
 	},
 	"elements": [

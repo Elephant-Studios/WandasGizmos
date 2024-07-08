@@ -10,6 +10,7 @@
 		"y": 0.0825
 	},
 	"client": {
+		"size": 0.8,
 		"renderer": "RopeRenderer",
 		"textures": {"metal": {"base": "game:block/metal/plate/{material}"}},
 		"shape": {

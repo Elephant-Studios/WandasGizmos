@@ -16,10 +16,10 @@
   },
   "textures": {"metal": {"base": "game:block/metal/plate/{material}"}},
   "shape": {
-    "base": "item/hook",
+    "base": "item/hook-rope",
     "alternates": [
       {
-        "base": "item/empty"
+        "base": "item/rope"
       }
     ]
   },
@@ -33,19 +33,20 @@
   },
   "guiTransform": {
 		"translation": { "x": 0, "y": 0, "z": 0 },
-		"rotation": { "x": 28, "y": -7, "z": -32 },
-		"origin": { "x": 0.82, "y": 0, "z": 0.6 },
+		"rotation": { "x": 157, "y": -47, "z": -4 },
+		"origin": { "x": 0.92, "y": 0, "z": 0.85 },
 		"scale": 2.08
 	},
   "tpHandTransform": {
-		"translation": { "x": 0.5, "y": -0, "z": 0.5 },
-		"rotation": { "x": 0, "y": 0, "z": 0 },
-		"origin": { "x": 0, "y": 0, "z": 0 },
+		"translation": { "x": -0.5, "y": 0.4, "z": 0.05 },
+		"rotation": { "x": -88, "y": -85, "z": -3 },
+		"origin": { "x": 0, "y": 0, "z": -0 },
 		"scale": 0.6
 	},
   "groundTransform": {
-		"translation": { "x": -0.1, "y": -0.2, "z": 0.1 },
-		"rotation": { "x": 134, "y": 0, "z": 16 },
-		"scale": 4
+		"translation": { "x": 0, "y": 0, "z": 0 },
+		"rotation": { "x": 0, "y": 0, "z": 0 },
+		"origin": { "x": 0, "y": 0, "z": 0 },
+		"scale": 3.2
 	}
 }
