@@ -74,10 +74,14 @@
   </Content>
   <None Remove="assets\wgmt\entities\grapplinghook.json" />
   <None Remove="assets\wgmt\entities\rope.json" />
+  <None Remove="assets\wgmt\patches\animation\rappell.json" />
+  <None Remove="assets\wgmt\recipes\grid\grapplinghook.json" />
   <None Remove="assets\wgmt\shaders\rope.frag" />
   <None Remove="assets\wgmt\shaders\rope.vert" />
   <None Remove="assets\wgmt\shaders\ropelineshadow.frag" />
   <None Remove="assets\wgmt\shaders\ropelineshadow.vert" />
+  <None Remove="assets\wgmt\shapes\item\empty.json" />
+  <None Remove="assets\wgmt\shapes\item\grapplinghook - Copy.json" />
   <None Remove="assets\wgmt\shapes\rope\rope.json" />
   <None Remove="assets\wgmt\textures\rope\rope.png" />
   <Content Include="modinfo.json">

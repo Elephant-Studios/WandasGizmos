@@ -3,7 +3,7 @@
 	"class": "EntityHook",
 	"hitboxSize": {
 		"x": 0.0825,
-		"y": 0.125
+		"y": 0.0825
 	},
 	"client": {
 		"renderer": "RopeRenderer",
@@ -17,8 +17,8 @@
 			{
 				"code": "passivephysics",
 				"groundDragFactor": 1,
-				"airDragFactor": 0.15,
-				"gravityFactor": 0.35
+				"airDragFactor": 0.25,
+				"gravityFactor": 0.75
 			},
 			{ "code": "interpolateposition" }
 		]
@@ -28,8 +28,8 @@
 			{
 				"code": "passivephysics",
 				"groundDragFactor": 1,
-				"airDragFactor": 0.15,
-				"gravityFactor": 0.35
+				"airDragFactor": 0.25,
+				"gravityFactor": 0.75
 			},
 			{
 				"code": "despawn",

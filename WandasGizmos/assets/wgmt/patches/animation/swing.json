@@ -1,0 +1,40 @@
+[
+	{
+		"file": "game:entities/humanoid/player",
+		"op": "add",
+		"path": "/client/animations/-",
+		"value": {
+			"code": "swing",
+			"animation": "swing",
+			"animationSpeed": 1,
+			"blendMode": "Add"
+		}
+	},
+	{
+		"file": "game:shapes/entity/humanoid/seraph-faceless",
+		"op": "add",
+		"path": "/animations/-",
+		"value": {
+			"name": "swing",
+			"code": "swing",
+			"quantityframes": 1,
+			"onActivityStopped": "PlayTillEnd",
+			"onAnimationEnd": "Hold",
+			"keyframes": [
+				{
+					"frame": 0,
+					"elements": {
+						"UpperArmR": {
+							"offsetX": 0.0,
+							"offsetY": 1.5,
+							"offsetZ": -0.5,
+							"rotationX": -22.0,
+							"rotationY": 0.0,
+							"rotationZ": -180.0
+						}
+					}
+				}
+			]
+		}
+	}
+]

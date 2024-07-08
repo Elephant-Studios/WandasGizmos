@@ -1,0 +1,93 @@
+[
+  {
+    "file": "game:entities/humanoid/player",
+    "op": "add",
+    "path": "/client/animations/-",
+    "value": {
+      "code": "rappell",
+      "animation": "rappell",
+      "animationSpeed": 1,
+      "blendMode": "Add"
+    }
+  },
+  {
+    "file": "game:shapes/entity/humanoid/seraph-faceless",
+    "op": "add",
+    "path": "/animations/-",
+    "value": {
+      "name": "rappell",
+      "code": "rappell",
+      "quantityframes": 1,
+      "onActivityStopped": "EaseOut",
+      "onAnimationEnd": "EaseOut",
+      "keyframes": [
+        {
+          "frame": 0,
+          "elements": {
+            "UpperTorso": {
+              "rotationX": 0.0,
+              "rotationY": 0.0,
+              "rotationZ": -17.0
+            },
+            "UpperFootL": {
+              "offsetX": 2.0,
+              "offsetY": -1.0,
+              "offsetZ": 0.0,
+              "rotationX": 0.0,
+              "rotationY": 8.0,
+              "rotationZ": -55.0
+            },
+            "UpperFootR": {
+              "offsetX": 2.0,
+              "offsetY": -1.0,
+              "offsetZ": 0.0,
+              "rotationX": 0.0,
+              "rotationY": -8.0,
+              "rotationZ": -55.0
+            },
+            "LowerFootR": {
+              "rotationX": 0.0,
+              "rotationY": 0.0,
+              "rotationZ": 36.0
+            },
+            "LowerFootL": {
+              "rotationX": 0.0,
+              "rotationY": 0.0,
+              "rotationZ": 36.0
+            },
+            "LowerBackAttachment": {
+              "rotationX": 0.0,
+              "rotationY": 0.0,
+              "rotationZ": 0.0
+            },
+            "BackShirtTile": {
+              "rotationX": 0.0,
+              "rotationY": 0.0,
+              "rotationZ": 17.0
+            },
+            "UpperArmL": {
+              "rotationX": 0.0,
+              "rotationY": 0.0,
+              "rotationZ": -22.0
+            },
+            "UpperArmR": {
+              "rotationX": 0.0,
+              "rotationY": 0.0,
+              "rotationZ": -22.0
+            },
+            "LowerArmR": {
+              "rotationX": 0.0,
+              "rotationY": 19.0,
+              "rotationZ": -66.0
+            },
+            "LowerArmL": {
+              "rotationX": 0.0,
+              "rotationY": -19.0,
+              "rotationZ": -66.0
+            }
+          }
+        }
+      ]
+    }
+  }
+]

@@ -5,10 +5,23 @@
     "base": "item/grapplinghook"
   },
   "shape": {
-    "base":  "item/grapplinghook"
+    "base": "item/grapplinghook",
+    "alternates": [
+      {
+        "base": "item/empty"
+      }
+    ]
+  },
+  "shapeinventory": {
+    "voxelizeTexture": "true",
+    "base": "item/rope"
   },
   "creativeinventory": {
-    "general": [ "*" ],
-    "items": [ "*" ]
+    "general": [
+      "*"
+    ],
+    "items": [
+      "*"
+    ]
   }
 }

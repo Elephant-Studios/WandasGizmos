@@ -1,0 +1,179 @@
+[
+  {
+    "ingredientPattern": "_A_,ABA,_A_",
+    "ingredients": {
+      "A": {
+        "type": "item",
+        "code": "game:metalnailsandstrips-copper",
+        "quantity": 1
+      },
+      "B": {
+        "type": "item",
+        "code": "game:flaxtwine",
+        "quantity": 1
+      }
+    },
+    "width": 3,
+    "height": 3,
+    "output": {
+      "type": "item",
+      "code": "wgmt:grapplinghook",
+      "attributes": { "durability": 50 }
+    }
+  },
+  {
+    "ingredientPattern": "_A_,ABA,_A_",
+    "ingredients": {
+      "A": {
+        "type": "item",
+        "code": "game:metalnailsandstrips-bismuthbronze",
+        "quantity": 1
+      },
+      "B": {
+        "type": "item",
+        "code": "game:flaxtwine",
+        "quantity": 1
+      }
+    },
+    "width": 3,
+    "height": 3,
+    "output": {
+      "type": "item",
+      "code": "wgmt:grapplinghook",
+      "attributes": { "durability": 2 }
+    }
+  },
+  {
+    "ingredientPattern": "_A_,ABA,_A_",
+    "ingredients": {
+      "A": {
+        "type": "item",
+        "code": "game:metalnailsandstrips-tinbronze",
+        "quantity": 1
+      },
+      "B": {
+        "type": "item",
+        "code": "game:flaxtwine",
+        "quantity": 1
+      }
+    },
+    "width": 3,
+    "height": 3,
+    "output": {
+      "type": "item",
+      "code": "wgmt:grapplinghook",
+      "attributes": { "durability": 100 }
+    }
+  },
+  {
+    "ingredientPattern": "_A_,ABA,_A_",
+    "ingredients": {
+      "A": {
+        "type": "item",
+        "code": "game:metalnailsandstrips-blackbronze",
+        "quantity": 1
+      },
+      "B": {
+        "type": "item",
+        "code": "game:flaxtwine",
+        "quantity": 1
+      }
+    },
+    "width": 3,
+    "height": 3,
+    "output": {
+      "type": "item",
+      "code": "wgmt:grapplinghook",
+      "attributes": { "durability": 125 }
+    }
+  },
+  {
+    "ingredientPattern": "_A_,ABA,_A_",
+    "ingredients": {
+      "A": {
+        "type": "item",
+        "code": "game:metalnailsandstrips-gold",
+        "quantity": 1
+      },
+      "B": {
+        "type": "item",
+        "code": "game:flaxtwine",
+        "quantity": 1
+      }
+    },
+    "width": 3,
+    "height": 3,
+    "output": {
+      "type": "item",
+      "code": "wgmt:grapplinghook",
+      "attributes": { "durability": 30 }
+    }
+  },
+  {
+    "ingredientPattern": "_A_,ABA,_A_",
+    "ingredients": {
+      "A": {
+        "type": "item",
+        "code": "game:metalnailsandstrips-iron",
+        "quantity": 1
+      },
+      "B": {
+        "type": "item",
+        "code": "game:flaxtwine",
+        "quantity": 1
+      }
+    },
+    "width": 3,
+    "height": 3,
+    "output": {
+      "type": "item",
+      "code": "wgmt:grapplinghook",
+      "attributes": { "durability": 200 }
+    }
+  },
+  {
+    "ingredientPattern": "_A_,ABA,_A_",
+    "ingredients": {
+      "A": {
+        "type": "item",
+        "code": "game:metalnailsandstrips-silver",
+        "quantity": 1
+      },
+      "B": {
+        "type": "item",
+        "code": "game:flaxtwine",
+        "quantity": 1
+      }
+    },
+    "width": 3,
+    "height": 3,
+    "output": {
+      "type": "item",
+      "code": "wgmt:grapplinghook",
+      "attributes": { "durability": 40 }
+    }
+  },
+  {
+    "ingredientPattern": "_A_,ABA,_A_",
+    "ingredients": {
+      "A": {
+        "type": "item",
+        "code": "game:metalnailsandstrips-steel",
+        "quantity": 1
+      },
+      "B": {
+        "type": "item",
+        "code": "game:flaxtwine",
+        "quantity": 1
+      }
+    },
+    "width": 3,
+    "height": 3,
+    "output": {
+      "type": "item",
+      "code": "wgmt:grapplinghook",
+      "attributes": { "durability": 350 }
+    }
+  }
+]
+

@@ -40,7 +40,6 @@ namespace WandasGizmos
         public double FunConstant = 0.01f;
         public Vec3d anchorPoint;
         public ItemSlot HookSlot = null!;
-        public ItemStack hook = null!;
         //public int totalRope;
 
 
@@ -119,19 +118,21 @@ namespace WandasGizmos
             if (HookSlot.Itemstack?.Attributes.TryGetBool("pull") == true)
             {
                 MaxLength -= 0.3;
+
             }
             else if (HookSlot.Itemstack?.Attributes.TryGetBool("push") == true)
             {
                 Console.WriteLine(RopeCount + " r");
-                Console.WriteLine(MaxLength + " m");   
+                Console.WriteLine(MaxLength + " m");
                 if (MaxLength + -0.1 < RopeCount)
                 {
                     MaxLength += 0.3;
-                }  
+                }
             }
             else if (this.FiredBy.Player.InventoryManager.ActiveHotbarSlot.Itemstack != this.HookSlot.Itemstack)
             {
                 //this.HookSlot.Itemstack.Attributes.RemoveAttribute("hookId");
+                this.HookSlot.Itemstack.Attributes.RemoveAttribute("used");
                 Console.WriteLine("death: switched hotbar slots");
                 Die();
             }
@@ -142,7 +143,7 @@ namespace WandasGizmos
             if (FiredBy != null && collTester.IsColliding(World.BlockAccessor, collisionTestBox, pos.XYZ)) //&& !grappled)
             {
                 double L = FiredBy.Pos.DistanceTo(anchorPoint);
-                if (L > MaxLength + 0.2)
+                if (L > MaxLength + 0.01) // + 0.2
                 {
                     double theta = Math.Atan2(FiredBy.Pos.X - anchorPoint.X, FiredBy.Pos.Y - anchorPoint.Y);
                     double phi = Math.Atan2(FiredBy.Pos.Z - anchorPoint.Z, FiredBy.Pos.Y - anchorPoint.Y);
@@ -198,6 +199,13 @@ namespace WandasGizmos
         }
         public override void OnCollided()
         {
+            HookSlot.Itemstack.Collectible.DamageItem(FiredBy.World, FiredBy, new DummySlot(HookSlot.Itemstack));
+            int leftDurability = HookSlot.Itemstack == null ? 1 : HookSlot.Itemstack.Collectible.GetRemainingDurability(HookSlot.Itemstack);
+            if (leftDurability <= 0)
+            {
+                HookSlot.TakeOut(1);
+                HookSlot.MarkDirty();
+            }
             RopeCount = 0;
             foreach (ItemSlot itemSlot in FiredBy.Player.InventoryManager.GetHotbarInventory())
             {
@@ -210,9 +218,12 @@ namespace WandasGizmos
             {
                 Console.WriteLine("death: player too far");
                 //HookSlot.Itemstack.Attributes.RemoveAttribute("hookId");
+                this.HookSlot.Itemstack.Attributes.RemoveAttribute("used");
                 Die();
             }
             EntityPos pos = SidedPos;
+
+            pos.Motion.Set(0, 0, 0);
             anchorPoint = pos.XYZ;
             MaxLength = FiredBy.Pos.DistanceTo(anchorPoint);
             IsColliding(SidedPos, Math.Max(motionBeforeCollide.Length(), pos.Motion.Length()));
