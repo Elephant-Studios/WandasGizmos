@@ -39,7 +39,7 @@ namespace WandasGizmos
         public int RopeCount;
         public double FunConstant = 0.01f;
         public Vec3d anchorPoint;
-        public ItemSlot HookSlot = null!;
+        public ItemSlot HookSlot;
         //public int totalRope;
 
 
@@ -113,7 +113,7 @@ namespace WandasGizmos
         {
             base.OnGameTick(dt);
             if (FiredBy == null) FiredBy = (Api as ICoreClientAPI)?.World.Player.Entity;
-            if (HookSlot == null) HookSlot = FiredBy.Player.InventoryManager.ActiveHotbarSlot;
+            if (HookSlot == null) HookSlot = FiredBy.ActiveHandItemSlot;
             //Console.WriteLine(HookSlot.Itemstack.Id);
             if (HookSlot.Itemstack?.Attributes.TryGetBool("pull") == true)
             {
@@ -132,7 +132,7 @@ namespace WandasGizmos
             else if (this.FiredBy.Player.InventoryManager.ActiveHotbarSlot.Itemstack != this.HookSlot.Itemstack)
             {
                 //this.HookSlot.Itemstack.Attributes.RemoveAttribute("hookId");
-                this.HookSlot.Itemstack.Attributes.RemoveAttribute("used");
+                this.HookSlot.Itemstack?.Attributes.RemoveAttribute("used");
                 Console.WriteLine("death: switched hotbar slots");
                 Die();
             }
@@ -199,12 +199,15 @@ namespace WandasGizmos
         }
         public override void OnCollided()
         {
-            HookSlot.Itemstack.Collectible.DamageItem(FiredBy.World, FiredBy, new DummySlot(HookSlot.Itemstack));
+            HookSlot.Itemstack?.Attributes.RemoveAttribute("used");
+            Console.WriteLine("dmg");
+            HookSlot.Itemstack?.Collectible.DamageItem(FiredBy.World, FiredBy, HookSlot);
             int leftDurability = HookSlot.Itemstack == null ? 1 : HookSlot.Itemstack.Collectible.GetRemainingDurability(HookSlot.Itemstack);
-            if (leftDurability <= 0)
+            if (leftDurability <=    0)
             {
                 HookSlot.TakeOut(1);
                 HookSlot.MarkDirty();
+                Die();
             }
             RopeCount = 0;
             foreach (ItemSlot itemSlot in FiredBy.Player.InventoryManager.GetHotbarInventory())

@@ -15,13 +15,19 @@ namespace WandasGizmos
     {
         public int ItemRopeCount;
         public EntityPlayer FiredBy;
-        public override void OnLoaded(ICoreAPI api)
+
+        public override void OnHeldAttackStart(ItemSlot slot, EntityAgent byEntity, BlockSelection blockSel, EntitySelection entitySel, ref EnumHandHandling handling)
         {
-            base.OnLoaded(api);
+            base.OnHeldAttackStart(slot, byEntity, blockSel, entitySel, ref handling);
+            slot.Itemstack.Attributes.RemoveAttribute("used");
         }
         public override void OnHeldInteractStart(ItemSlot slot, EntityAgent byEntity, BlockSelection blockSel, EntitySelection entitySel, bool firstEvent, ref EnumHandHandling handling)
         {
-            //if (slot.Itemstack.Attributes.HasAttribute("used")) return;
+            if (slot.Itemstack.Attributes.HasAttribute("used"))
+            {
+                Console.WriteLine("used exists");
+                return;
+            }
             //Console.WriteLine("fauxBreak1");
             base.OnHeldInteractStart(slot, byEntity, blockSel, entitySel, firstEvent, ref handling);
             if (handling == EnumHandHandling.PreventDefault) return;
@@ -70,16 +76,12 @@ namespace WandasGizmos
                 //Console.WriteLine("ground");
             }
         }
-        public virtual new void OnHeldRenderOpaque(ItemSlot inSlot, IClientPlayer byPlayer)
-        {
-            base.OnHeldRenderOpaque(inSlot, byPlayer);
-        }
         public override void OnHeldInteractStop(float secondsUsed, ItemSlot slot, EntityAgent byEntity, BlockSelection blockSel, EntitySelection entitySel)
         {
             if (byEntity.Attributes.GetInt("aimingCancel") == 1) return;
-            //if (slot.Itemstack.Attributes.HasAttribute("used")) Console.WriteLine("used exists");
             if (secondsUsed < 1f) return;
             else if (secondsUsed > 2.5f) secondsUsed = 2.5f;
+            slot.Itemstack.Attributes.SetBool("used", true);
             Console.WriteLine("fauxBreak2");
             byEntity.Attributes.SetInt("aiming1", 0);
             base.OnHeldInteractStop(secondsUsed, slot, byEntity, blockSel, entitySel);
@@ -132,7 +134,7 @@ namespace WandasGizmos
             //byEntity.StartAnimation("swing");
             //ItemGrapplingHook.InitializeHook(slot, enhk);
             //ItemStack stack = slot.TakeOut(1);
-            slot.MarkDirty();
+            //slot.MarkDirty();
             //byEntity.StartAnimation("throw");
             Debug.Print("working");
             Console.WriteLine("fauxBreak5");

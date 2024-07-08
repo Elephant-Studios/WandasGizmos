@@ -18,7 +18,7 @@
     "output": {
       "type": "item",
       "code": "wgmt:grapplinghook",
-      "attributes": { "durability": 50 }
+      "attributes": { "durability": 40 }
     }
   },
   {
@@ -40,7 +40,7 @@
     "output": {
       "type": "item",
       "code": "wgmt:grapplinghook",
-      "attributes": { "durability": 2 }
+      "attributes": { "durability": 60 }
     }
   },
   {
@@ -62,7 +62,7 @@
     "output": {
       "type": "item",
       "code": "wgmt:grapplinghook",
-      "attributes": { "durability": 100 }
+      "attributes": { "durability": 80 }
     }
   },
   {
@@ -84,7 +84,7 @@
     "output": {
       "type": "item",
       "code": "wgmt:grapplinghook",
-      "attributes": { "durability": 125 }
+      "attributes": { "durability": 100 }
     }
   },
   {
@@ -106,7 +106,7 @@
     "output": {
       "type": "item",
       "code": "wgmt:grapplinghook",
-      "attributes": { "durability": 30 }
+      "attributes": { "durability": 20 }
     }
   },
   {
@@ -128,7 +128,7 @@
     "output": {
       "type": "item",
       "code": "wgmt:grapplinghook",
-      "attributes": { "durability": 200 }
+      "attributes": { "durability": 150 }
     }
   },
   {
@@ -150,7 +150,7 @@
     "output": {
       "type": "item",
       "code": "wgmt:grapplinghook",
-      "attributes": { "durability": 40 }
+      "attributes": { "durability": 24 }
     }
   },
   {
@@ -172,7 +172,7 @@
     "output": {
       "type": "item",
       "code": "wgmt:grapplinghook",
-      "attributes": { "durability": 350 }
+      "attributes": { "durability": 200 }
     }
   }
 ]
