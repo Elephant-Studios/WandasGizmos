@@ -1,163 +1,155 @@
 {
 	"editor": {
 		"allAngles": false,
-		"entityTextureMode": true
+		"entityTextureMode": false
 	},
 	"textureWidth": 24,
 	"textureHeight": 24,
 	"textureSizes": {
 	},
 	"textures": {
+		"steel": "game:block/metal/plate/steel"
 	},
 	"elements": [
 		{
 			"name": "Shaft",
 			"from": [ 10.95, 0.0, 6.95 ],
 			"to": [ 13.05, 1.0, 9.05 ],
-			"uv": [ 16.0, 0.5 ],
 			"rotationOrigin": [ 12.0, 8.0, 8.0 ],
 			"rotationZ": -90.0,
 			"faces": {
-				"north": { "texture": "#grapplinghook", "uv": [ 16.0, 2.5, 18.0, 3.5 ] },
-				"east": { "texture": "#grapplinghook", "uv": [ 18.0, 2.5, 20.0, 3.5 ] },
-				"south": { "texture": "#grapplinghook", "uv": [ 20.0, 2.5, 22.0, 3.5 ] },
-				"west": { "texture": "#grapplinghook", "uv": [ 22.0, 2.5, 24.0, 3.5 ] },
-				"up": { "texture": "#grapplinghook", "uv": [ 16.0, 0.5, 18.0, 2.5 ] },
-				"down": { "texture": "#grapplinghook", "uv": [ 18.0, 0.5, 20.0, 2.5 ] }
+				"north": { "texture": "#steel", "uv": [ 16.0, 2.5, 18.0, 3.5 ] },
+				"east": { "texture": "#steel", "uv": [ 18.0, 2.5, 20.0, 3.5 ] },
+				"south": { "texture": "#steel", "uv": [ 20.0, 2.5, 22.0, 3.5 ] },
+				"west": { "texture": "#steel", "uv": [ 22.0, 2.5, 24.0, 3.5 ] },
+				"up": { "texture": "#steel", "uv": [ 16.0, 0.5, 18.0, 2.5 ] },
+				"down": { "texture": "#steel", "uv": [ 18.0, 0.5, 20.0, 2.5 ] }
 			}
 		},
 		{
 			"name": "North Claw Shaft",
 			"from": [ 5.0, 8.0, 7.0 ],
 			"to": [ 6.0, 16.0, 9.0 ],
-			"uv": [ 12.0, 5.5 ],
 			"rotationOrigin": [ 5.0, 8.0, 8.0 ],
 			"rotationX": -180.0,
 			"rotationZ": -135.0,
 			"faces": {
-				"north": { "texture": "#grapplinghook", "uv": [ 12.0, 7.5, 13.0, 15.5 ] },
-				"east": { "texture": "#grapplinghook", "uv": [ 13.0, 7.5, 15.0, 15.5 ] },
-				"south": { "texture": "#grapplinghook", "uv": [ 15.0, 7.5, 16.0, 15.5 ] },
-				"west": { "texture": "#grapplinghook", "uv": [ 16.0, 7.5, 18.0, 15.5 ] },
-				"up": { "texture": "#grapplinghook", "uv": [ 12.0, 5.5, 13.0, 7.5 ] },
-				"down": { "texture": "#grapplinghook", "uv": [ 13.0, 5.5, 14.0, 7.5 ] }
+				"north": { "texture": "#steel", "uv": [ 12.0, 7.5, 13.0, 15.5 ] },
+				"east": { "texture": "#steel", "uv": [ 13.0, 7.5, 15.0, 15.5 ] },
+				"south": { "texture": "#steel", "uv": [ 15.0, 7.5, 16.0, 15.5 ] },
+				"west": { "texture": "#steel", "uv": [ 16.0, 7.5, 18.0, 15.5 ] },
+				"up": { "texture": "#steel", "uv": [ 12.0, 5.5, 13.0, 7.5 ] },
+				"down": { "texture": "#steel", "uv": [ 13.0, 5.5, 14.0, 7.5 ] }
 			}
 		},
 		{
 			"name": "West Claw Shaft",
 			"from": [ 4.0, 8.0, 8.0 ],
 			"to": [ 6.0, 16.0, 9.0 ],
-			"uv": [ 0.0, 6.5 ],
 			"rotationOrigin": [ 5.0, 8.0, 8.0 ],
 			"rotationY": -45.0,
 			"rotationZ": -90.0,
 			"faces": {
-				"north": { "texture": "#grapplinghook", "uv": [ 0.0, 7.5, 2.0, 15.5 ] },
-				"east": { "texture": "#grapplinghook", "uv": [ 2.0, 7.5, 3.0, 15.5 ] },
-				"south": { "texture": "#grapplinghook", "uv": [ 3.0, 7.5, 5.0, 15.5 ] },
-				"west": { "texture": "#grapplinghook", "uv": [ 5.0, 7.5, 6.0, 15.5 ] },
-				"up": { "texture": "#grapplinghook", "uv": [ 0.0, 6.5, 2.0, 7.5 ] },
-				"down": { "texture": "#grapplinghook", "uv": [ 2.0, 6.5, 4.0, 7.5 ] }
+				"north": { "texture": "#steel", "uv": [ 0.0, 7.5, 2.0, 15.5 ] },
+				"east": { "texture": "#steel", "uv": [ 2.0, 7.5, 3.0, 15.5 ] },
+				"south": { "texture": "#steel", "uv": [ 3.0, 7.5, 5.0, 15.5 ] },
+				"west": { "texture": "#steel", "uv": [ 5.0, 7.5, 6.0, 15.5 ] },
+				"up": { "texture": "#steel", "uv": [ 0.0, 6.5, 2.0, 7.5 ] },
+				"down": { "texture": "#steel", "uv": [ 2.0, 6.5, 4.0, 7.5 ] }
 			}
 		},
 		{
 			"name": "South Claw Shaft",
 			"from": [ 2.5, 7.0, 7.0 ],
 			"to": [ 3.5, 15.0, 9.0 ],
-			"uv": [ 18.0, 5.5 ],
 			"rotationOrigin": [ 4.0, 7.0, 8.0 ],
 			"rotationZ": -135.0,
 			"faces": {
-				"north": { "texture": "#grapplinghook", "uv": [ 18.0, 7.5, 19.0, 15.5 ] },
-				"east": { "texture": "#grapplinghook", "uv": [ 19.0, 7.5, 21.0, 15.5 ] },
-				"south": { "texture": "#grapplinghook", "uv": [ 21.0, 7.5, 22.0, 15.5 ] },
-				"west": { "texture": "#grapplinghook", "uv": [ 22.0, 7.5, 24.0, 15.5 ] },
-				"up": { "texture": "#grapplinghook", "uv": [ 18.0, 5.5, 19.0, 7.5 ] },
-				"down": { "texture": "#grapplinghook", "uv": [ 19.0, 5.5, 20.0, 7.5 ] }
+				"north": { "texture": "#steel", "uv": [ 18.0, 7.5, 19.0, 15.5 ] },
+				"east": { "texture": "#steel", "uv": [ 19.0, 7.5, 21.0, 15.5 ] },
+				"south": { "texture": "#steel", "uv": [ 21.0, 7.5, 22.0, 15.5 ] },
+				"west": { "texture": "#steel", "uv": [ 22.0, 7.5, 24.0, 15.5 ] },
+				"up": { "texture": "#steel", "uv": [ 18.0, 5.5, 19.0, 7.5 ] },
+				"down": { "texture": "#steel", "uv": [ 19.0, 5.5, 20.0, 7.5 ] }
 			}
 		},
 		{
 			"name": "North Claw Tip",
 			"from": [ 15.98, -1.38, 7.01 ],
 			"to": [ 16.63, 0.62, 8.99 ],
-			"uv": [ 8.0, 0.0 ],
 			"rotationOrigin": [ 3.0, 2.5, 14.5 ],
 			"rotationZ": 67.5,
 			"faces": {
-				"north": { "texture": "#grapplinghook", "uv": [ 8.0, 1.5, 8.5, 3.5 ] },
-				"east": { "texture": "#grapplinghook", "uv": [ 8.5, 1.5, 10.0, 3.5 ] },
-				"south": { "texture": "#grapplinghook", "uv": [ 10.0, 1.5, 10.5, 3.5 ] },
-				"west": { "texture": "#grapplinghook", "uv": [ 10.5, 1.5, 12.0, 3.5 ] },
-				"up": { "texture": "#grapplinghook", "uv": [ 8.0, 0.0, 8.5, 1.5 ] },
-				"down": { "texture": "#grapplinghook", "uv": [ 8.5, 0.0, 9.0, 1.5 ] }
+				"north": { "texture": "#steel", "uv": [ 8.0, 1.5, 8.5, 3.5 ] },
+				"east": { "texture": "#steel", "uv": [ 8.5, 1.5, 10.0, 3.5 ] },
+				"south": { "texture": "#steel", "uv": [ 10.0, 1.5, 10.5, 3.5 ] },
+				"west": { "texture": "#steel", "uv": [ 10.5, 1.5, 12.0, 3.5 ] },
+				"up": { "texture": "#steel", "uv": [ 8.0, 0.0, 8.5, 1.5 ] },
+				"down": { "texture": "#steel", "uv": [ 8.5, 0.0, 9.0, 1.5 ] }
 			}
 		},
 		{
 			"name": "West Claw Tip",
 			"from": [ 15.98, -2.38, -4.99 ],
 			"to": [ 16.63, -0.38, -3.01 ],
-			"uv": [ 4.0, 0.0 ],
 			"rotationOrigin": [ 3.0, 1.5, 2.5 ],
 			"rotationX": 90.0,
 			"rotationZ": 67.5,
 			"faces": {
-				"north": { "texture": "#grapplinghook", "uv": [ 4.0, 1.5, 4.5, 3.5 ] },
-				"east": { "texture": "#grapplinghook", "uv": [ 4.5, 1.5, 6.0, 3.5 ] },
-				"south": { "texture": "#grapplinghook", "uv": [ 6.0, 1.5, 6.5, 3.5 ] },
-				"west": { "texture": "#grapplinghook", "uv": [ 6.5, 1.5, 8.0, 3.5 ] },
-				"up": { "texture": "#grapplinghook", "uv": [ 4.0, 0.0, 4.5, 1.5 ] },
-				"down": { "texture": "#grapplinghook", "uv": [ 4.5, 0.0, 5.0, 1.5 ] }
+				"north": { "texture": "#steel", "uv": [ 4.0, 1.5, 4.5, 3.5 ] },
+				"east": { "texture": "#steel", "uv": [ 4.5, 1.5, 6.0, 3.5 ] },
+				"south": { "texture": "#steel", "uv": [ 6.0, 1.5, 6.5, 3.5 ] },
+				"west": { "texture": "#steel", "uv": [ 6.5, 1.5, 8.0, 3.5 ] },
+				"up": { "texture": "#steel", "uv": [ 4.0, 0.0, 4.5, 1.5 ] },
+				"down": { "texture": "#steel", "uv": [ 4.5, 0.0, 5.0, 1.5 ] }
 			}
 		},
 		{
 			"name": "East Claw Tip",
 			"from": [ 3.34, 10.74, -12.99 ],
 			"to": [ 3.99, 12.74, -11.01 ],
-			"uv": [ 12.0, 0.0 ],
 			"rotationOrigin": [ 11.0, 14.5, -5.5 ],
 			"rotationX": -90.0,
 			"rotationZ": 67.5,
 			"faces": {
-				"north": { "texture": "#grapplinghook", "uv": [ 12.0, 1.5, 12.5, 3.5 ] },
-				"east": { "texture": "#grapplinghook", "uv": [ 12.5, 1.5, 14.0, 3.5 ] },
-				"south": { "texture": "#grapplinghook", "uv": [ 14.0, 1.5, 14.5, 3.5 ] },
-				"west": { "texture": "#grapplinghook", "uv": [ 14.5, 1.5, 16.0, 3.5 ] },
-				"up": { "texture": "#grapplinghook", "uv": [ 12.0, 0.0, 12.5, 1.5 ] },
-				"down": { "texture": "#grapplinghook", "uv": [ 12.5, 0.0, 13.0, 1.5 ] }
+				"north": { "texture": "#steel", "uv": [ 12.0, 1.5, 12.5, 3.5 ] },
+				"east": { "texture": "#steel", "uv": [ 12.5, 1.5, 14.0, 3.5 ] },
+				"south": { "texture": "#steel", "uv": [ 14.0, 1.5, 14.5, 3.5 ] },
+				"west": { "texture": "#steel", "uv": [ 14.5, 1.5, 16.0, 3.5 ] },
+				"up": { "texture": "#steel", "uv": [ 12.0, 0.0, 12.5, 1.5 ] },
+				"down": { "texture": "#steel", "uv": [ 12.5, 0.0, 13.0, 1.5 ] }
 			}
 		},
 		{
 			"name": "East Claw Shaft",
 			"from": [ 4.0, 8.0, 7.0 ],
 			"to": [ 6.0, 16.0, 8.0 ],
-			"uv": [ 6.0, 6.5 ],
 			"rotationOrigin": [ 5.0, 8.0, 8.0 ],
 			"rotationY": 45.0,
 			"rotationZ": -90.0,
 			"faces": {
-				"north": { "texture": "#grapplinghook", "uv": [ 6.0, 7.5, 8.0, 15.5 ] },
-				"east": { "texture": "#grapplinghook", "uv": [ 8.0, 7.5, 9.0, 15.5 ] },
-				"south": { "texture": "#grapplinghook", "uv": [ 9.0, 7.5, 11.0, 15.5 ] },
-				"west": { "texture": "#grapplinghook", "uv": [ 11.0, 7.5, 12.0, 15.5 ] },
-				"up": { "texture": "#grapplinghook", "uv": [ 6.0, 6.5, 8.0, 7.5 ] },
-				"down": { "texture": "#grapplinghook", "uv": [ 8.0, 6.5, 10.0, 7.5 ] }
+				"north": { "texture": "#steel", "uv": [ 6.0, 7.5, 8.0, 15.5 ] },
+				"east": { "texture": "#steel", "uv": [ 8.0, 7.5, 9.0, 15.5 ] },
+				"south": { "texture": "#steel", "uv": [ 9.0, 7.5, 11.0, 15.5 ] },
+				"west": { "texture": "#steel", "uv": [ 11.0, 7.5, 12.0, 15.5 ] },
+				"up": { "texture": "#steel", "uv": [ 6.0, 6.5, 8.0, 7.5 ] },
+				"down": { "texture": "#steel", "uv": [ 8.0, 6.5, 10.0, 7.5 ] }
 			}
 		},
 		{
 			"name": "North Claw Tip2",
 			"from": [ 15.93, 9.55, -5.99 ],
 			"to": [ 16.58, 11.55, -4.01 ],
-			"uv": [ 0.0, 0.0 ],
 			"rotationOrigin": [ 3.0, 13.5, 1.5 ],
 			"rotationX": 180.0,
 			"rotationZ": 67.5,
 			"faces": {
-				"north": { "texture": "#grapplinghook", "uv": [ 0.0, 1.5, 0.5, 3.5 ] },
-				"east": { "texture": "#grapplinghook", "uv": [ 0.5, 1.5, 2.0, 3.5 ] },
-				"south": { "texture": "#grapplinghook", "uv": [ 2.0, 1.5, 2.5, 3.5 ] },
-				"west": { "texture": "#grapplinghook", "uv": [ 2.5, 1.5, 4.0, 3.5 ] },
-				"up": { "texture": "#grapplinghook", "uv": [ 0.0, 0.0, 0.5, 1.5 ] },
-				"down": { "texture": "#grapplinghook", "uv": [ 0.5, 0.0, 1.0, 1.5 ] }
+				"north": { "texture": "#steel", "uv": [ 0.0, 1.5, 0.5, 3.5 ] },
+				"east": { "texture": "#steel", "uv": [ 0.5, 1.5, 2.0, 3.5 ] },
+				"south": { "texture": "#steel", "uv": [ 2.0, 1.5, 2.5, 3.5 ] },
+				"west": { "texture": "#steel", "uv": [ 2.5, 1.5, 4.0, 3.5 ] },
+				"up": { "texture": "#steel", "uv": [ 0.0, 0.0, 0.5, 1.5 ] },
+				"down": { "texture": "#steel", "uv": [ 0.5, 0.0, 1.0, 1.5 ] }
 			}
 		}
 	],

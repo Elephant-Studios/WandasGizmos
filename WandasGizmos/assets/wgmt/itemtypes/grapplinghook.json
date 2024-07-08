@@ -23,7 +23,6 @@
       }
     ]
   },
-  "shapeinventory": { "base": "block/{material}/bed-inventory" },
   "creativeinventory": {
     "general": [
       "*"
@@ -31,5 +30,22 @@
     "items": [
       "*"
     ]
-  }
+  },
+  "guiTransform": {
+		"translation": { "x": 0, "y": 0, "z": 0 },
+		"rotation": { "x": 28, "y": -7, "z": -32 },
+		"origin": { "x": 0.82, "y": 0, "z": 0.6 },
+		"scale": 2.08
+	},
+  "tpHandTransform": {
+		"translation": { "x": 0.5, "y": -0, "z": 0.5 },
+		"rotation": { "x": 0, "y": 0, "z": 0 },
+		"origin": { "x": 0, "y": 0, "z": 0 },
+		"scale": 0.6
+	},
+  "groundTransform": {
+		"translation": { "x": -0.1, "y": -0.2, "z": 0.1 },
+		"rotation": { "x": 134, "y": 0, "z": 16 },
+		"scale": 4
+	}
 }
