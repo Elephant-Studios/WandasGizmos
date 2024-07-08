@@ -84,7 +84,8 @@ namespace WandasGizmos.src
                 float[] numArray = Mat4f.Mul(matrixf.Values, ((EntityRenderer)this).capi.Render.CurrentModelviewMatrix, matrixf.Values);
                 Mat4f.Mul(numArray, ((EntityRenderer)this).capi.Render.CurrentProjectionMatrix, numArray);
                 ropeLineShadow.UniformMatrix("mvpMatrix", numArray);
-                this.offset.Set((float)(((EntityRenderer)this).entity.Pos.X - entity.CameraPos.X - vec3d.X), (float)(((EntityRenderer)this).entity.Pos.Y + 0.10000000149011612 - entity.CameraPos.Y - vec3d.Y), (float)(((EntityRenderer)this).entity.Pos.Z - entity.CameraPos.Z - vec3d.Z));
+                this.offset.Set((float)(
+                    ((EntityRenderer)this).entity.Pos.X - entity.CameraPos.X - vec3d.X), (float)(((EntityRenderer)this).entity.Pos.Y + 0.1 - entity.CameraPos.Y - vec3d.Y), (float)(((EntityRenderer)this).entity.Pos.Z - entity.CameraPos.Z - vec3d.Z));
                 ropeLineShadow.Uniform("offset", this.offset);
                 ropeLineShadow.Uniform("droop", 1f);
                 ((EntityRenderer)this).capi.Render.GlDisableCullFace();
@@ -102,7 +103,7 @@ namespace WandasGizmos.src
                 ropeLine.UniformMatrix("viewMatrix", ((EntityRenderer)this).capi.Render.CameraMatrixOriginf);
                 ropeLine.UniformMatrix("projectionMatrix", ((EntityRenderer)this).capi.Render.CurrentProjectionMatrix);
                 ropeLine.BindTexture2D("tex2d", this.lineTexture, 0);
-                this.offset.Set((float)(((EntityRenderer)this).entity.Pos.X - entity.CameraPos.X - vec3d.X), (float)(((EntityRenderer)this).entity.Pos.Y + 0.45 - entity.CameraPos.Y - vec3d.Y), (float)(((EntityRenderer)this).entity.Pos.Z - entity.CameraPos.Z - vec3d.Z)); //z == 0.25
+                this.offset.Set((float)(((EntityRenderer)this).entity.Pos.X - entity.CameraPos.X - vec3d.X), (float)(((EntityRenderer)this).entity.Pos.Y - entity.CameraPos.Y - vec3d.Y), (float)(((EntityRenderer)this).entity.Pos.Z - entity.CameraPos.Z - vec3d.Z)); //z == 0.25
                 ropeLine.Uniform("offset", offset);
                 ropeLine.Uniform("color", new Vec3f(0.8f, 0.8f, 0.8f));
                 ropeLine.Uniform("droop", 1f);

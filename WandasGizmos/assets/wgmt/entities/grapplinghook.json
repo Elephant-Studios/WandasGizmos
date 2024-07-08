@@ -1,17 +1,19 @@
 {
 	"code": "grapplinghook",
 	"class": "EntityHook",
+	"variantgroups": [
+    {"code": "type", "states": ["simple"]},
+    {"code": "material", "states": ["copper", "tinbronze", "bismuthbronze", "blackbronze", "iron", "meteoriciron", "steel"]}
+  ],
 	"hitboxSize": {
 		"x": 0.0825,
 		"y": 0.0825
 	},
 	"client": {
 		"renderer": "RopeRenderer",
-		"texture": {
-			"base": "item/grapplinghook"
-		},
+		"textures": {"metal": {"base": "game:block/metal/plate/{material}"}},
 		"shape": {
-			"base":  "item/grapplinghook"
+			"base": "item/hook"
 		},
 		"behaviors": [
 			{

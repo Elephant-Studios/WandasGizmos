@@ -112,7 +112,11 @@ namespace WandasGizmos
         public override void OnGameTick(float dt)
         {
             base.OnGameTick(dt);
-            if (FiredBy == null) FiredBy = (Api as ICoreClientAPI)?.World.Player.Entity;
+            if (FiredBy == null)
+            {
+                FiredBy = (Api as ICoreClientAPI)?.World.Player.Entity;
+                if (FiredBy == null) return;
+            }
             if (HookSlot == null) HookSlot = FiredBy.ActiveHandItemSlot;
             //Console.WriteLine(HookSlot.Itemstack.Id);
             if (HookSlot.Itemstack?.Attributes.TryGetBool("pull") == true)
