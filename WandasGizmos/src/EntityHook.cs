@@ -111,13 +111,14 @@ namespace WandasGizmos
         //bool grappled = false;
         public override void OnGameTick(float dt)
         {
+            Console.WriteLine(MaxLength);
             base.OnGameTick(dt);
-            if (FiredBy == null)
+            if (FiredBy is null)
             {
-                FiredBy = (Api as ICoreClientAPI)?.World.Player.Entity;
-                if (FiredBy == null) return;
+                FiredBy = (EntityPlayer) api.World.GetEntityById(FiredById);
+                if (FiredBy is null) return;
             }
-            if (HookSlot == null) HookSlot = FiredBy.ActiveHandItemSlot;
+            if (HookSlot == null) this.HookSlot = FiredBy.ActiveHandItemSlot;
             //Console.WriteLine(HookSlot.Itemstack.Id);
             if (HookSlot.Itemstack?.Attributes.TryGetBool("pull") == true)
             {
@@ -137,6 +138,9 @@ namespace WandasGizmos
             {
                 //this.HookSlot.Itemstack.Attributes.RemoveAttribute("hookId");
                 this.HookSlot.Itemstack?.Attributes.RemoveAttribute("used");
+                this.HookSlot.Itemstack.Attributes.SetInt("renderVariant", 2); //empty
+                this.HookSlot.MarkDirty();
+                Console.WriteLine("changed it");
                 Console.WriteLine("death: switched hotbar slots");
                 Die();
             }
@@ -203,14 +207,14 @@ namespace WandasGizmos
         }
         public override void OnCollided()
         {
-            HookSlot.Itemstack?.Attributes.RemoveAttribute("used");
+            this.HookSlot.Itemstack?.Attributes.RemoveAttribute("used");
             Console.WriteLine("dmg");
-            HookSlot.Itemstack?.Collectible.DamageItem(FiredBy.World, FiredBy, HookSlot);
-            int leftDurability = HookSlot.Itemstack == null ? 1 : HookSlot.Itemstack.Collectible.GetRemainingDurability(HookSlot.Itemstack);
+            this.HookSlot.Itemstack?.Collectible.DamageItem(FiredBy.World, FiredBy, this.HookSlot);
+            int leftDurability = this.HookSlot.Itemstack == null ? 1 : this.HookSlot.Itemstack.Collectible.GetRemainingDurability(this.HookSlot.Itemstack);
             if (leftDurability <=    0)
             {
-                HookSlot.TakeOut(1);
-                HookSlot.MarkDirty();
+                this.HookSlot.TakeOut(1);
+                this.HookSlot.MarkDirty();
                 Die();
             }
             RopeCount = 0;
@@ -226,6 +230,9 @@ namespace WandasGizmos
                 Console.WriteLine("death: player too far");
                 //HookSlot.Itemstack.Attributes.RemoveAttribute("hookId");
                 this.HookSlot.Itemstack.Attributes.RemoveAttribute("used");
+                this.HookSlot.Itemstack.Attributes.SetInt("renderVariant", 2); //empty
+                this.HookSlot.MarkDirty();
+                Console.WriteLine("changed it");
                 Die();
             }
             EntityPos pos = SidedPos;

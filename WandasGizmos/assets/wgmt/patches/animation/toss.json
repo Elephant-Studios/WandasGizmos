@@ -1,0 +1,128 @@
+[
+  {
+    "file": "game:entities/humanoid/player",
+    "op": "add",
+    "path": "/client/animations/-",
+    "value": {
+      "code": "swing",
+      "animation": "swing",
+      "animationSpeed": 1,
+      "blendMode": "Average",
+      "weight": 10000000
+    }
+  },
+  {
+    "file": "game:shapes/entity/humanoid/seraph-faceless",
+    "op": "add",
+    "path": "/animations/-",
+    "value": {
+      "name": "toss",
+      "code": "toss",
+      "quantityframes": 30,
+      "onActivityStopped": "PlayTillEnd",
+      "onAnimationEnd": "Repeat",
+      "keyframes": [
+        {
+          "frame": 1,
+          "elements": {
+            "UpperArmR": {
+              "rotationX": 3,
+              "rotationY": -17,
+              "rotationZ": -22
+            },
+            "LowerArmR": {
+              "rotationX": 0,
+              "rotationY": 0,
+              "rotationZ": -22
+            }
+          }
+        },
+        {
+          "frame": 3,
+          "elements": {
+            "LowerArmR": {
+              "rotationX": 8,
+              "rotationY": 0,
+              "rotationZ": -19
+            }
+          }
+        },
+        {
+          "frame": 7,
+          "elements": {
+            "UpperArmR": {
+              "rotationX": 3,
+              "rotationY": -17,
+              "rotationZ": -22
+            },
+            "LowerArmR": {
+              "rotationX": 14,
+              "rotationY": 0,
+              "rotationZ": -39
+            }
+          }
+        },
+        {
+          "frame": 11,
+          "elements": {
+            "LowerArmR": {
+              "rotationX": 0,
+              "rotationY": -17,
+              "rotationZ": -80
+            }
+          }
+        },
+        {
+          "frame": 15,
+          "elements": {
+            "LowerArmR": {
+              "rotationX": 0,
+              "rotationY": -8,
+              "rotationZ": -127
+            }
+          }
+        },
+        {
+          "frame": 19,
+          "elements": {
+            "LowerArmR": {
+              "rotationX": 14,
+              "rotationY": 0,
+              "rotationZ": -125
+            }
+          }
+        },
+        {
+          "frame": 23,
+          "elements": {
+            "LowerArmR": {
+              "rotationX": 0,
+              "rotationY": 25,
+              "rotationZ": -105
+            }
+          }
+        },
+        {
+          "frame": 27,
+          "elements": {
+            "LowerArmR": {
+              "rotationX": 0,
+              "rotationY": 30,
+              "rotationZ": -64
+            }
+          }
+        },
+        {
+          "frame": 30,
+          "elements": {
+            "LowerArmR": {
+              "rotationX": 0,
+              "rotationY": 0,
+              "rotationZ": 0
+            }
+          }
+        }
+      ]
+    }
+  }
+]

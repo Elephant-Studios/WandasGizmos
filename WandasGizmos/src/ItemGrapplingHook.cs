@@ -53,6 +53,7 @@ namespace WandasGizmos
                 api.Logger.Chat("requires rope to be used");
                 return;
             }
+            byEntity.StartAnimation("toss");
             byEntity.Attributes.SetInt("aiming1", 1);
             byEntity.Attributes.SetInt("aimingCancel", 0);
             //Console.WriteLine("fauxBreak5");
@@ -78,6 +79,7 @@ namespace WandasGizmos
         }
         public override void OnHeldInteractStop(float secondsUsed, ItemSlot slot, EntityAgent byEntity, BlockSelection blockSel, EntitySelection entitySel)
         {
+            byEntity.StopAnimation("toss");
             if (byEntity.Attributes.GetInt("aimingCancel") == 1) return;
             if (secondsUsed < 1f) return;
             else if (secondsUsed > 2.5f) secondsUsed = 2.5f;
@@ -134,7 +136,6 @@ namespace WandasGizmos
             
             
             //byEntity.World.SpawnEntity(enrp);
-            byEntity.StartAnimation("throw");
             //byEntity.StartAnimation("swing");
             //ItemGrapplingHook.InitializeHook(slot, enhk);
             //ItemStack stack = slot.TakeOut(1);

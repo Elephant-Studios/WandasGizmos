@@ -5,6 +5,7 @@ using Vintagestory.API.Common;
 using Vintagestory.API.Config;
 using Vintagestory.API.MathTools;
 using Vintagestory.API.Server;
+using Vintagestory.API.Util;
 using Vintagestory.Client.NoObf;
 using Vintagestory.GameContent;
 using WandasGizmos.src;
@@ -43,14 +44,14 @@ namespace WandasGizmos
             {
                 if (keyEvent.KeyCode == (int)GlKeys.LShift)
                 {
-                    if (api.World.Player.InventoryManager.ActiveHotbarSlot.Itemstack?.Id == 3336)
+                    if (WildcardUtil.Match("*grapplinghook-*", api.World.Player.InventoryManager.ActiveHotbarSlot.Itemstack?.Item?.Code.ToString() ?? ""))
                     {
                         api.World.Player.InventoryManager.ActiveHotbarSlot.Itemstack.Attributes.SetBool("pull", true);
                     }
                 }
                 else if (keyEvent.KeyCode == (int)GlKeys.Tab)
                 {
-                    if (api.World.Player.InventoryManager.ActiveHotbarSlot.Itemstack?.Id == 3336)
+                    if (WildcardUtil.Match("*grapplinghook-*", api.World.Player.InventoryManager.ActiveHotbarSlot.Itemstack?.Item?.Code.ToString() ?? ""))
                     {
                         api.World.Player.InventoryManager.ActiveHotbarSlot.Itemstack.Attributes.SetBool("push", true);
                     }
@@ -60,14 +61,14 @@ namespace WandasGizmos
             {                       
                 if (keyEvent.KeyCode == (int)GlKeys.LShift)
                 {
-                    if (api.World.Player.InventoryManager.ActiveHotbarSlot.Itemstack?.Id == 3336)
+                    if (WildcardUtil.Match("*grapplinghook-*", api.World.Player.InventoryManager.ActiveHotbarSlot.Itemstack?.Item?.Code.ToString() ?? ""))
                     {
                         api.World.Player.InventoryManager.ActiveHotbarSlot.Itemstack.Attributes.SetBool("pull", false);
                     }
                 }
                 else if (keyEvent.KeyCode == (int)GlKeys.Tab)
                 {
-                    if (api.World.Player.InventoryManager.ActiveHotbarSlot.Itemstack?.Id == 3336)
+                    if (WildcardUtil.Match("*grapplinghook-*", api.World.Player.InventoryManager.ActiveHotbarSlot.Itemstack?.Item?.Code.ToString() ?? ""))
                     {
                         api.World.Player.InventoryManager.ActiveHotbarSlot.Itemstack.Attributes.SetBool("push", false);
                     }

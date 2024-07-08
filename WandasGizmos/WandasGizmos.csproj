@@ -75,6 +75,7 @@
   <None Remove="assets\wgmt\entities\grapplinghook.json" />
   <None Remove="assets\wgmt\entities\rope.json" />
   <None Remove="assets\wgmt\patches\animation\rappell.json" />
+  <None Remove="assets\wgmt\patches\animation\toss.json" />
   <None Remove="assets\wgmt\recipes\grid\grapplinghook.json" />
   <None Remove="assets\wgmt\shaders\rope.frag" />
   <None Remove="assets\wgmt\shaders\rope.vert" />
