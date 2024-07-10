@@ -11,11 +11,6 @@ namespace WandasGizmos
 {
     public class EntityHook : Entity
     {
-        ICoreClientAPI api;
-
-        MeshRef ropeMesh;
-        int ropeMeshTextureId;
-        float[] modelMat = Mat4f.Create();
 
         bool beforeCollided;
         bool stuck;
@@ -55,10 +50,6 @@ namespace WandasGizmos
         {
             get { return false; }
         }
-        /*public override void Dispose()
-        {
-            ropeMesh?.Dispose();
-        }*/
 
     /*public void SetHook(ItemSlot slot, ICoreAPI api)
     {
@@ -111,11 +102,11 @@ namespace WandasGizmos
         //bool grappled = false;
         public override void OnGameTick(float dt)
         {
-            Console.WriteLine(MaxLength);
+            //Console.WriteLine(MaxLength);
             base.OnGameTick(dt);
             if (FiredBy is null)
             {
-                FiredBy = (EntityPlayer) api.World.GetEntityById(FiredById);
+                FiredBy = (EntityPlayer) Api.World.GetEntityById(FiredById);
                 if (FiredBy is null) return;
             }
             if (HookSlot == null) this.HookSlot = FiredBy.ActiveHandItemSlot;
@@ -127,8 +118,8 @@ namespace WandasGizmos
             }
             else if (HookSlot.Itemstack?.Attributes.TryGetBool("push") == true)
             {
-                Console.WriteLine(RopeCount + " r");
-                Console.WriteLine(MaxLength + " m");
+                //Console.WriteLine(RopeCount + " r");
+                //Console.WriteLine(MaxLength + " m");
                 if (MaxLength + -0.1 < RopeCount)
                 {
                     MaxLength += 0.3;

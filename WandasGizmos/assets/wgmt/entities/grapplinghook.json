@@ -6,8 +6,8 @@
     {"code": "material", "states": ["copper", "tinbronze", "bismuthbronze", "blackbronze", "iron", "meteoriciron", "steel"]}
   ],
 	"hitboxSize": {
-		"x": 0.0825,
-		"y": 0.0825
+		"x": 0.165,
+		"y": 0.33
 	},
 	"client": {
 		"renderer": "RopeRenderer",

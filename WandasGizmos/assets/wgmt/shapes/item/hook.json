@@ -1,6 +1,5 @@
 {
 	"editor": {
-		"collapsedPaths": "Root/Hook/hook_17,Root/Rope/rope_2,Root/Rope/rope_1,Root/Hook/hook_0,Root/Hook/hook_9,Root/Hook/hook_5,Root/Hook/hook_13",
 		"allAngles": false,
 		"entityTextureMode": false
 	},
@@ -9,7 +8,6 @@
 	"textureSizes": {
 	},
 	"textures": {
-		"metal": "game:block/metal/plate/steel"
 	},
 	"elements": [
 		{
@@ -17,6 +15,7 @@
 			"from": [ 10.7, -0.6, 8.0 ],
 			"to": [ 10.7, -0.6, 8.0 ],
 			"rotationOrigin": [ 10.7, -0.6, 8.0 ],
+			"rotationX": -45.0,
 			"faces": {
 				"north": { "texture": "#metal", "uv": [ 0.0, 0.0, 0.5, 0.5 ] },
 				"east": { "texture": "#metal", "uv": [ 0.0, 0.0, 0.5, 0.5 ] },

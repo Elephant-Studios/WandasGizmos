@@ -16,7 +16,6 @@ namespace WandasGizmos
     {
 
         ICoreAPI _api;
-        MeshRef ropeMesh;
         public ICoreClientAPI capi;
         //float[] modelMat = Mat4f.Create();
 
