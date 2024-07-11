@@ -104,6 +104,8 @@ namespace WandasGizmos
         {
             //Console.WriteLine(MaxLength);
             base.OnGameTick(dt);
+            FiredBy.PositionBeforeFalling = FiredBy.Pos.XYZ;
+            Console.WriteLine(FiredBy.PositionBeforeFalling);
             if (FiredBy is null)
             {
                 FiredBy = (EntityPlayer) Api.World.GetEntityById(FiredById);
@@ -153,6 +155,7 @@ namespace WandasGizmos
                 double L = FiredBy.Pos.DistanceTo(anchorPoint);
                 if (L > MaxLength + 0.01) // + 0.2
                 {
+                    
                     double theta = Math.Atan2(FiredBy.Pos.X - anchorPoint.X, FiredBy.Pos.Y - anchorPoint.Y);
                     double phi = Math.Atan2(FiredBy.Pos.Z - anchorPoint.Z, FiredBy.Pos.Y - anchorPoint.Y);
                     Vec3d radialDistance = FiredBy.Pos.XYZ.SubCopy(anchorPoint);
