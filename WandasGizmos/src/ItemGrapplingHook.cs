@@ -28,6 +28,7 @@ namespace WandasGizmos
                 Console.WriteLine("used exists");
                 return;
             }
+            byEntity.Properties.FallDamage = false;
             //Console.WriteLine("fauxBreak1");
             base.OnHeldInteractStart(slot, byEntity, blockSel, entitySel, firstEvent, ref handling);
             if (handling == EnumHandHandling.PreventDefault) return;
@@ -77,9 +78,19 @@ namespace WandasGizmos
                 //Console.WriteLine("ground");
             }
         }
+
+        public override void OnHeldDropped(IWorldAccessor world, IPlayer byPlayer, ItemSlot slot, int quantity, ref EnumHandling handling)
+        {
+            base.OnHeldDropped(world, byPlayer, slot, quantity, ref handling);
+            slot.Itemstack.Attributes.SetInt("renderVariant", 1); //normal
+            slot.Itemstack.Attributes.RemoveAttribute("shapeinventory");
+            byPlayer.Entity.Properties.FallDamage = false;
+            Console.WriteLine("talk");
+        }
         public override void OnHeldInteractStop(float secondsUsed, ItemSlot slot, EntityAgent byEntity, BlockSelection blockSel, EntitySelection entitySel)
         {
             byEntity.StopAnimation("toss");
+            byEntity.Properties.FallDamage = true;
             if (byEntity.Attributes.GetInt("aimingCancel") == 1) return;
             if (secondsUsed < 1f) return;
             else if (secondsUsed > 2.5f) secondsUsed = 2.5f;
@@ -154,7 +165,7 @@ namespace WandasGizmos
         {
             byEntity.Attributes.SetInt("aiming1", 0);
             //byEntity.StopAnimation("aim");
-
+            byEntity.Properties.FallDamage = true;
             if (cancelReason != EnumItemUseCancelReason.ReleasedMouse)
             {
                 byEntity.Attributes.SetInt("aimingCancel", 1);

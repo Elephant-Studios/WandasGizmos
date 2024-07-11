@@ -112,7 +112,7 @@ namespace WandasGizmos
             if (!FiredBy.Alive)
             {
                 this.HookSlot.Itemstack?.Attributes.RemoveAttribute("used");
-                this.HookSlot.Itemstack.Attributes.SetInt("renderVariant", 2); //empty
+                this.HookSlot.Itemstack.Attributes.SetInt("renderVariant", 1); //empty
                 this.HookSlot.MarkDirty();
                 Die();
                 return;
@@ -137,7 +137,7 @@ namespace WandasGizmos
             {
                 //this.HookSlot.Itemstack.Attributes.RemoveAttribute("hookId");
                 this.HookSlot.Itemstack?.Attributes.RemoveAttribute("used");
-                this.HookSlot.Itemstack.Attributes.SetInt("renderVariant", 2); //empty
+                this.HookSlot.Itemstack.Attributes.SetInt("renderVariant", 1); //empty
                 this.HookSlot.MarkDirty();
                 Console.WriteLine("changed it");
                 Console.WriteLine("death: switched hotbar slots");
@@ -153,7 +153,6 @@ namespace WandasGizmos
                 double L = FiredBy.Pos.DistanceTo(anchorPoint);
                 if (L > MaxLength + 0.01) // + 0.2
                 {
-                    FiredBy.PositionBeforeFalling = FiredBy.Pos.XYZ;
                     double theta = Math.Atan2(FiredBy.Pos.X - anchorPoint.X, FiredBy.Pos.Y - anchorPoint.Y);
                     double phi = Math.Atan2(FiredBy.Pos.Z - anchorPoint.Z, FiredBy.Pos.Y - anchorPoint.Y);
                     Vec3d radialDistance = FiredBy.Pos.XYZ.SubCopy(anchorPoint);
@@ -231,7 +230,7 @@ namespace WandasGizmos
                 Console.WriteLine("death: player too far");
                 //HookSlot.Itemstack.Attributes.RemoveAttribute("hookId");
                 this.HookSlot.Itemstack.Attributes.RemoveAttribute("used");
-                this.HookSlot.Itemstack.Attributes.SetInt("renderVariant", 2); //empty
+                this.HookSlot.Itemstack.Attributes.SetInt("renderVariant", 1); //empty
                 this.HookSlot.MarkDirty();
                 Console.WriteLine("changed it");
                 Die();
