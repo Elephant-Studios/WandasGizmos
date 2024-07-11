@@ -109,6 +109,14 @@ namespace WandasGizmos
                 FiredBy = (EntityPlayer) Api.World.GetEntityById(FiredById);
                 if (FiredBy is null) return;
             }
+            if (!FiredBy.Alive)
+            {
+                this.HookSlot.Itemstack?.Attributes.RemoveAttribute("used");
+                this.HookSlot.Itemstack.Attributes.SetInt("renderVariant", 2); //empty
+                this.HookSlot.MarkDirty();
+                Die();
+                return;
+            }
             if (HookSlot == null) this.HookSlot = FiredBy.ActiveHandItemSlot;
             //Console.WriteLine(HookSlot.Itemstack.Id);
             if (HookSlot.Itemstack?.Attributes.TryGetBool("pull") == true)
@@ -134,6 +142,7 @@ namespace WandasGizmos
                 Console.WriteLine("changed it");
                 Console.WriteLine("death: switched hotbar slots");
                 Die();
+                return;
             }
             if (ShouldDespawn) return;
             EntityPos pos = SidedPos;
@@ -144,6 +153,7 @@ namespace WandasGizmos
                 double L = FiredBy.Pos.DistanceTo(anchorPoint);
                 if (L > MaxLength + 0.01) // + 0.2
                 {
+                    FiredBy.PositionBeforeFalling = FiredBy.Pos.XYZ;
                     double theta = Math.Atan2(FiredBy.Pos.X - anchorPoint.X, FiredBy.Pos.Y - anchorPoint.Y);
                     double phi = Math.Atan2(FiredBy.Pos.Z - anchorPoint.Z, FiredBy.Pos.Y - anchorPoint.Y);
                     Vec3d radialDistance = FiredBy.Pos.XYZ.SubCopy(anchorPoint);
