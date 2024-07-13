@@ -24,7 +24,7 @@ namespace WandasGizmos
         CollisionTester collTester = new CollisionTester();
 
         public long FiredById;
-        public EntityPlayer FiredBy;
+        public EntityPlayer FiredBy = null!;
         public float Weight = 0.1f;
         public float Damage;
         public ItemStack ProjectileStack;
@@ -34,7 +34,6 @@ namespace WandasGizmos
         public bool DamageStackOnImpact = false;
         public float SpringConst = 0.5f;
         public double MaxLength;
-        public EntityBehaviorPassivePhysics physics;
         public int RopeCount;
         public double FunConstant = 0.01f;
         public Vec3d anchorPoint;
@@ -66,11 +65,10 @@ namespace WandasGizmos
             }
             else
             {
-                Die(EnumDespawnReason.Expire);
-                return;
+                Die();
             }
             msLaunch = World.ElapsedMilliseconds;
-            collisionTestBox = SelectionBox.Clone().OmniGrowBy(0.05f);
+            collisionTestBox = SelectionBox.Clone().OmniGrowBy(0.15f);
             GetBehavior<EntityBehaviorPassivePhysics>().OnPhysicsTickCallback = onPhysicsTickCallback;
             GetBehavior<EntityBehaviorPassivePhysics>().collisionYExtra = 0f; // Slightly cheap hax so that stones/arrows don't collid with fences
 
@@ -98,23 +96,24 @@ namespace WandasGizmos
         }
 
         //bool grappled = false;
-        public override void OnGameTick(float dt)
+    public override void OnGameTick(float dt)
     {
-        //Console.WriteLine(MaxLength);
         base.OnGameTick(dt);
+        if (ShouldDespawn || !Alive) return;
         if (FiredBy is null)
         {
-            FiredBy = (EntityPlayer)Api.World.GetEntityById(FiredById);
+            FiredBy = Api.World.GetEntityById(FiredById) as EntityPlayer;
             if (FiredBy is null) return;
         }
-        Console.WriteLine(FiredBy.Attributes.GetAsBool("hookdie"));
-        if (FiredBy.Attributes.GetAsBool("hookdie") == true)
+        EntityPos pos = SidedPos;
+        
+        Console.WriteLine(stuck + "     " + pos);
+        if (!FiredBy.WatchedAttributes.GetAsBool("fired"))
         {
-            FiredBy.Attributes.RemoveAttribute("hookdie");
-            Console.WriteLine("culled");
-            FiredBy.Attributes.MarkAllDirty();
+            Console.WriteLine("culled1");
             Die();
         }
+        
         if (anchorPoint == null) return;
         double L = FiredBy.Pos.DistanceTo(anchorPoint);
 
@@ -130,36 +129,34 @@ namespace WandasGizmos
                 MaxLength += 0.3;
             }
         }
-        if (ShouldDespawn) return;
-        EntityPos pos = SidedPos;
-        if (collTester.IsColliding(World.BlockAccessor, collisionTestBox, pos.XYZ)) //&& !grappled)
+        if (FiredBy != null && collTester.IsColliding(World.BlockAccessor, collisionTestBox, pos.XYZ)) //&& !grappled)
         {
-            if (L > MaxLength && L > 1) // + 0.2
+            if (L > MaxLength + 0.2) // + 0.2
             {
                 FiredBy.PositionBeforeFalling = FiredBy.Pos.XYZ;
                 double theta = Math.Atan2(FiredBy.Pos.X - anchorPoint.X, FiredBy.Pos.Y - anchorPoint.Y);
                 double phi = Math.Atan2(FiredBy.Pos.Z - anchorPoint.Z, FiredBy.Pos.Y - anchorPoint.Y);
-                Vec3d radialDistance = FiredBy.Pos.XYZ.SubCopy(anchorPoint);
+                Vec3d radialDistance = FiredBy.SidedPos.XYZ.SubCopy(anchorPoint);
                 double radialDistanceMag = radialDistance.Length();
                 Vec3d radialDirection = radialDistance.Normalize();
                 Vec3d acceleration = radialDirection * SpringConst * Math.Abs(radialDistanceMag - MaxLength);
                 var damping = 2f * Math.Sqrt(SpringConst);
-                Vec3d TangVel = FiredBy.Pos.Motion - GetProjectionOn(FiredBy.Pos.Motion, radialDirection);
-                FiredBy.ServerPos.Motion.Add(acceleration * dt);
-                FiredBy.Pos.Motion.Add(acceleration * dt);
-                FiredBy.ServerPos.Motion.Add(-damping * GetProjectionOn(FiredBy.Pos.Motion, radialDirection));
-                FiredBy.Pos.Motion.Add(-damping * GetProjectionOn(FiredBy.Pos.Motion, radialDirection));
+                Vec3d TangVel = FiredBy.SidedPos.Motion - GetProjectionOn(FiredBy.SidedPos.Motion, radialDirection);
+                //FiredBy.ServerPos.Motion.Add(acceleration * dt);
+                FiredBy.SidedPos.Motion.Add(acceleration * dt);
+                //FiredBy.ServerPos.Motion.Add(-damping * GetProjectionOn(FiredBy.Pos.Motion, radialDirection));
+                FiredBy.SidedPos.Motion.Add(-damping * GetProjectionOn(FiredBy.Pos.Motion, radialDirection));
                 var ThetaDegrees = theta * 180 / Math.PI;
                 var PhiDegrees = phi * 180 / Math.PI;
-                if (FiredBy.Pos.Motion.Length() < 0.3f && ((ThetaDegrees > 135 && ThetaDegrees < 180) || (ThetaDegrees > -180 && ThetaDegrees < -135)))
+                if (FiredBy.ServerPos.Motion.Length() < 0.3f && ((ThetaDegrees > 135 && ThetaDegrees < 180) || (ThetaDegrees > -180 && ThetaDegrees < -135)))
                 {
-                    FiredBy.ServerPos.Motion.Add(TangVel * FunConstant);
-                    FiredBy.Pos.Motion.Add(TangVel * FunConstant);
+                    //FiredBy.ServerPos.Motion.Add(TangVel * FunConstant);
+                    FiredBy.SidedPos.Motion.Add(TangVel * FunConstant);
                 }
-                if (FiredBy.Pos.Motion.Length() < 0.3f && ((PhiDegrees > 135 && PhiDegrees < 180) || (PhiDegrees > -180 && PhiDegrees < -135)))
+                if (FiredBy.ServerPos.Motion.Length() < 0.3f && ((PhiDegrees > 135 && PhiDegrees < 180) || (PhiDegrees > -180 && PhiDegrees < -135)))
                 {
-                    FiredBy.ServerPos.Motion.Add(TangVel * FunConstant);
-                    FiredBy.Pos.Motion.Add(TangVel * FunConstant);
+                    //FiredBy.ServerPos.Motion.Add(TangVel * FunConstant);
+                    FiredBy.SidedPos.Motion.Add(TangVel * FunConstant);
                 }
             }
         }
@@ -170,7 +167,7 @@ namespace WandasGizmos
 
         if (stuck)
         {
-            if (Api.Side == EnumAppSide.Client) ServerPos.SetFrom(Pos);
+            if (Api.Side == EnumAppSide.Client) ServerPos.SetFrom(pos);
             IsColliding(pos, impactSpeed);
             return;
         }
@@ -181,40 +178,36 @@ namespace WandasGizmos
 
         beforeCollided = false;
         motionBeforeCollide.Set(pos.Motion.X, pos.Motion.Y, pos.Motion.Z);
-        }
+    }
         
-        public static Vec3d GetProjectionOn(Vec3d vector, Vec3d direction)
-        {
-            return direction * (vector.Dot(direction) / Math.Sqrt(direction.Dot(direction)));
-        }
-        public override void OnCollided()
-        {
-            if (!FiredBy.Alive || !Alive) return;
-            RopeCount = 0;
-            foreach (ItemSlot itemSlot in FiredBy.Player.InventoryManager.GetHotbarInventory())
+    public static Vec3d GetProjectionOn(Vec3d vector, Vec3d direction)
+    {
+        return direction * (vector.Dot(direction) / Math.Sqrt(direction.Dot(direction)));
+    }
+    public override void OnCollided()
+    {
+        foreach (ItemSlot itemSlot in FiredBy.Player.InventoryManager.GetHotbarInventory())
             {
                 if (itemSlot?.Itemstack?.Id == 1701)
                 {
                     RopeCount += itemSlot.Itemstack.StackSize * 3/2;
                 }
             }
-            if (this.ServerPos.DistanceTo(FiredBy.Pos) > RopeCount) // > totalRope);
+        if (this.ServerPos.DistanceTo(FiredBy.Pos) > RopeCount + 0.9) // > totalRope);
             {
-                FiredBy.Attributes.SetBool("hookdie", true);
-                Console.WriteLine("culled");
-                FiredBy.Attributes.MarkAllDirty();
+                FiredBy.WatchedAttributes.SetBool("fired", false);
+                WatchedAttributes.MarkAllDirty();
+                Console.WriteLine("culled2");
                 Die();
                 return;
             }
-            EntityPos pos = SidedPos;
+        EntityPos pos = SidedPos;
 
-            pos.Motion.Set(0, 0, 0);
-            anchorPoint = pos.XYZ;
-            MaxLength = FiredBy.Pos.DistanceTo(anchorPoint);
-            IsColliding(SidedPos, Math.Max(motionBeforeCollide.Length(), pos.Motion.Length()));
-            motionBeforeCollide.Set(pos.Motion.X, pos.Motion.Y, pos.Motion.Z);
+        anchorPoint = pos.XYZ;
+        MaxLength = FiredBy.Pos.DistanceTo(anchorPoint);
+        IsColliding(SidedPos, Math.Max(motionBeforeCollide.Length(), pos.Motion.Length()));
+        motionBeforeCollide.Set(pos.Motion.X, pos.Motion.Y, pos.Motion.Z);
         }
-
 
         private void IsColliding(EntityPos pos, double impactSpeed)
         {
@@ -228,14 +221,22 @@ namespace WandasGizmos
 
                     // Resend position to client
                     WatchedAttributes.MarkAllDirty();
-                }
 
+                    if (DamageStackOnImpact)
+                    {
+                        ProjectileStack.Collectible.DamageItem(World, this, new DummySlot(ProjectileStack));
+                        int leftDurability = ProjectileStack == null ? 1 : ProjectileStack.Collectible.GetRemainingDurability(ProjectileStack);
+                        if (leftDurability <= 0)
+                        {
+                            Console.WriteLine("death: durability");
+                            Die();
+                        }
+                    }
+                }
                 msCollide = World.ElapsedMilliseconds;
 
                 beforeCollided = true;
             }
-
-
         }
 
         private void ImpactOnEntity(Entity entity)
@@ -297,6 +298,8 @@ namespace WandasGizmos
                 else
                 {
                     Console.WriteLine("death: random break chance");
+                    FiredBy.WatchedAttributes.SetBool("fired", false);
+
                     Die();
                 }
 

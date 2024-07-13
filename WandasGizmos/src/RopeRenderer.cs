@@ -37,7 +37,7 @@ namespace WandasGizmos.src
         public override void DoRender3DOpaque(float dt, bool isShadowPass)
         {
             base.DoRender3DOpaque(dt, isShadowPass);
-            if (!(((IWorldAccessor)((EntityRenderer)this).capi.World).GetEntityById(this.hook.FiredById) is EntityPlayer entityById) || !(entityById.Player.InventoryManager.ActiveHotbarSlot.Itemstack?.Collectible is ItemGrapplingHook collectible)) return;
+            if (!(((IWorldAccessor)((EntityRenderer)this).capi.World).GetEntityById(this.hook.FiredById) is EntityPlayer entityById)) return;
             EntityPlayer entity = ((IPlayer)((EntityRenderer)this).capi.World.Player).Entity;
             bool flag = entityById == entity && ((EntityRenderer)this).capi.World.Player.CameraMode == EnumCameraMode.ThirdPerson && !isShadowPass;
             bool flagFirstPerson = entityById == entity && ((EntityRenderer)this).capi.World.Player.CameraMode == EnumCameraMode.FirstPerson && !isShadowPass;

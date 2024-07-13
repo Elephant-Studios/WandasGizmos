@@ -19,18 +19,14 @@ namespace WandasGizmos
         public override void OnHeldAttackStart(ItemSlot slot, EntityAgent byEntity, BlockSelection blockSel, EntitySelection entitySel, ref EnumHandHandling handling)
         {
             base.OnHeldAttackStart(slot, byEntity, blockSel, entitySel, ref handling);
-            byEntity.Attributes.SetBool("hookdie", true);
-            byEntity.Attributes.MarkAllDirty();
+            byEntity.WatchedAttributes.SetBool("fired", false);
         }
         public override void OnHeldInteractStart(ItemSlot slot, EntityAgent byEntity, BlockSelection blockSel, EntitySelection entitySel, bool firstEvent, ref EnumHandHandling handling)
         {
             base.OnHeldInteractStart(slot, byEntity, blockSel, entitySel, firstEvent, ref handling);
             if (handling == EnumHandHandling.PreventDefault) return;
             handling = EnumHandHandling.PreventDefault;
-            if (byEntity.Attributes.GetAsBool("hookdie")) byEntity.Attributes.SetBool("hookdie", true);
-            byEntity.Attributes.MarkAllDirty();
-            slot.Itemstack.Attributes.RemoveAttribute("renderVariant"); //normal //normal
-            slot.MarkDirty();
+            if (byEntity.WatchedAttributes.GetAsBool("fired")) { byEntity.WatchedAttributes.SetBool("fired", false); }
             if (api.World.GetEntityById(byEntity.EntityId) is EntityPlayer entityById)
             {
                 this.FiredBy = entityById;
@@ -53,9 +49,14 @@ namespace WandasGizmos
         {
             //byEntity.StartAnimation("idle1");
             base.OnHeldIdle(slot, byEntity);
-            if (byEntity.Attributes.GetAsBool("hookdie"))
+            if (byEntity.WatchedAttributes.GetAsBool("fired"))
             {
                 slot.Itemstack.Attributes.SetInt("renderVariant", 2); //empty
+                slot.MarkDirty();
+            }
+            else
+            {
+                slot.Itemstack.Attributes.SetInt("renderVariant", 1); //full
                 slot.MarkDirty();
             }
             if (!byEntity.CollidedVertically) //&& slot.Itemstack.Attributes.HasAttribute("used"))
@@ -79,7 +80,6 @@ namespace WandasGizmos
             byEntity.StopAnimation("toss");
             if (secondsUsed < 1f) return;
             else if (secondsUsed > 2.5f) secondsUsed = 2.5f;
-            byEntity.Attributes.SetBool("hookdie", false);
             Console.WriteLine(secondsUsed);
             slot.Itemstack.Collectible.DamageItem(byEntity.World, byEntity, slot);
             int leftDurability = slot.Itemstack == null ? 1 : slot.Itemstack.Collectible.GetRemainingDurability(slot.Itemstack);
@@ -88,7 +88,6 @@ namespace WandasGizmos
                 slot.TakeOut(1);
                 slot.MarkDirty();
             }
-            
             double power = secondsUsed / 2.5;
             EntityProperties EnhkType = byEntity.World.GetEntityType(Code);
             EntityHook enhk = byEntity.World.ClassRegistry.CreateEntity(EnhkType) as EntityHook;
@@ -117,7 +116,7 @@ namespace WandasGizmos
             
             
             slot.Itemstack.Attributes.SetInt("renderVariant", 2); //empty
-            byEntity.Attributes.SetBool("hookdie", false); //thrown, not deleted.
+            byEntity.WatchedAttributes.SetBool("fired", true);
             byEntity.Attributes.MarkAllDirty();
             slot.MarkDirty();
             

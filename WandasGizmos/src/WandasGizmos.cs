@@ -41,22 +41,22 @@ namespace WandasGizmos
             capi = api;
             api.Event.KeyDown += (keyEvent) =>
             {
-                if (keyEvent.KeyCode == (int)GlKeys.LShift)
+                if (keyEvent.KeyCode == (int)GlKeys.Space)
                 {
                     api.World.Player.Entity.Attributes.SetBool("pull", true);
                 }
-                else if (keyEvent.KeyCode == (int)GlKeys.Tab)
+                else if (keyEvent.KeyCode == (int)GlKeys.LControl)
                 {
                     api.World.Player.Entity.Attributes.SetBool("push", true);
                 }
             };
             api.Event.KeyUp += (keyEvent) =>
             {                       
-                if (keyEvent.KeyCode == (int)GlKeys.LShift)
+                if (keyEvent.KeyCode == (int)GlKeys.Space)
                 {
                     api.World.Player.Entity.Attributes.SetBool("pull", false);
                 }
-                else if (keyEvent.KeyCode == (int)GlKeys.Tab)
+                else if (keyEvent.KeyCode == (int)GlKeys.LControl)
                 {
                     api.World.Player.Entity.Attributes.SetBool("push", false);
                 }
