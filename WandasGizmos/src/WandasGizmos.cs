@@ -74,7 +74,6 @@ namespace WandasGizmos
         public static bool IsKeyComboActive(ICoreClientAPI api, string key)
         {
             KeyCombination combo = api.Input.GetHotKeyByCode(key).CurrentMapping;
-            Console.WriteLine(combo + " TEST");
             return api.Input.KeyboardKeyState[combo.KeyCode];
         }
 

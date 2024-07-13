@@ -39,7 +39,6 @@ namespace WandasGizmos
                     ItemRopeCount += itemSlot.Itemstack.StackSize;
                 }
             }
-            Console.WriteLine(ItemRopeCount);
             byEntity.StartAnimation("toss");
         }
         public override void OnHeldIdle(ItemSlot slot, EntityAgent byEntity)
@@ -58,17 +57,13 @@ namespace WandasGizmos
             }
             if (!byEntity.CollidedVertically) //&& slot.Itemstack.Attributes.HasAttribute("used"))
             {
-                //Console.WriteLine("in air");
-                //byEntity.StartAnimation("idle1");
                 byEntity.StopAnimation("walk");
-                //byEntity.StartAnimation("fly");
                 byEntity.StartAnimation("swing");
                 
             }
             else
             {
                 byEntity.StopAnimation("swing");
-                //Console.WriteLine("ground");
             }
         }
         public override void OnHeldDropped(IWorldAccessor world, IPlayer byPlayer, ItemSlot slot, int quantity, ref EnumHandling handling)
@@ -88,7 +83,6 @@ namespace WandasGizmos
             if (ItemRopeCount == 0) return;
             if (secondsUsed < 1f) return;
             else if (secondsUsed > 2.5f) secondsUsed = 2.5f;
-            Console.WriteLine(secondsUsed);
             double power = secondsUsed / 2.5;
             slot.Itemstack.Attributes.SetInt("renderVariant", 2); //empty
             byEntity.WatchedAttributes.SetBool("fired", true);
