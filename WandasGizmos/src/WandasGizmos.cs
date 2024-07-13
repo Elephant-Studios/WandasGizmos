@@ -43,34 +43,22 @@ namespace WandasGizmos
             {
                 if (keyEvent.KeyCode == (int)GlKeys.LShift)
                 {
-                    if (WildcardUtil.Match("*grapplinghook-*", api.World.Player.InventoryManager.ActiveHotbarSlot.Itemstack?.Item?.Code.ToString() ?? ""))
-                    {
-                        api.World.Player.InventoryManager.ActiveHotbarSlot.Itemstack.Attributes.SetBool("pull", true);
-                    }
+                    api.World.Player.Entity.Attributes.SetBool("pull", true);
                 }
                 else if (keyEvent.KeyCode == (int)GlKeys.Tab)
                 {
-                    if (WildcardUtil.Match("*grapplinghook-*", api.World.Player.InventoryManager.ActiveHotbarSlot.Itemstack?.Item?.Code.ToString() ?? ""))
-                    {
-                        api.World.Player.InventoryManager.ActiveHotbarSlot.Itemstack.Attributes.SetBool("push", true);
-                    }
+                    api.World.Player.Entity.Attributes.SetBool("push", true);
                 }
             };
             api.Event.KeyUp += (keyEvent) =>
             {                       
                 if (keyEvent.KeyCode == (int)GlKeys.LShift)
                 {
-                    if (WildcardUtil.Match("*grapplinghook-*", api.World.Player.InventoryManager.ActiveHotbarSlot.Itemstack?.Item?.Code.ToString() ?? ""))
-                    {
-                        api.World.Player.InventoryManager.ActiveHotbarSlot.Itemstack.Attributes.SetBool("pull", false);
-                    }
+                    api.World.Player.Entity.Attributes.SetBool("pull", false);
                 }
                 else if (keyEvent.KeyCode == (int)GlKeys.Tab)
                 {
-                    if (WildcardUtil.Match("*grapplinghook-*", api.World.Player.InventoryManager.ActiveHotbarSlot.Itemstack?.Item?.Code.ToString() ?? ""))
-                    {
-                        api.World.Player.InventoryManager.ActiveHotbarSlot.Itemstack.Attributes.SetBool("push", false);
-                    }
+                    api.World.Player.Entity.Attributes.SetBool("push", false);
                 }
             };
             capi.Event.ReloadShader += () =>
