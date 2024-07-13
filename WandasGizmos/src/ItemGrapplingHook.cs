@@ -39,11 +39,7 @@ namespace WandasGizmos
                     ItemRopeCount += itemSlot.Itemstack.StackSize;
                 }
             }
-            if (ItemRopeCount == 0)
-            {
-                api.Logger.Chat("requires rope to be used");
-                return;
-            }
+            Console.WriteLine(ItemRopeCount);
             byEntity.StartAnimation("toss");
         }
         public override void OnHeldIdle(ItemSlot slot, EntityAgent byEntity)
@@ -89,6 +85,7 @@ namespace WandasGizmos
         {
             base.OnHeldInteractStop(secondsUsed, slot, byEntity, blockSel, entitySel);
             byEntity.StopAnimation("toss");
+            if (ItemRopeCount == 0) return;
             if (secondsUsed < 1f) return;
             else if (secondsUsed > 2.5f) secondsUsed = 2.5f;
             Console.WriteLine(secondsUsed);
