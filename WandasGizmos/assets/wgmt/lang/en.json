@@ -1,4 +1,12 @@
 {
   "item-grapplinghook": "Grappling Hook",
-  "rope-rope": "Rope"
+  "rope-rope": "Rope",
+  "item-grapplinghook-simple-copper": "Copper Grappling Hook",
+  "item-grapplinghook-simple-bismuthbronze": "Bismuth-Bronze Grappling Hook",
+  "item-grapplinghook-simple-gold": "Gold Grappling Hook",
+  "item-grapplinghook-simple-blackbronze": "Black-Bronze Grappling Hook",
+  "item-grapplinghook-simple-tinbronze": "Tin-Bronze Grappling Hook",
+  "item-grapplinghook-simple-iron": "Iron Grappling Hook",
+  "item-grapplinghook-simple-meteoriciron": "Meteoric-Iron Grappling Hook",
+  "item-grapplinghook-simple-steel": "Steel Grappling Hook"
 }

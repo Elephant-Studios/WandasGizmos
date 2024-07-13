@@ -5,6 +5,7 @@ using Vintagestory.API.Common;
 using Vintagestory.API.Config;
 using Vintagestory.API.MathTools;
 using Vintagestory.API.Server;
+using Vintagestory.API.Util;
 using Vintagestory.Client.NoObf;
 using Vintagestory.GameContent;
 using WandasGizmos.src;
@@ -15,7 +16,6 @@ namespace WandasGizmos
     {
 
         ICoreAPI _api;
-        MeshRef ropeMesh;
         public ICoreClientAPI capi;
         //float[] modelMat = Mat4f.Create();
 
@@ -41,36 +41,24 @@ namespace WandasGizmos
             capi = api;
             api.Event.KeyDown += (keyEvent) =>
             {
-                if (keyEvent.KeyCode == (int)GlKeys.LShift)
+                if (keyEvent.KeyCode == (int)GlKeys.Space)
                 {
-                    if (api.World.Player.InventoryManager.ActiveHotbarSlot.Itemstack?.Id == 3336)
-                    {
-                        api.World.Player.InventoryManager.ActiveHotbarSlot.Itemstack.Attributes.SetBool("pull", true);
-                    }
+                    api.World.Player.Entity.Attributes.SetBool("pull", true);
                 }
-                else if (keyEvent.KeyCode == (int)GlKeys.Tab)
+                else if (keyEvent.KeyCode == (int)GlKeys.LControl)
                 {
-                    if (api.World.Player.InventoryManager.ActiveHotbarSlot.Itemstack?.Id == 3336)
-                    {
-                        api.World.Player.InventoryManager.ActiveHotbarSlot.Itemstack.Attributes.SetBool("push", true);
-                    }
+                    api.World.Player.Entity.Attributes.SetBool("push", true);
                 }
             };
             api.Event.KeyUp += (keyEvent) =>
             {                       
-                if (keyEvent.KeyCode == (int)GlKeys.LShift)
+                if (keyEvent.KeyCode == (int)GlKeys.Space)
                 {
-                    if (api.World.Player.InventoryManager.ActiveHotbarSlot.Itemstack?.Id == 3336)
-                    {
-                        api.World.Player.InventoryManager.ActiveHotbarSlot.Itemstack.Attributes.SetBool("pull", false);
-                    }
+                    api.World.Player.Entity.Attributes.SetBool("pull", false);
                 }
-                else if (keyEvent.KeyCode == (int)GlKeys.Tab)
+                else if (keyEvent.KeyCode == (int)GlKeys.LControl)
                 {
-                    if (api.World.Player.InventoryManager.ActiveHotbarSlot.Itemstack?.Id == 3336)
-                    {
-                        api.World.Player.InventoryManager.ActiveHotbarSlot.Itemstack.Attributes.SetBool("push", false);
-                    }
+                    api.World.Player.Entity.Attributes.SetBool("push", false);
                 }
             };
             capi.Event.ReloadShader += () =>
