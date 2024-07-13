@@ -92,14 +92,19 @@ namespace WandasGizmos
             if (secondsUsed < 1f) return;
             else if (secondsUsed > 2.5f) secondsUsed = 2.5f;
             Console.WriteLine(secondsUsed);
+            double power = secondsUsed / 2.5;
+            slot.Itemstack.Attributes.SetInt("renderVariant", 2); //empty
+            byEntity.WatchedAttributes.SetBool("fired", true);
+            byEntity.Attributes.MarkAllDirty();
+            slot.MarkDirty();
             slot.Itemstack.Collectible.DamageItem(byEntity.World, byEntity, slot);
             int leftDurability = slot.Itemstack == null ? 1 : slot.Itemstack.Collectible.GetRemainingDurability(slot.Itemstack);
             if (leftDurability <= 0)
-            {   
+            {
                 slot.TakeOut(1);
                 slot.MarkDirty();
+                return;
             }
-            double power = secondsUsed / 2.5;
             EntityProperties EnhkType = byEntity.World.GetEntityType(Code);
             EntityHook enhk = byEntity.World.ClassRegistry.CreateEntity(EnhkType) as EntityHook;
             //EntityProperties EnrpType = byEntity.World.GetEntityType(new AssetLocation("wgmt:rope"));
@@ -125,11 +130,6 @@ namespace WandasGizmos
             byEntity.World.SpawnEntity(enhk);
             //slot.Itemstack.Attributes.SetBool("used", true);
             
-            
-            slot.Itemstack.Attributes.SetInt("renderVariant", 2); //empty
-            byEntity.WatchedAttributes.SetBool("fired", true);
-            byEntity.Attributes.MarkAllDirty();
-            slot.MarkDirty();
             
             
             //byEntity.World.SpawnEntity(enrp);
