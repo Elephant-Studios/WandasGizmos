@@ -22,7 +22,7 @@ namespace WandasGizmos
         CollisionTester collTester = new();
 
         public long FiredById;
-        public EntityPlayer FiredBy = null!;
+        public EntityPlayer FiredBy;
         public float Weight = 0.1f;
         public float Damage;
         public ItemStack ProjectileStack;
@@ -125,13 +125,13 @@ namespace WandasGizmos
 
             }
             double L = FiredBy.Pos.DistanceTo(anchorPoint);
-
-            if (FiredBy.Attributes.TryGetBool("pull") == true && L > 2 && !(FiredBy.CollidedVertically && !FiredBy.OnGround))
+            Console.WriteLine("H: " + FiredBy.WatchedAttributes.GetAsBool("hoist") + "R: " + FiredBy.WatchedAttributes.GetAsBool("rappell"));
+            if (FiredBy.WatchedAttributes.GetAsBool("hoist"))
             {
+                if (MaxLength > 2) // if max length larger than 1 and NOT(Collided Vertically and Not on Ground)
                 MaxLength -= 0.3;
-
             }
-            else if (FiredBy.Attributes.TryGetBool("push") == true)
+            else if (FiredBy.WatchedAttributes.GetAsBool("rappell"))
             {
                 if (MaxLength + -0.1 < RopeCount)
                 {
@@ -140,7 +140,7 @@ namespace WandasGizmos
             }
             if (FiredBy != null && collTester.IsColliding(World.BlockAccessor, collisionTestBox, pos.XYZ)) //&& !grappled)
             {
-                if (L > MaxLength + 0.2) // + 0.2
+                if (L > MaxLength && L > 2) // + 0.2
                 {
                     FiredBy.PositionBeforeFalling = FiredBy.Pos.XYZ;
                     double theta = Math.Atan2(FiredBy.Pos.X - anchorPoint.X, FiredBy.Pos.Y - anchorPoint.Y);
@@ -195,6 +195,7 @@ namespace WandasGizmos
         }
         public override void OnCollided()
         {
+            RopeCount = 0;
             foreach (ItemSlot itemSlot in FiredBy.Player.InventoryManager.GetHotbarInventory())
             {
                 if (itemSlot?.Itemstack?.Id == 1701)

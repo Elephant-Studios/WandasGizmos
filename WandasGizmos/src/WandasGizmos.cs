@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 using System.Reflection;
 using Vintagestory.API.Client;
 using Vintagestory.API.Common;
@@ -21,44 +22,43 @@ namespace WandasGizmos
 
         public static IShaderProgram RopeLine { get; set; }
         public static IShaderProgram RopeLineShadow { get; set; }
-
         // Called on server and client
         // Useful for registering block/entity classes on both sides
         public override void Start(ICoreAPI api)
         {
             base.Start(api);
             _api = api;
-
             api.RegisterEntity("EntityHook", typeof(EntityHook));
             //api.RegisterEntity("EntityRope", typeof(EntityRope));
             api.RegisterItemClass("ItemGrapplingHook", typeof(ItemGrapplingHook));
         }
-
         public override void StartClientSide(ICoreClientAPI api)
         {
             api.RegisterEntityRendererClass("RopeRenderer", typeof(RopeRenderer));
             base.StartClientSide(api);
             capi = api;
-            api.Event.KeyDown += (keyEvent) =>
+            capi.Input.RegisterHotKey("hoist", "Hoist", GlKeys.Tab, HotkeyType.MovementControls);
+            capi.Input.SetHotKeyHandler("hoist", _ => true);
+
+            capi.Input.RegisterHotKey("rappell", "Rappell", GlKeys.LShift, HotkeyType.MovementControls);
+            capi.Input.SetHotKeyHandler("rappell", _ => true);
+            capi.Event.KeyDown += _ =>
             {
-                if (keyEvent.KeyCode == (int)GlKeys.Space)
+                if (IsKeyComboActive(api, "hoist"))
                 {
-                    api.World.Player.Entity.Attributes.SetBool("pull", true);
+                    api.World.Player?.Entity.WatchedAttributes.SetBool("hoist", true);
                 }
-                else if (keyEvent.KeyCode == (int)GlKeys.LControl)
+                else
                 {
-                    api.World.Player.Entity.Attributes.SetBool("push", true);
+                    api.World.Player?.Entity.WatchedAttributes.SetBool("hoist", false);
                 }
-            };
-            api.Event.KeyUp += (keyEvent) =>
-            {                       
-                if (keyEvent.KeyCode == (int)GlKeys.Space)
+                if (IsKeyComboActive(capi, "rappell"))
                 {
-                    api.World.Player.Entity.Attributes.SetBool("pull", false);
+                    api.World.Player?.Entity.WatchedAttributes.SetBool("rappell", true);
                 }
-                else if (keyEvent.KeyCode == (int)GlKeys.LControl)
+                else
                 {
-                    api.World.Player.Entity.Attributes.SetBool("push", false);
+                    api.World.Player?.Entity.WatchedAttributes.SetBool("rappell", false);
                 }
             };
             capi.Event.ReloadShader += () =>
@@ -71,12 +71,12 @@ namespace WandasGizmos
             };
         }
 
-        public override void StartServerSide(ICoreServerAPI api)
+        public static bool IsKeyComboActive(ICoreClientAPI api, string key)
         {
-            base.StartServerSide(api);
-
+            KeyCombination combo = api.Input.GetHotKeyByCode(key).CurrentMapping;
+            Console.WriteLine(combo + " TEST");
+            return api.Input.KeyboardKeyState[combo.KeyCode];
         }
-
 
         public IShaderProgram RegisterShader(string shaderPath, string shaderName)
         {

@@ -8,6 +8,7 @@ using Vintagestory.API.Config;
 using Vintagestory.API.MathTools;
 using Vintagestory.API.Server;
 using Vintagestory.API.Util;
+using static OpenTK.Graphics.OpenGL.GL;
 
 namespace WandasGizmos
 {
@@ -73,6 +74,16 @@ namespace WandasGizmos
                 byEntity.StopAnimation("swing");
                 //Console.WriteLine("ground");
             }
+        }
+        public override void OnHeldDropped(IWorldAccessor world, IPlayer byPlayer, ItemSlot slot, int quantity, ref EnumHandling handling)
+        {
+            base.OnHeldDropped(world, byPlayer, slot, quantity, ref handling);
+            FiredBy = api.World.GetEntityById(byPlayer.Entity.EntityId) as EntityPlayer;
+            FiredBy.StopAnimation("swing");
+            slot.Itemstack.Attributes.SetInt("renderVariant", 1); //full
+            slot.MarkDirty();
+            FiredBy.WatchedAttributes.SetBool("fired", false);
+            FiredBy.WatchedAttributes.MarkAllDirty();
         }
         public override void OnHeldInteractStop(float secondsUsed, ItemSlot slot, EntityAgent byEntity, BlockSelection blockSel, EntitySelection entitySel)
         {
