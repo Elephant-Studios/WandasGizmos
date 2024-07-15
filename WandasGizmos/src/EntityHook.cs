@@ -192,6 +192,7 @@ namespace WandasGizmos
         }
         public override void OnCollided()
         {
+            
             RopeCount = 0;
             foreach (ItemSlot itemSlot in FiredBy.Player.InventoryManager.GetHotbarInventory())
             {
@@ -200,24 +201,24 @@ namespace WandasGizmos
                     RopeCount += itemSlot.Itemstack.StackSize * 3 / 2;
                 }
             }
-            if (this.Pos.DistanceTo(FiredBy.Pos) > RopeCount + 0.9) // > totalRope);
+            if (this.ServerPos.DistanceTo(FiredBy.ServerPos) > RopeCount) // > totalRope);
             {
                 FiredBy.WatchedAttributes.SetBool("fired", false);
                 WatchedAttributes.MarkAllDirty();
                 Console.WriteLine("broke");
-                Die();
-                return;
             }
             EntityPos pos = SidedPos;
-            //Console.WriteLine(anchorPoint);
-            anchorPoint = this.Pos.XYZ;
+            pos.Motion.Set(0, 0, 0);
+
+            anchorPoint = Pos.XYZ;
+            Console.WriteLine("anchor Point: " + anchorPoint);
             Console.WriteLine("c to s" + FiredBy.Pos.DistanceTo(ServerPos));
             Console.WriteLine("c to c" + FiredBy.Pos.DistanceTo(Pos));
             Console.WriteLine("s to s" + FiredBy.ServerPos.DistanceTo(ServerPos));
             Console.WriteLine("s to c" + FiredBy.ServerPos.DistanceTo(Pos));
             
             
-            if (Api.Side == EnumAppSide.Server) MaxLength = FiredBy.Pos.DistanceTo(Pos);
+            if (Api.Side == EnumAppSide.Server) MaxLength = FiredBy.ServerPos.DistanceTo(ServerPos);
             else MaxLength = FiredBy.Pos.DistanceTo(Pos);
             Console.WriteLine(Api.Side + " " + MaxLength);
             WatchedAttributes.MarkAllDirty();
@@ -228,8 +229,9 @@ namespace WandasGizmos
         {
             pos.Motion.Set(0, 0, 0);
 
-            if (!beforeCollided && World is IServerWorldAccessor && World.ElapsedMilliseconds > msCollide + 500)
+            if (!beforeCollided && World is IServerWorldAccessor)
             {
+                WatchedAttributes.MarkAllDirty();
                 msCollide = World.ElapsedMilliseconds;
                 beforeCollided = true;
             }
