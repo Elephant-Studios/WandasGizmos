@@ -1,6 +1,8 @@
 ﻿using HarmonyLib;
 using System;
 using System.Diagnostics;
+using System.Security.Cryptography.X509Certificates;
+using System.Text;
 using Vintagestory.API.Client;
 using Vintagestory.API.Common;
 using Vintagestory.API.Common.Entities;
@@ -8,13 +10,14 @@ using Vintagestory.API.Config;
 using Vintagestory.API.MathTools;
 using Vintagestory.API.Server;
 using Vintagestory.API.Util;
+using Vintagestory.GameContent;
 using static OpenTK.Graphics.OpenGL.GL;
 
 namespace WandasGizmos
 {
     class ItemGrapplingHook : Item
     {
-        public int ItemRopeCount;
+        public double ItemRopeCount;
         public EntityPlayer FiredBy;
 
         public override void OnHeldAttackStart(ItemSlot slot, EntityAgent byEntity, BlockSelection blockSel, EntitySelection entitySel, ref EnumHandHandling handling)
@@ -32,19 +35,40 @@ namespace WandasGizmos
             {
                 this.FiredBy = entityById;
             }
-            foreach (ItemSlot itemSlot in FiredBy.Player.InventoryManager.GetHotbarInventory())
-            {
-                if (itemSlot?.Itemstack?.Id == 1701)
-                {
-                    ItemRopeCount += itemSlot.Itemstack.StackSize;
-                }
-            }
+            byEntity.Attributes.SetInt("aiming", 1);
+            byEntity.Attributes.SetInt("aimingCancel", 0);
             byEntity.StartAnimation("toss");
+            byEntity.StartAnimation("aim");
+        }
+        public override bool OnHeldInteractCancel(float secondsUsed, ItemSlot slot, EntityAgent byEntity, BlockSelection blockSel, EntitySelection entitySel, EnumItemUseCancelReason cancelReason)
+        {
+            byEntity.Attributes.SetInt("aiming", 0);
+            byEntity.StopAnimation("aim");
+            FiredBy = api.World.GetEntityById(byEntity.EntityId) as EntityPlayer;
+            FiredBy.StopAnimation("swing");
+            slot.Itemstack.Attributes.SetInt("renderVariant", 1); //full
+            slot.MarkDirty();
+            FiredBy.StopAnimation("aim");
+            FiredBy.WatchedAttributes.SetBool("fired", false);
+            FiredBy.WatchedAttributes.MarkAllDirty();
+            if (cancelReason != EnumItemUseCancelReason.ReleasedMouse)
+            {
+                byEntity.Attributes.SetInt("aimingCancel", 1);
+            }
+
+            return true;
+        }
+        public override void GetHeldItemInfo(ItemSlot inSlot, StringBuilder dsc, IWorldAccessor world, bool withDebugInfo)
+        {
+            base.GetHeldItemInfo(inSlot, dsc, world, withDebugInfo);
+            dsc.AppendLine("Snakes... Why'd it have to be snakes!");
+            dsc.AppendLine("*Requires Rope in Hotbar for Use*");
         }
         public override void OnHeldIdle(ItemSlot slot, EntityAgent byEntity)
         {
             //byEntity.StartAnimation("idle1");
             base.OnHeldIdle(slot, byEntity);
+            
             if (byEntity.WatchedAttributes.GetAsBool("fired"))
             {
                 slot.Itemstack.Attributes.SetInt("renderVariant", 2); //empty
@@ -73,15 +97,26 @@ namespace WandasGizmos
             FiredBy.StopAnimation("swing");
             slot.Itemstack.Attributes.SetInt("renderVariant", 1); //full
             slot.MarkDirty();
+            FiredBy.StopAnimation("aim");
             FiredBy.WatchedAttributes.SetBool("fired", false);
             FiredBy.WatchedAttributes.MarkAllDirty();
         }
         public override void OnHeldInteractStop(float secondsUsed, ItemSlot slot, EntityAgent byEntity, BlockSelection blockSel, EntitySelection entitySel)
         {
             base.OnHeldInteractStop(secondsUsed, slot, byEntity, blockSel, entitySel);
+            if (byEntity.Attributes.GetInt("aimingCancel") == 1) return;
             byEntity.StopAnimation("toss");
+            ItemRopeCount = 0;
+            foreach (ItemSlot itemSlot in FiredBy.Player.InventoryManager.GetHotbarInventory())
+            {
+                if (itemSlot?.Itemstack?.Id == 1701)
+                {
+                    ItemRopeCount += itemSlot.Itemstack.StackSize;
+                }
+            }
+            Console.WriteLine(ItemRopeCount);
             if (ItemRopeCount == 0) return;
-            if (secondsUsed < 1f) return;
+            if (secondsUsed < 0.75f) return;
             else if (secondsUsed > 2.5f) secondsUsed = 2.5f;
             double power = secondsUsed / 2.5;
             slot.Itemstack.Attributes.SetInt("renderVariant", 2); //empty
@@ -94,6 +129,7 @@ namespace WandasGizmos
             {
                 slot.TakeOut(1);
                 slot.MarkDirty();
+                FiredBy.WatchedAttributes.SetBool("fired", false);
                 return;
             }
             EntityProperties EnhkType = byEntity.World.GetEntityType(Code);
@@ -110,13 +146,12 @@ namespace WandasGizmos
             enhk.ServerPos.SetPos(spawnPos);
             enhk.ServerPos.Motion.Set(velocity * power);
             enhk.FiredById = byEntity.EntityId;
-            enhk.RopeCount = ItemRopeCount * 3;
+            enhk.RopeCount = (int) (ItemRopeCount * 1.5);
             enhk.ProjectileStack = slot.Itemstack;
 
             enhk.Pos.SetFrom(enhk.ServerPos);
             enhk.World = byEntity.World;
             enhk.SetRotation();
-            enhk.RopeCount = ItemRopeCount * 3;
 
             byEntity.World.SpawnEntity(enhk);
             //slot.Itemstack.Attributes.SetBool("used", true);
@@ -135,7 +170,6 @@ namespace WandasGizmos
         {
             return true;
         }
-
         public override WorldInteraction[] GetHeldInteractionHelp(ItemSlot inSlot)
         {
             return new WorldInteraction[] {

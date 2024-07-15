@@ -99,7 +99,7 @@ namespace WandasGizmos
                 FiredBy = Api.World.GetEntityById(FiredById) as EntityPlayer;
                 if (FiredBy is null) return;
             }
-            Console.WriteLine(Api.Side + "M " + MaxLength);
+            //Console.WriteLine(Api.Side + "M " + MaxLength);
             EntityPos pos = SidedPos;
             if (!FiredBy.WatchedAttributes.GetAsBool("fired"))
             {
@@ -121,7 +121,8 @@ namespace WandasGizmos
 
             }
             double L = FiredBy.Pos.DistanceTo(anchorPoint);
-            Console.WriteLine(Api.Side + "L " + L);
+            if (MaxLength == 0) MaxLength = FiredBy.Pos.DistanceTo(Pos);
+            //Console.WriteLine(Api.Side + "L " + L);
             if (FiredBy.WatchedAttributes.GetAsBool("hoist"))
             {
                 if (MaxLength > 2) // if max length larger than 1 and NOT(Collided Vertically and Not on Ground)
@@ -203,15 +204,23 @@ namespace WandasGizmos
             {
                 FiredBy.WatchedAttributes.SetBool("fired", false);
                 WatchedAttributes.MarkAllDirty();
+                Console.WriteLine("broke");
                 Die();
                 return;
             }
             EntityPos pos = SidedPos;
-
-            anchorPoint = Pos.XYZ;
-            MaxLength = FiredBy.ServerPos.DistanceTo(anchorPoint);
-            Console.WriteLine(SidedPos + " " + MaxLength);
-            IsColliding(SidedPos, Math.Max(motionBeforeCollide.Length(), pos.Motion.Length()));
+            //Console.WriteLine(anchorPoint);
+            anchorPoint = this.Pos.XYZ;
+            Console.WriteLine("c to s" + FiredBy.Pos.DistanceTo(ServerPos));
+            Console.WriteLine("c to c" + FiredBy.Pos.DistanceTo(Pos));
+            Console.WriteLine("s to s" + FiredBy.ServerPos.DistanceTo(ServerPos));
+            Console.WriteLine("s to c" + FiredBy.ServerPos.DistanceTo(Pos));
+            
+            
+            if (Api.Side == EnumAppSide.Server) MaxLength = FiredBy.Pos.DistanceTo(Pos);
+            else MaxLength = FiredBy.Pos.DistanceTo(Pos);
+            Console.WriteLine(Api.Side + " " + MaxLength);
+            WatchedAttributes.MarkAllDirty();
             motionBeforeCollide.Set(pos.Motion.X, pos.Motion.Y, pos.Motion.Z);
         }
 
@@ -221,26 +230,7 @@ namespace WandasGizmos
 
             if (!beforeCollided && World is IServerWorldAccessor && World.ElapsedMilliseconds > msCollide + 500)
             {
-                if (impactSpeed >= 0.07)
-                {
-                    World.PlaySoundAt(new AssetLocation("sounds/arrow-impact"), this, null, false, 32);
-
-                    // Resend position to client
-                    WatchedAttributes.MarkAllDirty();
-
-                    if (DamageStackOnImpact)
-                    {
-                        ProjectileStack.Collectible.DamageItem(World, this, new DummySlot(ProjectileStack));
-                        int leftDurability = ProjectileStack == null ? 1 : ProjectileStack.Collectible.GetRemainingDurability(ProjectileStack);
-                        if (leftDurability <= 0)
-                        {
-                            Console.WriteLine("death: durability");
-                            Die();
-                        }
-                    }
-                }
                 msCollide = World.ElapsedMilliseconds;
-
                 beforeCollided = true;
             }
         }
