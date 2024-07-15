@@ -211,12 +211,6 @@ namespace WandasGizmos
             pos.Motion.Set(0, 0, 0);
 
             anchorPoint = Pos.XYZ;
-            Console.WriteLine("anchor Point: " + anchorPoint);
-            Console.WriteLine("c to s" + FiredBy.Pos.DistanceTo(ServerPos));
-            Console.WriteLine("c to c" + FiredBy.Pos.DistanceTo(Pos));
-            Console.WriteLine("s to s" + FiredBy.ServerPos.DistanceTo(ServerPos));
-            Console.WriteLine("s to c" + FiredBy.ServerPos.DistanceTo(Pos));
-            
             
             if (Api.Side == EnumAppSide.Server) MaxLength = FiredBy.ServerPos.DistanceTo(ServerPos);
             else MaxLength = FiredBy.Pos.DistanceTo(Pos);
