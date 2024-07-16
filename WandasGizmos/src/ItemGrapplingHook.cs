@@ -100,6 +100,7 @@ namespace WandasGizmos
             FiredBy.StopAnimation("aim");
             FiredBy.WatchedAttributes.SetBool("fired", false);
             FiredBy.WatchedAttributes.MarkAllDirty();
+            FiredBy.WatchedAttributes.MarkAllDirty();
         }
         public override void OnHeldInteractStop(float secondsUsed, ItemSlot slot, EntityAgent byEntity, BlockSelection blockSel, EntitySelection entitySel)
         {

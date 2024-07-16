@@ -125,12 +125,11 @@ namespace WandasGizmos
             //Console.WriteLine(Api.Side + "L " + L);
             if (FiredBy.WatchedAttributes.GetAsBool("hoist"))
             {
-                if (MaxLength > 2) // if max length larger than 1 and NOT(Collided Vertically and Not on Ground)
-                MaxLength -= 0.3;
+                if (MaxLength > 2) MaxLength -= 0.3;// if max length larger than 1 and NOT(Collided Vertically and Not on Ground)
             }
             else if (FiredBy.WatchedAttributes.GetAsBool("rappell"))
             {
-                if (MaxLength + -0.1 < RopeCount)
+                if (MaxLength < RopeCount)
                 {
                     MaxLength += 0.3;
                 }
@@ -139,14 +138,14 @@ namespace WandasGizmos
             {
                 if (L > MaxLength && L > 2) // + 0.2
                 {
-                    FiredBy.PositionBeforeFalling = FiredBy.Pos.XYZ;
+                    FiredBy.PositionBeforeFalling = FiredBy.ServerPos.XYZ;
                     double theta = Math.Atan2(FiredBy.Pos.X - anchorPoint.X, FiredBy.Pos.Y - anchorPoint.Y);
                     double phi = Math.Atan2(FiredBy.Pos.Z - anchorPoint.Z, FiredBy.Pos.Y - anchorPoint.Y);
                     Vec3d radialDistance = FiredBy.Pos.XYZ.SubCopy(anchorPoint);
                     double radialDistanceMag = radialDistance.Length();
                     Vec3d radialDirection = radialDistance.Normalize();
                     Vec3d acceleration = radialDirection * SpringConst * Math.Abs(radialDistanceMag - MaxLength);
-                    double damping = 2f * Math.Sqrt(SpringConst);
+                    double damping = 2.2f * Math.Sqrt(SpringConst);
                     Vec3d TangVel = FiredBy.Pos.Motion - GetProjectionOn(FiredBy.Pos.Motion, radialDirection);
                     //FiredBy.ServerPos.Motion.Add(acceleration * dt);
                     FiredBy.Pos.Motion.Add(acceleration * dt);
@@ -192,7 +191,7 @@ namespace WandasGizmos
         }
         public override void OnCollided()
         {
-            
+            if (!FiredBy.Alive || FiredBy.WatchedAttributes.GetAsBool("fired", false)) return;
             RopeCount = 0;
             foreach (ItemSlot itemSlot in FiredBy.Player.InventoryManager.GetHotbarInventory())
             {

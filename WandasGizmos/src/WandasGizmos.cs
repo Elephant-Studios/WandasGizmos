@@ -52,7 +52,7 @@ namespace WandasGizmos
                 {
                     api.World.Player?.Entity.WatchedAttributes.SetBool("hoist", false);
                 }
-                if (IsKeyComboActive(capi, "rappell"))
+                if (IsKeyComboActive(api, "rappell"))
                 {
                     api.World.Player?.Entity.WatchedAttributes.SetBool("rappell", true);
                 }
