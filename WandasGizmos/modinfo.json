@@ -1,12 +1,13 @@
 {
     "type": "code",
-    "modid": "WGMT",
-    "name": "WGMT",
+    "modid": "wgmt",
+    "name": "Wanda's Gizmos",
     "authors": [
         "Dov3"
     ],
     "contributors": [
-        "Jayugg"
+        "Jayugg",
+        "Maltiez"
     ],
     "description": "GRAPPPLING HOOOOOOOOOOOOK!!!!!",
     "version": "0.0.12",
