@@ -37,30 +37,11 @@ namespace WandasGizmos
             api.RegisterEntityRendererClass("RopeRenderer", typeof(RopeRenderer));
             base.StartClientSide(api);
             capi = api;
-            capi.Input.RegisterHotKey("hoist", "Hoist", GlKeys.Tab, HotkeyType.MovementControls);
-            capi.Input.SetHotKeyHandler("hoist", _ => true);
+            capi.Input.RegisterHotKey("hoist", "Hoist", GlKeys.CapsLock, HotkeyType.MovementControls);
+            capi.Input.SetHotKeyHandler("hoist", combo => false);
 
             capi.Input.RegisterHotKey("rappell", "Rappell", GlKeys.LShift, HotkeyType.MovementControls);
-            capi.Input.SetHotKeyHandler("rappell", _ => true);
-            capi.Event.KeyDown += _ =>
-            {
-                if (IsKeyComboActive(api, "hoist"))
-                {
-                    api.World.Player?.Entity.WatchedAttributes.SetBool("hoist", true);
-                }
-                else
-                {
-                    api.World.Player?.Entity.WatchedAttributes.SetBool("hoist", false);
-                }
-                if (IsKeyComboActive(api, "rappell"))
-                {
-                    api.World.Player?.Entity.WatchedAttributes.SetBool("rappell", true);
-                }
-                else
-                {
-                    api.World.Player?.Entity.WatchedAttributes.SetBool("rappell", false);
-                }
-            };
+            capi.Input.SetHotKeyHandler("rappell", combo => false);
             capi.Event.ReloadShader += () =>
             {
                 //Squiggly = RegisterShader("squiggly", "squiggly");
@@ -76,7 +57,6 @@ namespace WandasGizmos
             KeyCombination combo = api.Input.GetHotKeyByCode(key).CurrentMapping;
             return api.Input.KeyboardKeyState[combo.KeyCode];
         }
-
         public IShaderProgram RegisterShader(string shaderPath, string shaderName)
         {
             IShaderProgram shader = capi.Shader.NewShaderProgram();

@@ -19,12 +19,6 @@ namespace WandasGizmos
     {
         public double ItemRopeCount;
         public EntityPlayer FiredBy;
-
-        public override void OnHeldAttackStart(ItemSlot slot, EntityAgent byEntity, BlockSelection blockSel, EntitySelection entitySel, ref EnumHandHandling handling)
-        {
-            base.OnHeldAttackStart(slot, byEntity, blockSel, entitySel, ref handling);
-            byEntity.WatchedAttributes.SetBool("fired", false);
-        }
         public override void OnHeldInteractStart(ItemSlot slot, EntityAgent byEntity, BlockSelection blockSel, EntitySelection entitySel, bool firstEvent, ref EnumHandHandling handling)
         {
             base.OnHeldInteractStart(slot, byEntity, blockSel, entitySel, firstEvent, ref handling);
@@ -115,7 +109,6 @@ namespace WandasGizmos
                     ItemRopeCount += itemSlot.Itemstack.StackSize;
                 }
             }
-            Console.WriteLine(ItemRopeCount);
             if (ItemRopeCount == 0) return;
             if (secondsUsed < 0.75f) return;
             else if (secondsUsed > 2.5f) secondsUsed = 2.5f;

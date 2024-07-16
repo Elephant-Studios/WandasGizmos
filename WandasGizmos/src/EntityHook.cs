@@ -5,6 +5,7 @@ using Vintagestory.API.Common;
 using Vintagestory.API.Common.Entities;
 using Vintagestory.API.MathTools;
 using Vintagestory.API.Server;
+using static OpenTK.Graphics.OpenGL.GL;
 
 namespace WandasGizmos
 {
@@ -103,7 +104,6 @@ namespace WandasGizmos
             EntityPos pos = SidedPos;
             if (!FiredBy.WatchedAttributes.GetAsBool("fired"))
             {
-                Console.WriteLine("Killed");
                 Die();
             }
 
@@ -120,25 +120,24 @@ namespace WandasGizmos
                 }
 
             }
-            double L = FiredBy.Pos.DistanceTo(anchorPoint);
-            if (MaxLength == 0) MaxLength = FiredBy.Pos.DistanceTo(Pos);
-            //Console.WriteLine(Api.Side + "L " + L);
-            if (FiredBy.WatchedAttributes.GetAsBool("hoist"))
+            if (capi != null)
             {
-                if (MaxLength > 2) MaxLength -= 0.3;// if max length larger than 1 and NOT(Collided Vertically and Not on Ground)
-            }
-            else if (FiredBy.WatchedAttributes.GetAsBool("rappell"))
-            {
-                if (MaxLength < RopeCount)
+                if (capi.Input.KeyboardKeyState[capi.Input.GetHotKeyByCode("hoist").CurrentMapping.KeyCode])
+                {
+                    if (MaxLength > 2) MaxLength -= 0.15;
+                }
+                if (capi.Input.KeyboardKeyState[capi.Input.GetHotKeyByCode("rappell").CurrentMapping.KeyCode])
                 {
                     MaxLength += 0.3;
                 }
             }
+            double L = FiredBy.Pos.DistanceTo(anchorPoint);
+            if (MaxLength == 0) MaxLength = FiredBy.Pos.DistanceTo(Pos);
+            FiredBy.PositionBeforeFalling = FiredBy.Pos.XYZ;
             if (FiredBy != null && collTester.IsColliding(World.BlockAccessor, collisionTestBox, pos.XYZ)) //&& !grappled)
             {
                 if (L > MaxLength && L > 2) // + 0.2
                 {
-                    FiredBy.PositionBeforeFalling = FiredBy.ServerPos.XYZ;
                     double theta = Math.Atan2(FiredBy.Pos.X - anchorPoint.X, FiredBy.Pos.Y - anchorPoint.Y);
                     double phi = Math.Atan2(FiredBy.Pos.Z - anchorPoint.Z, FiredBy.Pos.Y - anchorPoint.Y);
                     Vec3d radialDistance = FiredBy.Pos.XYZ.SubCopy(anchorPoint);
@@ -191,7 +190,6 @@ namespace WandasGizmos
         }
         public override void OnCollided()
         {
-            if (!FiredBy.Alive || FiredBy.WatchedAttributes.GetAsBool("fired", false)) return;
             RopeCount = 0;
             foreach (ItemSlot itemSlot in FiredBy.Player.InventoryManager.GetHotbarInventory())
             {
@@ -204,7 +202,6 @@ namespace WandasGizmos
             {
                 FiredBy.WatchedAttributes.SetBool("fired", false);
                 WatchedAttributes.MarkAllDirty();
-                Console.WriteLine("broke");
             }
             EntityPos pos = SidedPos;
             pos.Motion.Set(0, 0, 0);
@@ -213,7 +210,6 @@ namespace WandasGizmos
             
             if (Api.Side == EnumAppSide.Server) MaxLength = FiredBy.ServerPos.DistanceTo(ServerPos);
             else MaxLength = FiredBy.Pos.DistanceTo(Pos);
-            Console.WriteLine(Api.Side + " " + MaxLength);
             WatchedAttributes.MarkAllDirty();
             motionBeforeCollide.Set(pos.Motion.X, pos.Motion.Y, pos.Motion.Z);
         }
@@ -288,7 +284,6 @@ namespace WandasGizmos
                 }
                 else
                 {
-                    Console.WriteLine("death: random break chance");
                     FiredBy.WatchedAttributes.SetBool("fired", false);
 
                     Die();
