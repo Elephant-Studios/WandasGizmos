@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Reflection;
 using Vintagestory.API.Client;
@@ -10,6 +11,7 @@ using Vintagestory.API.Util;
 using Vintagestory.Client.NoObf;
 using Vintagestory.GameContent;
 using WandasGizmos.src;
+using static OpenTK.Graphics.OpenGL.GL;
 
 namespace WandasGizmos
 {
@@ -17,7 +19,9 @@ namespace WandasGizmos
     {
 
         ICoreAPI _api;
+        public ICoreServerAPI _sapi;
         public ICoreClientAPI capi;
+        private readonly Dictionary<string, bool> OnlinePlayers = new();
         //float[] modelMat = Mat4f.Create();
 
         public static IShaderProgram RopeLine { get; set; }
@@ -28,6 +32,7 @@ namespace WandasGizmos
         {
             base.Start(api);
             _api = api;
+            
             api.RegisterEntity("EntityHook", typeof(EntityHook));
             //api.RegisterEntity("EntityRope", typeof(EntityRope));
             api.RegisterItemClass("ItemGrapplingHook", typeof(ItemGrapplingHook));

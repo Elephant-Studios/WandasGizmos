@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using Vintagestory.API.Client;
 using Vintagestory.API.Common;
@@ -34,6 +35,7 @@ namespace WandasGizmos
         public float SpringConst = 0.5f;
         public double MaxLength;
         public int RopeCount;
+        //private readonly Dictionary<string, bool> OnlinePlayers = new();
         public double FunConstant = 0.01f;
         public Vec3d anchorPoint;
         public Vec3d originalPoint;
@@ -67,11 +69,17 @@ namespace WandasGizmos
             {
                 Die();
             }
+            if (sapi != null) sapi.Event.PlayerDisconnect += EventOnPlayerDisconnect;
+            //OnlinePlayers[FiredBy.PlayerUID] = true;
             msLaunch = World.ElapsedMilliseconds;
             collisionTestBox = SelectionBox.Clone().OmniGrowBy(0.15f);
             GetBehavior<EntityBehaviorPassivePhysics>().OnPhysicsTickCallback = onPhysicsTickCallback;
             GetBehavior<EntityBehaviorPassivePhysics>().collisionYExtra = 0f; // Slightly cheap hax so that stones/arrows don't collid with fences
 
+        }
+        private void EventOnPlayerDisconnect(IServerPlayer byplayer)
+        {
+            if (byplayer.PlayerUID == FiredBy.PlayerUID) Die();
         }
         private void onPhysicsTickCallback(float dtFac)
         {
@@ -98,7 +106,7 @@ namespace WandasGizmos
             if (FiredBy is null)
             {
                 FiredBy = Api.World.GetEntityById(FiredById) as EntityPlayer;
-                if (FiredBy is null) return;
+                if (FiredBy is null) FiredBy.WatchedAttributes.SetBool("fired", false); Console.WriteLine("despawn case 1"); return;
             }
             //Console.WriteLine(Api.Side + "M " + MaxLength);
             EntityPos pos = SidedPos;
@@ -106,7 +114,6 @@ namespace WandasGizmos
             {
                 Die();
             }
-
             if (anchorPoint == null)
             {
                 if (WatchedAttributes.GetBool("stuck"))
@@ -191,6 +198,11 @@ namespace WandasGizmos
         public override void OnCollided()
         {
             RopeCount = 0;
+            if (FiredBy is null)
+            {
+                FiredBy = Api.World.GetEntityById(FiredById) as EntityPlayer;
+                if (FiredBy is null) FiredBy.WatchedAttributes.SetBool("fired", false); return;
+            }
             foreach (ItemSlot itemSlot in FiredBy.Player.InventoryManager.GetHotbarInventory())
             {
                 if (itemSlot?.Itemstack?.Id == 1701)
