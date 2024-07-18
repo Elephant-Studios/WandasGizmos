@@ -151,7 +151,7 @@ namespace WandasGizmos
                     double radialDistanceMag = radialDistance.Length();
                     Vec3d radialDirection = radialDistance.Normalize();
                     Vec3d acceleration = radialDirection * SpringConst * Math.Abs(radialDistanceMag - MaxLength);
-                    double damping = 2.2f * Math.Sqrt(SpringConst);
+                    double damping = 2f * Math.Sqrt(SpringConst);
                     Vec3d TangVel = FiredBy.Pos.Motion - GetProjectionOn(FiredBy.Pos.Motion, radialDirection);
                     //FiredBy.ServerPos.Motion.Add(acceleration * dt);
                     FiredBy.Pos.Motion.Add(acceleration * dt);
@@ -159,15 +159,34 @@ namespace WandasGizmos
                     FiredBy.Pos.Motion.Add(-damping * GetProjectionOn(FiredBy.Pos.Motion, radialDirection));
                     double ThetaDegrees = theta * 180 / Math.PI;
                     double PhiDegrees = phi * 180 / Math.PI;
-                    if (FiredBy.ServerPos.Motion.Length() < 0.3f && ((ThetaDegrees > 135 && ThetaDegrees < 180) || (ThetaDegrees > -180 && ThetaDegrees < -135)))
+                    if (capi != null)
                     {
-                        //FiredBy.ServerPos.Motion.Add(TangVel * FunConstant);
-                        FiredBy.SidedPos.Motion.Add(TangVel * FunConstant);
-                    }
-                    if (FiredBy.ServerPos.Motion.Length() < 0.3f && ((PhiDegrees > 135 && PhiDegrees < 180) || (PhiDegrees > -180 && PhiDegrees < -135)))
-                    {
-                        //FiredBy.ServerPos.Motion.Add(TangVel * FunConstant);
-                        FiredBy.SidedPos.Motion.Add(TangVel * FunConstant);
+                        if (!capi.Input.KeyboardKeyState[(int)GlKeys.Space])
+                        {
+                            if (FiredBy.ServerPos.Motion.Length() < 0.3f && ((ThetaDegrees > 135 && ThetaDegrees < 180) || (ThetaDegrees > -180 && ThetaDegrees < -135)))
+                            {
+                                //FiredBy.ServerPos.Motion.Add(TangVel * FunConstant);
+                                FiredBy.SidedPos.Motion.Add(TangVel * FunConstant);
+                            }
+                            if (FiredBy.ServerPos.Motion.Length() < 0.3f && ((PhiDegrees > 135 && PhiDegrees < 180) || (PhiDegrees > -180 && PhiDegrees < -135)))
+                            {
+                                //FiredBy.ServerPos.Motion.Add(TangVel * FunConstant);
+                                FiredBy.SidedPos.Motion.Add(TangVel * FunConstant);
+                            }
+                        }
+                        else
+                        {
+                            if (FiredBy.ServerPos.Motion.Length() < 0.3f && ((ThetaDegrees > 135 && ThetaDegrees < 180) || (ThetaDegrees > -180 && ThetaDegrees < -135)))
+                            {
+                                //FiredBy.ServerPos.Motion.Add(TangVel * FunConstant);
+                                FiredBy.SidedPos.Motion.Add(-1 * TangVel * FunConstant);
+                            }
+                            if (FiredBy.ServerPos.Motion.Length() < 0.3f && ((PhiDegrees > 135 && PhiDegrees < 180) || (PhiDegrees > -180 && PhiDegrees < -135)))
+                            {
+                                //FiredBy.ServerPos.Motion.Add(TangVel * FunConstant);
+                                FiredBy.SidedPos.Motion.Add(-1 * TangVel * FunConstant);
+                            }
+                        }
                     }
                 }
             }
