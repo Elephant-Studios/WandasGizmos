@@ -18,7 +18,7 @@ namespace WandasGizmos
 {
     internal class HelperBlockDetection
     {
-        public static void WritePositionalBlocksToField(ICoreClientAPI capi, IClientPlayer player)
+        /*public static void WritePositionalBlocksToField(ICoreClientAPI capi, IClientPlayer player)
         {
             DataFields.blockAtPlayerPos = ((IWorldAccessor)capi.World).BlockAccessor.GetBlock((int)((Entity)((IPlayer)player).Entity).Pos.X, (int)((Entity)((IPlayer)player).Entity).Pos.Y, (int)((Entity)((IPlayer)player).Entity).Pos.Z);
             DataFields.blockAbovePlayerPos = ((IWorldAccessor)capi.World).BlockAccessor.GetBlock((int)((Entity)((IPlayer)player).Entity).Pos.X, (int)((Entity)((IPlayer)player).Entity).Pos.Y + 1, (int)((Entity)((IPlayer)player).Entity).Pos.Z);
@@ -72,7 +72,7 @@ namespace WandasGizmos
                 DataFields.collidedWithWoodClimbable = false;
             else
                 DataFields.collidedWithWoodClimbable = true;
-        }
+        }*/
     }
 }
 

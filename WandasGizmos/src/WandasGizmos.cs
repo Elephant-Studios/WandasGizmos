@@ -12,7 +12,6 @@ using Vintagestory.Client.NoObf;
 using Vintagestory.Common;
 using Vintagestory.GameContent;
 using WandasGizmos.src;
-using static OpenTK.Graphics.OpenGL.GL;
 
 namespace WandasGizmos
 {
@@ -61,15 +60,15 @@ namespace WandasGizmos
             DataFields.setCoreAPI(this._api);
             DataFields.setICoreClientAPI(this._capi);
             DataFields.setIClientPlayerWorld(this._capi.World);
-            api.Input.RegisterHotKey("toggleClimbing", "Toggle wall-climbing", (GlKeys)88, (HotkeyType)4, false, false, true);
-            api.Input.SetHotKeyHandler("toggleClimbing", Wandas.\u003C\u003EO.\u003C0\u003E__ToggleClimbMode ?? (MoveLikeKajiModSystem.\u003C\u003EO.\u003C0\u003E__ToggleClimbMode = new ActionConsumable<KeyCombination>((object)null, __methodptr(ToggleClimbMode))));
-            api.Input.RegisterHotKey("toggleCrawling", "Crawl on the floor", (GlKeys)85, (HotkeyType)4, false, false, true);
-            api.Input.SetHotKeyHandler("toggleCrawling", MoveLikeKajiModSystem.\u003C\u003EO.\u003C1\u003E__ToggleCrawling ?? (MoveLikeKajiModSystem.\u003C\u003EO.\u003C1\u003E__ToggleCrawling = new ActionConsumable<KeyCombination>((object)null, __methodptr(ToggleCrawling))));
-            api.Input.RegisterHotKey("toggleSettingsGUI", "Mod-Settings for 'Move like Kaji'", (GlKeys)94, (HotkeyType)0, false, false, false);
+            //api.Input.RegisterHotKey("toggleClimbing", "Toggle wall-climbing", (GlKeys)88, (HotkeyType)4, false, false, true);
+            //api.Input.SetHotKeyHandler("toggleClimbing", Wandas.\u003C\u003EO.\u003C0\u003E__ToggleClimbMode ?? (MoveLikeKajiModSystem.\u003C\u003EO.\u003C0\u003E__ToggleClimbMode = new ActionConsumable<KeyCombination>((object)null, __methodptr(ToggleClimbMode))));
+            //api.Input.RegisterHotKey("toggleCrawling", "Crawl on the floor", (GlKeys)85, (HotkeyType)4, false, false, true);
+            //api.Input.SetHotKeyHandler("toggleCrawling", MoveLikeKajiModSystem.\u003C\u003EO.\u003C1\u003E__ToggleCrawling ?? (MoveLikeKajiModSystem.\u003C\u003EO.\u003C1\u003E__ToggleCrawling = new ActionConsumable<KeyCombination>((object)null, __methodptr(ToggleCrawling))));
+            //api.Input.RegisterHotKey("toggleSettingsGUI", "Mod-Settings for 'Move like Kaji'", (GlKeys)94, (HotkeyType)0, false, false, false);
             //api.Input.AddHotkeyListener(MoveLikeKajiModSystem.\u003C\u003EO.\u003C3\u003E__OnSpecificHotkeyPressed ?? (MoveLikeKajiModSystem.\u003C\u003EO.\u003C3\u003E__OnSpecificHotkeyPressed = new OnHotKeyDelegate((object)null, __methodptr(OnSpecificHotkeyPressed))));
             GameTickListeners gameTickListerners = new GameTickListeners();
-            ((IEventAPI)api.Event).RegisterGameTickListener(new Action<float>(gameTickListerners.OnFixedTick), 50, 0);
-            api.Event.PlayerDeath += new PlayerEventDelegate((object)this, __methodptr(Event_PlayerDeath));
+            //((IEventAPI)api.Event).RegisterGameTickListener(new Action<float>(gameTickListerners.OnFixedTick), 50, 0);
+            //api.Event.PlayerDeath += new PlayerEventDelegate((object)this, __methodptr(Event_PlayerDeath));
         }
 
         public override void StartServerSide(ICoreServerAPI api)
@@ -77,10 +76,11 @@ namespace WandasGizmos
             base.StartServerSide(api);
 
         }
-        private void Event_PlayerDeath(IClientPlayer byPlayer)
+        /*private void Event_PlayerDeath(IClientPlayer byPlayer)
         {
             BehaviorClimbing.ToggleClimbMode(this.capi.World);
-        }
+        }*/
+
         public static bool IsKeyComboActive(ICoreClientAPI api, string key)
         {
             KeyCombination combo = api.Input.GetHotKeyByCode(key).CurrentMapping;

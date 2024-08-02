@@ -15,7 +15,7 @@ using static OpenTK.Graphics.OpenGL.GL;
 
 namespace WandasGizmos
 {
-    public class WandasGizmos : ModSystem
+    public class NetworkSyncHandler : ModSystem
     {
 
         ICoreAPI _api;
