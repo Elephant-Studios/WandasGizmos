@@ -104,7 +104,7 @@ namespace WandasGizmos
             ItemRopeCount = 0;
             foreach (ItemSlot itemSlot in FiredBy.Player.InventoryManager.GetHotbarInventory())
             {
-                if (itemSlot?.Itemstack?.GetName() == "Rope")
+                if (itemSlot?.Itemstack?.Item.Code.ToString() == "game:rope")
                 {
                     ItemRopeCount += itemSlot.Itemstack.StackSize;
                 }
