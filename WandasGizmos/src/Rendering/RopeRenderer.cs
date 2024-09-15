@@ -9,7 +9,7 @@ using Vintagestory.API.Common;
 using Vintagestory.API.MathTools;
 using Vintagestory.GameContent;
 
-namespace WandasGizmos.src
+namespace Elephant.WandasGizmos
 {
     public class RopeRenderer : EntityShapeRenderer
     {
@@ -24,7 +24,7 @@ namespace WandasGizmos.src
         public RopeRenderer(Entity entity, ICoreClientAPI api)
           : base(entity, api)
         {
-            this.CreateCrossFishingLine(0.03f);
+            this.CreateGrappleRope(0.03f);
             this.hook = (EntityHook)entity;
             this.lineTexture = ((EntityRenderer)this).capi.Render.GetOrLoadTexture(new AssetLocation("wgmt:rope/rope.png"));
             float num = (float)((EntityRenderer)this).capi.Settings.Int["fpHandsFoV"] * ((float)Math.PI / 180f);
@@ -60,7 +60,6 @@ namespace WandasGizmos.src
                 this.matrix.Translate(0.0, -((Entity)entityById).LocalEyePos.Y, 0.0);
             }
             this.matrix.RotateX((float)num1).RotateY((float)num2).RotateZ((float)num3).Translate(attachPoint.PosX / 16.0 - 0.5, attachPoint.PosY / 16.0, attachPoint.PosZ / 16.0 - 0.5).Mul(attachmentPointPose.AnimModelMatrix);
-            //this.matrix.Translate(-(double)collectible.lineOffset, 0.1, 0.0);
             Vec4f vec4f1 = this.matrix.TransformVector(new Vec4f(0.0f, 0.0f, 0.0f, 1f));
             if (flagFirstPerson)
             {
@@ -125,7 +124,7 @@ namespace WandasGizmos.src
             this.ropeLineMesh?.Dispose();
         }
 
-        public void CreateCrossFishingLine(float width)
+        public void CreateGrappleRope(float width)
         {
             this.ropeLineMesh?.Dispose();
             MeshData meshData1 = new MeshData(42, 42, false, true, false, false);

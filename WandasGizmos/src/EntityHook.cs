@@ -1,14 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using Vintagestory.API.Client;
 using Vintagestory.API.Common;
 using Vintagestory.API.Common.Entities;
 using Vintagestory.API.MathTools;
 using Vintagestory.API.Server;
-using static OpenTK.Graphics.OpenGL.GL;
 
-namespace WandasGizmos
+namespace Elephant.WandasGizmos
 {
     public class EntityHook : Entity
     {
@@ -35,12 +33,9 @@ namespace WandasGizmos
         public float SpringConst = 0.5f;
         public double MaxLength;
         public int RopeCount;
-        //private readonly Dictionary<string, bool> OnlinePlayers = new();
         public double FunConstant = 0.01f;
         public Vec3d anchorPoint;
         public Vec3d originalPoint;
-
-        //public int totalRope;
 
 
         Cuboidf collisionTestBox;
@@ -224,7 +219,7 @@ namespace WandasGizmos
             }
             foreach (ItemSlot itemSlot in FiredBy.Player.InventoryManager.GetHotbarInventory())
             {
-                if (itemSlot?.Itemstack?.Item.Code.ToString() == "game:rope")
+                if (itemSlot?.Itemstack?.Collectible?.Code?.Path == "rope")
                 {
                     RopeCount += itemSlot.Itemstack.StackSize * 3 / 2;
                 }

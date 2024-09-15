@@ -1,7 +1,5 @@
 ﻿using HarmonyLib;
 using System;
-using System.Diagnostics;
-using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using Vintagestory.API.Client;
 using Vintagestory.API.Common;
@@ -10,10 +8,8 @@ using Vintagestory.API.Config;
 using Vintagestory.API.MathTools;
 using Vintagestory.API.Server;
 using Vintagestory.API.Util;
-using Vintagestory.GameContent;
-using static OpenTK.Graphics.OpenGL.GL;
 
-namespace WandasGizmos
+namespace Elephant.WandasGizmos
 {
     class ItemGrapplingHook : Item
     {
@@ -104,7 +100,7 @@ namespace WandasGizmos
             ItemRopeCount = 0;
             foreach (ItemSlot itemSlot in FiredBy.Player.InventoryManager.GetHotbarInventory())
             {
-                if (itemSlot?.Itemstack?.Item.Code.ToString() == "game:rope")
+                if (itemSlot?.Itemstack?.Collectible?.Code?.Path == "rope")
                 {
                     ItemRopeCount += itemSlot.Itemstack.StackSize;
                 }
