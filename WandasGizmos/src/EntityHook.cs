@@ -217,15 +217,6 @@ namespace Elephant.WandasGizmos
                 FiredBy = Api.World.GetEntityById(FiredById) as EntityPlayer;
                 if (FiredBy is null) FiredBy.WatchedAttributes.SetBool("fired", false); return;
             }
-
-            /*
-            foreach (ItemSlot itemSlot in FiredBy.Player.InventoryManager.GetHotbarInventory())
-            {
-                if (itemSlot?.Itemstack?.Collectible?.Code?.Path == "rope")
-                {
-                    RopeCount += itemSlot.Itemstack.StackSize * 3 / 2;
-                }
-            }*/
             if (this.ServerPos.DistanceTo(FiredBy.ServerPos) > 50) // > totalRope);
             {
                 FiredBy.WatchedAttributes.SetBool("fired", false);
