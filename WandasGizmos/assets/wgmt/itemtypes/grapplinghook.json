@@ -7,12 +7,12 @@
   ],
   "durabilityByType": {
     "*-copper": 16,
-    "*-tinbronze": 64,
+    "*-tinbronze": 32,
     "*-bismuthbronze": 48,
-    "*-blackbronze": 90,
-    "*-iron": 256,
-    "*-meteoriciron": 512,
-    "*-steel": 1024
+    "*-blackbronze": 45,
+    "*-iron": 128,
+    "*-meteoriciron": 256,
+    "*-steel": 512
   },
   "textures": {"metal": {"base": "game:block/metal/plate/{material}"}},
   "shape": {

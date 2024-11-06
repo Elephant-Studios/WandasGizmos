@@ -211,24 +211,27 @@ namespace Elephant.WandasGizmos
         }
         public override void OnCollided()
         {
-            RopeCount = 0;
+            //RopeCount = 0;
             if (FiredBy is null)
             {
                 FiredBy = Api.World.GetEntityById(FiredById) as EntityPlayer;
                 if (FiredBy is null) FiredBy.WatchedAttributes.SetBool("fired", false); return;
             }
+
+            /*
             foreach (ItemSlot itemSlot in FiredBy.Player.InventoryManager.GetHotbarInventory())
             {
                 if (itemSlot?.Itemstack?.Collectible?.Code?.Path == "rope")
                 {
                     RopeCount += itemSlot.Itemstack.StackSize * 3 / 2;
                 }
-            }
-            if (this.ServerPos.DistanceTo(FiredBy.ServerPos) > RopeCount) // > totalRope);
+            }*/
+            if (this.ServerPos.DistanceTo(FiredBy.ServerPos) > 50) // > totalRope);
             {
                 FiredBy.WatchedAttributes.SetBool("fired", false);
                 WatchedAttributes.MarkAllDirty();
             }
+
             EntityPos pos = SidedPos;
             pos.Motion.Set(0, 0, 0);
 

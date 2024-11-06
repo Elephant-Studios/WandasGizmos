@@ -1,6 +1,6 @@
 [
   {
-		"ingredientPattern": "_M_,MFM,_M_",
+		"ingredientPattern": "_M_,MFM,___",
 		"ingredients": {
 			"M": { "type": "item", "code": "game:metalnailsandstrips-*", "name": "metal", "allowedVariants": ["copper", "tinbronze", "bismuthbronze", "blackbronze", "iron", "meteoriciron", "steel"] },
 			"F": { "type": "item", "code": "game:rope" }

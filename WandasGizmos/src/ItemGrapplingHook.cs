@@ -52,7 +52,6 @@ namespace Elephant.WandasGizmos
         {
             base.GetHeldItemInfo(inSlot, dsc, world, withDebugInfo);
             dsc.AppendLine("Snakes... Why'd it have to be snakes!");
-            dsc.AppendLine("*Requires Rope in Hotbar for Use*");
         }
         public override void OnHeldIdle(ItemSlot slot, EntityAgent byEntity)
         {
@@ -95,17 +94,10 @@ namespace Elephant.WandasGizmos
         public override void OnHeldInteractStop(float secondsUsed, ItemSlot slot, EntityAgent byEntity, BlockSelection blockSel, EntitySelection entitySel)
         {
             base.OnHeldInteractStop(secondsUsed, slot, byEntity, blockSel, entitySel);
+            Console.WriteLine("Break1");
             if (byEntity.Attributes.GetInt("aimingCancel") == 1) return;
             byEntity.StopAnimation("toss");
-            ItemRopeCount = 0;
-            foreach (ItemSlot itemSlot in FiredBy.Player.InventoryManager.GetHotbarInventory())
-            {
-                if (itemSlot?.Itemstack?.Collectible?.Code?.Path == "rope")
-                {
-                    ItemRopeCount += itemSlot.Itemstack.StackSize;
-                }
-            }
-            if (ItemRopeCount == 0) return;
+            Console.WriteLine("Break1");
             if (secondsUsed < 0.75f) return;
             else if (secondsUsed > 2.5f) secondsUsed = 2.5f;
             double power = secondsUsed / 2.5;
@@ -124,19 +116,15 @@ namespace Elephant.WandasGizmos
             }
             EntityProperties EnhkType = byEntity.World.GetEntityType(Code);
             EntityHook enhk = byEntity.World.ClassRegistry.CreateEntity(EnhkType) as EntityHook;
-            //EntityProperties EnrpType = byEntity.World.GetEntityType(new AssetLocation("wgmt:rope"));
-            //EntityRope enrp = byEntity.World.ClassRegistry.CreateEntity(EnrpType) as EntityHook;
             double pitch = byEntity.WatchedAttributes.GetDouble("aimingRandYaw", 1);
             double yaw = byEntity.WatchedAttributes.GetDouble("aimingRandYaw", 1);
             Vec3d pos = byEntity.Pos.XYZ.Add(0, byEntity.LocalEyePos.Y - 0.2, 0);
             Vec3d aimPos = pos.AheadCopy(1, byEntity.Pos.Pitch, byEntity.Pos.Yaw);
             Vec3d velocity = (aimPos - pos);
-            //byEntity.Pos.SetFrom(byEntity.ServerPos);
             Vec3d spawnPos = byEntity.ServerPos.BehindCopy(0.21).XYZ.Add(byEntity.LocalEyePos.X, byEntity.LocalEyePos.Y - 0.2, byEntity.LocalEyePos.Z);
             enhk.ServerPos.SetPos(spawnPos);
             enhk.ServerPos.Motion.Set(velocity * power);
             enhk.FiredById = byEntity.EntityId;
-            enhk.RopeCount = (int) (ItemRopeCount * 1.5);
             enhk.ProjectileStack = slot.Itemstack;
 
             enhk.Pos.SetFrom(enhk.ServerPos);
